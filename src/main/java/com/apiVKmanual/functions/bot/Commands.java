@@ -5,8 +5,7 @@ import com.apiVKmanual.client.BotApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import org.json.JSONException;
-import java.io.IOException;
+import net.aksingh.owmjapis.api.APIException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class Commands {
 
 
     //-----------------команды бота-----------------------------------------------//
-    public static String commandsBot(String textMessageString, String messages, UserActor actor, List messagesList, BotApiClient bot) throws IOException, JSONException, SQLException, ClassNotFoundException, ClientException, ApiException {
+    public static String commandsBot(String textMessageString, String messages, UserActor actor, List<com.vk.api.sdk.objects.messages.Dialog> messagesList, BotApiClient bot) throws  SQLException, ClassNotFoundException, ClientException, ApiException {
         String message=messages;
 
         if (textMessageString.equals("го стих")){
@@ -88,7 +87,11 @@ public class Commands {
                 message="Введите город по типу -Колян, го погоду Москва-";
             }else {
                 System.out.println("Запрос на погоду - город: " + city);
-                message= weather(city);
+                try {
+                    message= weather(city);
+                } catch (APIException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (textMessageString.equals("го приостановка бота")){

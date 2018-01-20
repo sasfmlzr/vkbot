@@ -6,11 +6,13 @@ import net.aksingh.owmjapis.model.CurrentWeather;
 import net.aksingh.owmjapis.core.OWM;
 
 
-public class Functional {
+@SuppressWarnings("ConstantConditions, deprecation")
+class Functional {
+
 
 
     //-----------------погода------------------------------------------------------//
-    public static String weather(String city) throws  APIException {
+    static String weather(String city) throws  APIException {
         String pogoda="";
         // берем апи с OpenWeatherMap
         OWM owm = new OWM("5c202047bca9a767f476b06c746ab856");
