@@ -1,0 +1,19 @@
+.button {
+	-fx-background-color: transparent;
+	-fx-font-size: 1px;
+
+	-fx-faint-focus-color: transparent;	
+}
+
+#button {
+	-fx-background-color: transparent;
+	-fx-font-size: 1px;
+
+	-fx-faint-focus-color: transparent;	
+}
+
+#button-active {
+	-fx-background-color: #e8e8e8;
+
+	-fx-faint-focus-color: transparent;	
+}

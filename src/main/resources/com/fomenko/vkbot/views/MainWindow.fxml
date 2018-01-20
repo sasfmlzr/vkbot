@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type ="javafx.scene.layout.AnchorPane" fx:id="root" style="-fx-background-color: #2d2d2d;" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" stylesheets="@dark.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="%MainWindow.menuFile.text">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuFileAdd" text="%MainWindow.fileItemNew.text" />
+                  <MenuItem mnemonicParsing="false" text="%MainWindow.fileItemOpen.text" />
+                  <MenuItem fx:id="menuFileClose" mnemonicParsing="false" onAction="#onMenuFileClose" text="%MainWindow.fileItemExit.text" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="%MainWindow.menuBot.text">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="%MainWindow.botItemToggle.text" />
+                  <MenuItem mnemonicParsing="false" text="%MainWindow.botItemTask.text" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuDatabaseBot" text="%MainWindow.botItemSettings.text" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuStatisticsBot" text="%MainWindow.botItemStatistics.text" />
+                  <MenuItem mnemonicParsing="false" text="%MainWindow.botItemRemove.text" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="%MainWindow.menuSettings.text">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuPropertiesOpen" text="%MainWindow.settingsMenuSettings.text" />
+                  <Menu mnemonicParsing="false" text="%MainWindow.settingsMenuLang.text">
+                     <items>
+                        <RadioMenuItem id="en_US" fx:id="menuLangEn" mnemonicParsing="false" text="%MainWindow.langItemEn.text">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="languageGroup" />
+                           </toggleGroup>
+                        </RadioMenuItem>
+                        <RadioMenuItem id="ru_RU" fx:id="menuLangRu" mnemonicParsing="false" text="%MainWindow.langItemRu.text" toggleGroup="$languageGroup" />
+                     </items>
+                  </Menu>
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="%MainWindow.menuHelp.text">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuLogOpen" text="%MainWindow.helpItemLog.text" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuAboutOpen" text="%MainWindow.helpItemAbout.text" />
+               </items></Menu>
+        </menus>
+      </MenuBar>
+      <TabPane fx:id="tabPane" layoutY="26.0" stylesheets="@dark.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <tabs>
+          <Tab fx:id="mainTab" closable="false" text="%MainWindow.mainTab.title" />
+        </tabs>
+      </TabPane>
+   </children>
+</fx:root>

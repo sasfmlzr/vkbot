@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="605.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fomenko.vkbot.controller.menuprogram.PropertiesProgramWindowController">
+   <children>
+      <TextArea fx:id="textLog" editable="false" layoutX="18.0" layoutY="7.0" minHeight="300.0" minWidth="279.0" prefHeight="435.0" prefWidth="554.0" text="Логи" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="7.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextArea>
+   </children>
+</AnchorPane>
