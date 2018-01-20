@@ -1,18 +1,9 @@
 package com.fomenko.vkbot.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.api.client.Client;
 import com.apiVKmanual.client.BotApiClient;
 import com.apiVKmanual.object.UserRights;
 import com.apiVKmanual.thread.ThreadBot;
-import com.fomenko.vkbot.VkBot;
 import com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController;
 import com.fomenko.vkbot.controller.menuprogram.PropertiesProgramWindowController;
 import com.fomenko.vkbot.controller.menuprogram.StatisticsWindowController;
@@ -38,20 +29,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static com.api.client.Client.idBot;
 import static com.apiVKmanual.functions.bot.Commands.adminCommandsBot;
 import static com.apiVKmanual.functions.bot.Commands.commandsBot;
-import static com.apiVKmanual.functions.botdatabase.DatabaseRequest.addInfoUser;
-import static com.apiVKmanual.functions.botdatabase.DatabaseRequest.addInfoUserRights;
-import static com.apiVKmanual.functions.botdatabase.DatabaseRequest.findUserRights;
+import static com.apiVKmanual.functions.botdatabase.DatabaseRequest.*;
 import static com.apiVKmanual.object.StatisticsVariable.*;
 import static com.fomenko.vkbot.controller.BotCardController.pushPowerBot;
-import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.BigMessagesData;
-import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.botData;
-import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.botRandomData;
+import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.*;
 import static com.vk.api.sdk.queries.users.UserField.PHOTO_200;
-import javafx.scene.layout.FlowPane;
-import javax.imageio.ImageIO;
 
 
 public class BotTabController extends AnchorPane implements Initializable {
@@ -94,7 +92,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
 
     public static boolean databaseLoaded=false;
-    public static boolean testSpeed=true;          // ТЕСТОВАЯ ПРОВЕРКА НА КОЛИЧЕСТВЕННОСТЬ СТАТИСТИКИ И ПОЖИРАНИЕ ПАМЯТИ
+    private static boolean testSpeed=true;          // ТЕСТОВАЯ ПРОВЕРКА НА КОЛИЧЕСТВЕННОСТЬ СТАТИСТИКИ И ПОЖИРАНИЕ ПАМЯТИ
     public static ResultSet resSettingBigBD;
     public static boolean botWork;                          // бот работает?
     public static boolean priostanovka;            // команда приостановки бота
@@ -254,10 +252,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         pushPowerBot=true;
         ThreadBot botsThread = new ThreadBot();             // создаем побочный поток
 
-
         List<UserXtrCounters> botSelfInfo = vk.users().get(actor).fields(PHOTO_200).execute();
-
-
 
         String botName = botSelfInfo.get(0).getFirstName() + " " + botSelfInfo.get(0).getLastName();
         String botAvatar = botSelfInfo.get(0).getPhoto200();
@@ -265,19 +260,14 @@ public class BotTabController extends AnchorPane implements Initializable {
         BufferedImage daffyDuckImage = ImageIO.read( daffyURL );
         Image botimage = SwingFXUtils.toFXImage(daffyDuckImage,null);
         ava=true;
-
         childList.forEach((BotCardController) -> {
             BotCardController.settext(botName);
             BotCardController.setavatar(botimage);
-            //    childScene.settext("Button clicked");
         });
-
-
-
         botsThread.start();
     }
 
-        public static boolean reduction=false;
+    public static boolean reduction=false;
 
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
         public static void sendMessageUser(UserActor actor) throws ClientException, ApiException, InterruptedException, IOException, SQLException, ClassNotFoundException {
@@ -390,7 +380,6 @@ public class BotTabController extends AnchorPane implements Initializable {
             botWork = false;
     }
 
-
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
     private static List<Dialog> createListMessageVK() throws ClientException, ApiException {
         long timezaprosstart =       System.currentTimeMillis();         // начало запроса непрочитанного запроса
@@ -471,6 +460,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         return messages;
     }
     //-----------------заполнение окна логов-----------------------------------------------//
+    @FXML
     public void logFill() {
         if (botWork)
         {
@@ -509,12 +499,10 @@ public class BotTabController extends AnchorPane implements Initializable {
                 countSleep = countSleep + 1;
                 timeDelayThread = 700 + countSleep * 100;
                 Thread.sleep(timeDelayThread);
-       //         System.out.print("время задержки потока= " + timeDelayThread + "\n");
             } else {
                 countSleep = countSleep + 1;
                 timeDelayThread = 1500 + countSleep * 100;
                 Thread.sleep(timeDelayThread);
-         //       System.out.print("время задержки потока= " + timeDelayThread + "\n");
             }
             if (countSleep >= 30) {
                 countSleep = 6;
@@ -526,44 +514,15 @@ public class BotTabController extends AnchorPane implements Initializable {
         }
     }
 
-
-    public boolean testBD(){
-        return true;
-    }
-
-
-
-
-
-
-
     private int o=0;
-    long[] usedBytes = new long[100];
+    private long[] usedBytes = new long[100];
 
     public void test()  {
-
-
         usedBytes[0]=0;
         o++;
         usedBytes[o]=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
-
-
-
         System.out.println(usedBytes[o]-usedBytes[o-1]);
-
-
-    //    vksendImageMessages(actor, 30562433, vk);
-
     }
-
-
-
-
-
-
-
-
-
     }
 
 

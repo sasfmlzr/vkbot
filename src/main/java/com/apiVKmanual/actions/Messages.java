@@ -19,7 +19,6 @@ public class Messages extends AbstractAction {
         new com.apiVKmanual.functions.message.Messages(getClient().getVkApiClient()).vkSendMessage(actor, message, messagesList, super.getClient().getVkApiClient());
     }
 
-
     public void vksendImageMessages(UserActor actor, List<Dialog> messagesList) throws ClientException, ApiException{
         new com.apiVKmanual.functions.message.Messages(getClient().getVkApiClient()).vksendImageMessages(actor,  messagesList, super.getClient().getVkApiClient());
     }
@@ -27,8 +26,4 @@ public class Messages extends AbstractAction {
     public void vkSendMessageUser(UserActor actor, String message, int userID) throws ClientException, ApiException {
         new com.apiVKmanual.functions.message.Messages(getClient().getVkApiClient()).vkSendMessageUser(actor,message,userID, super.getClient().getVkApiClient());
     }
-
-
-
-
 }

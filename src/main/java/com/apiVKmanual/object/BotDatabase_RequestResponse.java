@@ -10,8 +10,6 @@ public class BotDatabase_RequestResponse {
         this.response = response;
     }
 
-
-
     public String getRequest() {
         return request;
     }

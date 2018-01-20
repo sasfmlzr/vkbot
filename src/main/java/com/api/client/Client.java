@@ -24,74 +24,49 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import com.api.util.sig4j.signal.*;
 
-
-/**
- * Performs all network operations.
- */
 public class Client implements Serializable
 {
 	private static final long serialVersionUID = 5840493055914657790L;
-	
 	private transient CloseableHttpClient httpClient;
 	public static String token="";
-
-
 	public final transient Signal1<String> onCaptchaNeeded = new Signal1<>();
 	public final transient Signal0 onInvalidData = new Signal0();
 	public final transient Signal1<String> onSuspectLogin = new Signal1<>();
 	public final transient Signal0 onSuccess = new Signal0();
-	
-	public final void receiveCaptcha(String captcha)
-	{
-		this.captchaKey = captcha;
-	}
-
-
-
-
-
-
-	public final void receiveData(String email, String pass)
-	{
-		this.login = email;
-		this.pass = pass;
-	}
-	
-	public final void receivePhoneConfirmed()
-	{
-		this.phoneConfirmed = true;
-	}
-
-	private final String apiVersion = "5.53";
-	
 	private final String ID = "5988198";
 	private final String scope="friends,photos,audio,video,docs,status,wall,messages,offline";
 	private final String redirectUri = "https://oauth.vk.com/blank.html";
 	private final String display = "popup";
 	private final String responseType = "token";
-	String login="";
-	String pass="";
+	private String login="";
+	private String pass="";
+	private String ip_h="";
+	private String lg_h="";
+	private String to="";
+	private String captchaSid="";
+	private String captchaKey="";
+	private String captchaURL="";
+	private boolean phoneConfirmed = false;
+	private transient CloseableHttpResponse response;
+	private String stringResponse;
 
-	String ip_h="";
-	String lg_h="";
-	String to="";
-	
-	String captchaSid="";
-	String captchaKey="";
-	String captchaURL="";
-	
-	boolean phoneConfirmed = false;
-		
-	transient CloseableHttpResponse response;
-	String stringResponse;
-		
+	public final void receiveCaptcha(String captcha)
+	{
+		this.captchaKey = captcha;
+	}
+	public final void receiveData(String email, String pass)	{
+		this.login = email;
+		this.pass = pass;
+	}
+	public final void receivePhoneConfirmed()
+	{
+		this.phoneConfirmed = true;
+	}
 	public Client()
 	{
 		buildClient();
-	}	
-	
-	private void buildClient()
-	{
+	}
+	private void buildClient()	{
 		RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
 		CookieStore cookieStore = new BasicCookieStore();
 		HttpClientContext context = HttpClientContext.create();
@@ -99,17 +74,14 @@ public class Client implements Serializable
 		httpClient = HttpClients.custom().setDefaultRequestConfig(globalConfig).setDefaultCookieStore(cookieStore).build();	
 	}
 
-
-
-
-
-
-	public static String mam;
+	/**
+	 * TODO: здесь требуется оптимизировать код(разобраться с переменными)
+	 */
+	private static String mam;
 	public static int idBot;
 	public static UserActor actor;
 
-	public void connect(String email, String pass) throws Exception
-	{	
+	public void connect(String email, String pass) throws Exception {
 		this.login = email;
 		this.pass = pass;
 		authorize();		
@@ -127,9 +99,7 @@ public class Client implements Serializable
 
 		onSuccess.emit();
 	}
-
-	private void authorize() throws Exception
-	{
+	private void authorize() throws Exception	{
 		String post = "https://oauth.vk.com/authorize?" +
 				"client_id="+ID+
 				"&redirect_uri="+redirectUri+
@@ -143,9 +113,7 @@ public class Client implements Serializable
 		lg_h = getAttributeOfElement(doc, "input", HTML.Attribute.NAME, "lg_h", HTML.Attribute.VALUE);
 	    to = getAttributeOfElement(doc, "input", HTML.Attribute.NAME, "to", HTML.Attribute.VALUE);
 	}
-	
-	private String getAttributeOfElement (HTMLDocument doc, String elementName, HTML.Attribute knownAttribute, String knownValue, HTML.Attribute desiredAttribute)
-	{
+	private String getAttributeOfElement (HTMLDocument doc, String elementName, HTML.Attribute knownAttribute, String knownValue, HTML.Attribute desiredAttribute)	{
 	    ElementIterator it = new ElementIterator(doc); 
 	    Element elem; 
 
@@ -162,9 +130,7 @@ public class Client implements Serializable
 	    }	    
 	    return "";
 	}
-	
-	private String getAttributeOfElement (HTMLDocument doc, String elementName, HTML.Attribute desiredAttribute)
-	{
+	private String getAttributeOfElement (HTMLDocument doc, String elementName, HTML.Attribute desiredAttribute)	{
 	    ElementIterator it = new ElementIterator(doc); 
 	    Element elem; 
 	   		    	    
@@ -175,9 +141,7 @@ public class Client implements Serializable
 	    }
 	    return "";
 	}
-	
-	private HTMLDocument stringToHtml(String string) throws Exception
-	{
+	private HTMLDocument stringToHtml(String string) throws Exception	{
 		HTMLEditorKit kit = new HTMLEditorKit(); 
 		HTMLDocument doc = (HTMLDocument) kit.createDefaultDocument(); 
 		doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
@@ -185,9 +149,7 @@ public class Client implements Serializable
 		kit.read(HTMLReader, doc, 0); 
 		return doc;
 	}
-	
-	private void login() throws Exception
-	{
+	private void login() throws Exception	{
 		String post = "https://login.vk.com/?act=login&soft=1"+
 				"&q=1"+
 				"&ip_h="+ip_h+
@@ -201,9 +163,7 @@ public class Client implements Serializable
 		postQuery(post);
 		postQuery(response.getFirstHeader("location").getValue());
 	}
-
-	private void handleProblem() throws Exception
-	{	    		
+	private void handleProblem() throws Exception	{
 		HTMLDocument doc = stringToHtml(stringResponse);
 
 		if (hasAttributeValue(doc, "input", HTML.Attribute.NAME, "captcha_sid"))
@@ -212,9 +172,7 @@ public class Client implements Serializable
   		  handleConfirmApplicationRights(doc);
 		else handleInvalidData(doc);
 	}
-	
-	private boolean hasAttributeValue (HTMLDocument doc, String elementName, HTML.Attribute attribute, String value)
-	{
+	private boolean hasAttributeValue (HTMLDocument doc, String elementName, HTML.Attribute attribute, String value)	{
 	    ElementIterator it = new ElementIterator(doc); 
 	    Element elem;       
 	   		    	    
@@ -231,9 +189,7 @@ public class Client implements Serializable
 	    }
 	    return false;
 	}
-	
-	private void handleCaptcha(HTMLDocument doc) throws Exception
-	{
+	private void handleCaptcha(HTMLDocument doc) throws Exception	{
 	    getCaptcha(doc);
 	    
 	    File file = new File("file.jpg");	  
@@ -250,15 +206,12 @@ public class Client implements Serializable
 		
 	    file.delete();
 	}
-			
 	private void getCaptcha(HTMLDocument doc) {
 	    captchaURL = getAttributeOfElement(doc, "img", HTML.Attribute.CLASS, "captcha_img", HTML.Attribute.SRC);
 	    captchaSid = getAttributeOfElement(doc, "input", HTML.Attribute.NAME, "captcha_sid", HTML.Attribute.VALUE);
 	    lg_h = getAttributeOfElement(doc, "input", HTML.Attribute.NAME, "lg_h", HTML.Attribute.VALUE);
 	}
-	
-	private void sendCaptcha() throws Exception
-	{
+	private void sendCaptcha() throws Exception	{
 		String post = "https://login.vk.com/?act=login&soft=1"+
 				"&q=1"+
 				"&ip_h="+ip_h+
@@ -274,9 +227,7 @@ public class Client implements Serializable
 		postQuery(post);
 		postQuery(response.getFirstHeader("location").getValue());
 	}
-	
-	private void handleInvalidData(HTMLDocument doc) throws Exception
-	{	
+	private void handleInvalidData(HTMLDocument doc) throws Exception	{
 		lg_h = getAttributeOfElement(doc, "input", HTML.Attribute.NAME, "lg_h", HTML.Attribute.VALUE);
 		
 		login = "";
@@ -290,26 +241,16 @@ public class Client implements Serializable
 
         login();
 	}
-	
-	/**
-	 * If user logins first time and has to add the application.
-	 */
-	private void handleConfirmApplicationRights(HTMLDocument doc) throws Exception
-	{
+	private void handleConfirmApplicationRights(HTMLDocument doc) throws Exception	{
 		String name = getAttributeOfElement(doc, "form", HTML.Attribute.ACTION);		
 		postQuery(name);
-	  
 	    getTokenFirstTime();
 	}
-	
 	private void getTokenFirstTime() {
 		  String headerLocation = response.getFirstHeader("location").getValue();
 		  token = headerLocation.split("#")[1].split("&")[0].split("=")[1];	
 	}
-	
-
-	private void getToken() throws Exception
-	{
+	private void getToken() throws Exception	{
 		postQuery(response.getFirstHeader("location").getValue());
 
 		String headerLocation = response.getFirstHeader("location").getValue();
@@ -319,16 +260,7 @@ public class Client implements Serializable
 
 
 	}
-	
-
-
-	
-	/**
-	 * Sends the POST query and writes a server response to the class member.
-	 * @return Response's String representation.
-	 */
-	private String postQuery(String query) throws Exception
-	{	
+	private String postQuery(String query) throws Exception	{
 	//	while (!scheduler.canPostQuery());
 		
 		HttpPost post = new HttpPost(query);
@@ -339,14 +271,10 @@ public class Client implements Serializable
 
 		return stringResponse;
 	}
-
-	private void writeObject(ObjectOutputStream oos) throws IOException 
-	{
+	private void writeObject(ObjectOutputStream oos) throws IOException 	{
 		oos.defaultWriteObject();	
 	}
-
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException 
-	{
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException 	{
 		ois.defaultReadObject();
 		
 		buildClient();

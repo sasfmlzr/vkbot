@@ -17,51 +17,30 @@ public class BotTaskWindowController implements Initializable
 	final static String resourcePath = "com.fomenko.vkbot.resourcebundle.BotTaskWindow.messages";
 	final static String fxmlPath = "/com/fomenko/vkbot/views/BotTaskWindow.fxml";
 
-	public void initialize(URL location, ResourceBundle resources)
-	{
-	}
+	public void initialize(URL location, ResourceBundle resources)	{	}
 	
-	void initWindow()
-	{
-		
-	}
+	void initWindow()	{	}
 
 
 	public void zapros() throws Exception {
 
 		TransportClient transportClient = HttpTransportClient.getInstance();
 		VkApiClient vk = new VkApiClient(transportClient);
-
-	//	Client client.token;
-
-	String mam = Client.token;
-	int ID =idBot;
+		String mam = Client.token;
+		int ID =idBot;
 		System.out.print("id = " + ID + "\n");
 		System.out.print("token = " + mam + "\n");
-
 		UserActor actor = new UserActor(ID, mam);
-
 
 		int a = 10; // Начальное значение диапазона - "от"
 		int b = 8000; // Конечное значение диапазона - "до"
 
 	//	int random = Integer(Math.random());
-
 		//UserActor actor = new UserActor(authResponse.getUserId(), client.token);
-
 		vk.messages().send(actor)
 				.message( "Как дела?")
 				.userId(30562433)
 				.randomId(a + (int) (Math.random() * b))
 				.execute();
-
-
-
-
-
-
-
 	}
-
-
 }

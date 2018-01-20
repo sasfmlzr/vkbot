@@ -11,6 +11,7 @@ import java.util.List;
 import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.addElementinDialog;
 import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.statmt;
 
+@SuppressWarnings("SqlDialectInspection")
 public class DatabaseRequest {
 
 
@@ -27,7 +28,7 @@ public class DatabaseRequest {
     }
 
     //занесение данных в бд прав новых пользователей логин, userID, право - пользователь
-    public static void addInfoUserRights(int userID, UserActor actor) throws ClientException, ApiException, SQLException {
+    public static void addInfoUserRights(int userID, UserActor actor) throws SQLException {
         statmt.execute("INSERT  INTO 'UserRights' ('login', 'userID', 'nameRight') " +
                 "SELECT DISTINCT "+actor.getId()+","+userID+",'Пользователь' FROM 'UserRights'" +
                 "WHERE NOT EXISTS (SELECT 'login','userID' FROM 'UserRights' " +
@@ -49,7 +50,7 @@ public class DatabaseRequest {
 
 
     // --------Создание первичных таблиц--------
-    public static void CreateDB() throws ClassNotFoundException, SQLException {
+    public static void CreateDB() throws SQLException {
 
         // statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
 
@@ -88,7 +89,7 @@ public class DatabaseRequest {
     }
 
     // --------Создание вторичных таблиц--------
-    public static void CreateSecondaryDB() throws ClassNotFoundException, SQLException {
+    public static void CreateSecondaryDB() throws SQLException {
 
         // statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
 
@@ -125,8 +126,6 @@ public class DatabaseRequest {
     // парсер добавления в таблицу через вк
 
     public static String addToDB(String word) throws SQLException, ClassNotFoundException {
-
-
 
         String firstWord="", secondWord="";
         char[] chars = new char[50];
@@ -165,16 +164,7 @@ public class DatabaseRequest {
         return "Сделано!";
     }
 
-
-
-
-
-
-
-
-
-
-/** пример написания запроса, чтоб исключал повторяющиеся
+    /* пример написания запроса, чтоб исключал повторяющиеся
  * INSERT INTO UserRights(login, userID, nameRight)
  * SELECT DISTINCT 294987132, 30562433, 'Пользователь' FROM UserRights
  * WHERE NOT EXISTS (SELECT userID FROM UserRights WHERE userID = '30562433')

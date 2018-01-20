@@ -1,6 +1,5 @@
 package com.apiVKmanual.functions.bot;
 
-
 import com.apiVKmanual.client.BotApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -21,7 +20,6 @@ import static com.fomenko.vkbot.controller.BotTabController.botStopped;
 import static com.fomenko.vkbot.controller.BotTabController.reduction;
 
 public class Commands {
-
 
     //-----------------команды бота-----------------------------------------------//
     public static String commandsBot(String textMessageString, String messages, UserActor actor, List<com.vk.api.sdk.objects.messages.Dialog> messagesList, BotApiClient bot) throws  SQLException, ClassNotFoundException, ClientException, ApiException {

@@ -197,6 +197,7 @@ public class BotCardController extends  AnchorPane implements Initializable
 	private void setButtonActive(Button button)
 	{
 		button.setId("button-active");
+		//TODO: разобраться с effects.java (new innershadow)
 		button.setEffect(Effects.imageButtonActive);
 		root.requestFocus();
 	}

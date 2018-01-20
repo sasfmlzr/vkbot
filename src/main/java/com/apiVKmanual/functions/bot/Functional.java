@@ -1,17 +1,11 @@
 package com.apiVKmanual.functions.bot;
 
-
 import net.aksingh.owmjapis.api.APIException;
 import net.aksingh.owmjapis.model.CurrentWeather;
 import net.aksingh.owmjapis.core.OWM;
 
-
 @SuppressWarnings("ConstantConditions, deprecation")
 class Functional {
-
-
-
-    //-----------------погода------------------------------------------------------//
     static String weather(String city) throws  APIException {
         String pogoda="";
         // берем апи с OpenWeatherMap
@@ -19,7 +13,6 @@ class Functional {
         // выбираем город
         CurrentWeather cwd = owm.currentWeatherByCityName(city);
         // проверка ячейки на валидность
-
         if (cwd.hasRespCode() && cwd.getRespCode() == 200) {
             // проверка доступен ли город
             if (cwd.hasCityName()) {
@@ -71,6 +64,4 @@ class Functional {
         }
         return pogoda;
     }
-
-
 }

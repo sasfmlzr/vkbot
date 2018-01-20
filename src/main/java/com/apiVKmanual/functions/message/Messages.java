@@ -69,8 +69,6 @@ import static com.apiVKmanual.object.StatisticsVariable.countSendMessage;
         return messagesList.get(0).getMessage().getChatId() == null;
     }
     public void vksendImageMessages(UserActor actor, List<Dialog> messagesList, VkApiClient vk) throws ClientException, ApiException {
-
-
         String memPath = "./src/resources/mem/";    // беру путь
         Path path = Paths.get(memPath);             // перевожу в path
         if (Files.exists(path)) {                   // если путь существует
@@ -95,11 +93,7 @@ import static com.apiVKmanual.object.StatisticsVariable.countSendMessage;
                 int ChatID=messagesList.get(0).getMessage().getChatId();
                 vk.messages().send(actor).chatId(ChatID).attachment("photo"+saveMessagesPhoto.get(0).getOwnerId()+"_"+saveMessagesPhoto.get(0).getId()).randomId(super.other().randomId(8000)).message("Держи бро").execute();
             }
-
-
-            System.out.println("ioooooooo");
             vk.messages().markAsRead(actor).messageIds(messagesList.get(0).getMessage().getId()).execute();         //пометка сообщения прочитанным
-
         }
     }
 

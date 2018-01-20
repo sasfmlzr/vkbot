@@ -15,12 +15,12 @@ public class ThreadBot extends Thread		//(содержащее метод run())
 {
     public static UserActor actor;
     private boolean stoped = false;
-    private boolean exception = false;
+
     public void run()         //Этот метод будет выполняться в побочном потоке
     {
 
         while (!stoped) {
-            exception = false;
+            boolean exception = false;
                 if (Client.actor==null){
                     actor= BotTabController.actor;
                 }else

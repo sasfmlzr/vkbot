@@ -10,12 +10,7 @@ import javafx.scene.paint.Color;
 public class Effects 
 {
 	public static final InnerShadow imageButtonActive = new InnerShadow();
-	
-	/*public static void init()
-	{
-		initImageButtonActive();
-	}*/
-	
+
 	private static void initImageButtonActive()
 	{
 		imageButtonActive.setBlurType(BlurType.GAUSSIAN);

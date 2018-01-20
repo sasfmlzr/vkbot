@@ -1,18 +1,16 @@
 package com.fomenko.vkbot.controller.menuprogram;
 
-import java.io.*;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-
 import static com.apiVKmanual.object.StatisticsVariable.countSendMessageUser;
 import static com.apiVKmanual.object.StatisticsVariable.timeItogoMsMinusVK;
 import static com.apiVKmanual.object.StatisticsVariable.timeZaprosFinishItogo;
@@ -22,7 +20,6 @@ import static com.fomenko.vkbot.controller.BotTabController.botWork;
 public class StatisticsWindowController  implements Initializable
 
 {
-
 	public final static String resourcePath = "com.fomenko.vkbot.resourcebundle.StatisticsWindow.messages";
 	public final static String fxmlPath = "StatisticsWindow.fxml";
 
@@ -33,7 +30,6 @@ public class StatisticsWindowController  implements Initializable
 	@FXML public StackedAreaChart timeThread;
 	@FXML public NumberAxis timeThreadX;
 	@FXML public NumberAxis timeThreadY;
-
 	@FXML public StackedAreaChart timeBigBD;
 	@FXML public NumberAxis timeBigBDX;
 	@FXML public NumberAxis timeBigBDY;
@@ -42,11 +38,8 @@ public class StatisticsWindowController  implements Initializable
 
 	@FXML private RadioButton setTen,setFiveteen,setHungry,setThousand,setAuto;
 
-	public void initialize(URL location, ResourceBundle resources)
-	{
-	}
-
-	public void initWindow() throws IOException {
+	public void initialize(URL location, ResourceBundle resources)	{	}
+	public void initWindow() {
 		textLog.setText("");
 		if (botWork) {
 			/*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
@@ -77,7 +70,7 @@ public class StatisticsWindowController  implements Initializable
 	//		System.out.println(s);
 		}
 //////////////при нажатии на кнопку
-		public void blabla () throws InterruptedException {
+		public void blabla () {
 
 			System.out.print("setUpperBound "+ timeZaprosVkX.getUpperBound() + "\n");
 			punchRadioButton ();
@@ -88,8 +81,7 @@ public class StatisticsWindowController  implements Initializable
 	public static XYChart.Series seriesItogVk = new XYChart.Series();
 	public static XYChart.Series seriesZaprosVk = new XYChart.Series();
 	public static XYChart.Series seriesThread = new XYChart.Series();
-	public static XYChart.Series seriesBigBD = new XYChart.Series();
-	static boolean setCycle = false;
+	public static XYChart.Series<Integer,Integer> seriesBigBD = new XYChart.Series<>();
 
 
 	//////////////при нажатии на кнопку выбора кратности статистики

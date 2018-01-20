@@ -62,11 +62,8 @@ public class MainWindowController extends AnchorPane implements Initializable {
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
         addMainTab();
-        try {
-            addBotTab("Boo");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        addBotTab("Boo");
+
     }
     private void addMainTab()
     {
@@ -98,11 +95,7 @@ public class MainWindowController extends AnchorPane implements Initializable {
         }
     }
 
-
-
-
-
-    private void addBotTab(String name) throws IOException {
+    private void addBotTab(String name) {
 
         AnchorPane pane = new AnchorPane();
 
@@ -148,14 +141,6 @@ public class MainWindowController extends AnchorPane implements Initializable {
         Scene scene = root.getScene();
         scene.setRoot(FXMLLoader.load(getClass().getResource(fxmlPath), resources));
     }
-
-
-
-
-
-
-
-
 
     @FXML private void onMenuLogOpen() throws IOException
     {
@@ -267,8 +252,6 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.setTitle(bundle.getString("DataBaseWindow.title.text"));
         logStage.show();
     }
-
-
 
     @FXML private void onMenuFileAdd() throws IOException
     {

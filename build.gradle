@@ -1,50 +1,36 @@
 group 'vkbot'
 version '1.0-SNAPSHOT'
-
 apply plugin: 'java'
-
 sourceSets {
     main {
         java {
             srcDir 'src'
         }
     }
-
     test {
         java {
             srcDir 'test'
         }
     }
 }
-
 jar {
     manifest {
-        attributes 'Main-Class': 'Main'
+        attributes 'Main-Class': 'com.fomenko.vkbot.VkBot'
     }
 }
 compileJava.options.encoding = 'UTF-8'
-//CompileOptions.encoding = 'windows-1251' // write your encoding here
 sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
     compile 'com.vk.api:sdk:0.5.11'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
     compile group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
     compile 'net.aksingh:owm-japis:2.5.2.1'
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.21.0.1'
-   // compile group: 'org.slf4j', name: 'slf4j-api', version: '1.6.1'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
-
-
-/*task hello << {
-    println 'hello, world'
-}*/
-
 task execute(type:JavaExec) {
     main = 'com.fomenko.vkbot.VkBot'
     classpath = sourceSets.main.runtimeClasspath
