@@ -21,14 +21,12 @@ import javafx.scene.layout.AnchorPane;
 import static com.fomenko.vkbot.controller.BotTabController.recursion;
 
 
-class BotCardController extends  AnchorPane implements Initializable
+public class BotCardController extends  AnchorPane implements Initializable
 {
 	public final static String resourcePath = "com.fomenko.vkbot.resourcebundle.BotCard.messages";
 	public final static String fxmlPath = "/com/fomenko/vkbot/views/BotCard.fxml";
 
 	BotCardController() {
-
-
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -39,28 +37,13 @@ class BotCardController extends  AnchorPane implements Initializable
 		}
 	}
 
-	@FXML
-	private ImageView avatar;
-
-
-
-	//@FXML private ResourceBundle resources;
+	@FXML	private ImageView avatar;
 	@FXML private AnchorPane root;
-	
-
 	@FXML private Button buttonLoad;
-    @FXML
-	private Button buttonPowerBot;
-
-	@FXML
-	private Label nameBot;
-
-
+    @FXML	private Button buttonPowerBot;
+	@FXML	private Label nameBot;
 	static boolean pushPowerBot=true;
-
-	public void initWindow(){
-	}
-
+	public void initWindow(){	}
 	public Image getavatar(){
 	return avatar.getImage();
 	}

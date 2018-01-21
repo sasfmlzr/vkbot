@@ -3,6 +3,7 @@ package com.apiVKmanual.thread;
 import com.api.client.Client;
 
 import com.fomenko.vkbot.controller.BotTabController;
+import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -13,8 +14,15 @@ import java.sql.SQLException;
 
 public class ThreadBot extends Thread		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
-    public static UserActor actor;
+
     private boolean stoped = false;
+
+    private UserActor actor;
+
+    public ThreadBot(UserActor actor){
+        this.actor=actor;
+    }
+
 
     public void run()         //Этот метод будет выполняться в побочном потоке
     {

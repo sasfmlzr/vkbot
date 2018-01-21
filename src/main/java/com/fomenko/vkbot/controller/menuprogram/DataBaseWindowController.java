@@ -66,11 +66,10 @@ public class DataBaseWindowController implements Initializable
 
 
 
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources)    {
     }
 
-    public void initWindow() throws SQLException, ClassNotFoundException {
+    public void initWindow() throws SQLException {
 
 
         if (botWork) {
@@ -109,21 +108,19 @@ public class DataBaseWindowController implements Initializable
     }
 
 
-    public void start(Stage primaryStage)
-    {
+    public void start(Stage primaryStage)    {
 
     }
 
 
-    private static ResourceBundle loadLocale(Locale locale, String resourcePath)
-    {
+    private static ResourceBundle loadLocale(Locale locale, String resourcePath)    {
         Locale.setDefault(locale);
         return ResourceBundle.getBundle(resourcePath, Locale.getDefault());
     }
 
 
     // при нажатии на обновить таблицу
-    public void refreshTable() throws SQLException, ClassNotFoundException {
+    public void refreshTable() throws SQLException {
 /*
         System.out.println("UserID = " + "\n");
         for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
@@ -185,7 +182,7 @@ public class DataBaseWindowController implements Initializable
     }
 
 
-    public void addElement() throws SQLException, ClassNotFoundException {
+    public void addElement() throws SQLException {
             if ((!Objects.equals(zapros.getText(), "")) &&   (!Objects.equals(otvet.getText(), "")))
         {
             int idBot;
@@ -204,7 +201,7 @@ public class DataBaseWindowController implements Initializable
     }   // добавить новый элемент в таблицу
 
 
-    public static void addElementinDialog(String request, String response) throws SQLException, ClassNotFoundException {
+    public static void addElementinDialog(String request, String response) throws SQLException {
         System.out.println(request);
         System.out.println(response);
         int idBot;
@@ -260,10 +257,6 @@ public class DataBaseWindowController implements Initializable
             int id =  Integer.parseInt(resSet.getString("id"));
             String  responseTextBot = resSet.getString("responsetextbot");
             botData.add(new BotDatabase_IdRequestResponse(id,requesttextbot,responseTextBot));
-
-            //   idColumn.getColumns().add(id);
-            //    sendTextMessage.getColumns().add(responseTextBot);
-            //    requestTextMessage.getColumns().add(requestTextBot);
         }
 
         InitOneDB_Id_Request("RandomMessages", botRandomData);
@@ -282,6 +275,8 @@ public class DataBaseWindowController implements Initializable
         System.out.println( "БД проинициализировались"  );
     }
 
+
+
     // инициализация одной таблицы ID REQUEST
     private static void InitOneDB_Id_Request(String tableDB, ObservableList<BotDatabase_IdRequest> objectData) throws SQLException{
         ResultSet resSet;
@@ -290,13 +285,6 @@ public class DataBaseWindowController implements Initializable
         {
             String  requesttextbot = resSet.getString("request");
             int id =  Integer.parseInt(resSet.getString("id"));
-
-            /*  System.out.println( "ID = " + id );
-
-            System.out.println( "request = " + requesttextbot );
-
-            System.out.println();*/
-
             objectData.add(new BotDatabase_IdRequest(id,requesttextbot));
         }
         resSet.close();

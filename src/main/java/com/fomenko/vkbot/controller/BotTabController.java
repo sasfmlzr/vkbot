@@ -1,6 +1,7 @@
 package com.fomenko.vkbot.controller;
 
 import com.api.client.Client;
+import com.apiVKmanual.UserBot;
 import com.apiVKmanual.client.BotApiClient;
 import com.apiVKmanual.object.UserRights;
 import com.apiVKmanual.thread.ThreadBot;
@@ -33,6 +34,7 @@ import javafx.scene.layout.FlowPane;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,24 +57,16 @@ import static com.vk.api.sdk.queries.users.UserField.PHOTO_200;
 public class BotTabController extends AnchorPane implements Initializable {
 
 
-    final static String fxmlPath = "/com/fomenko/vkbot/views/BotTab.fxml";
+    //final static String fxmlPath = "/com/fomenko/vkbot/views/BotTab.fxml";
 
-    @FXML
-    private FlowPane botCardPane;
-    @FXML
-    private ListView vkdialog;
-    @FXML
-    private TextField textMessage;
-    @FXML
-    private TextField users_id;
-    @FXML
-    private TextArea textMessages;
-    @FXML
-    private TextArea textLog;
-    @FXML
-    private Button botLog;
-    @FXML
-    private static ImageView imageTest;
+    @FXML    private FlowPane botCardPane;
+    @FXML    private ListView vkdialog;
+    @FXML    private TextField textMessage;
+    @FXML    private TextField users_id;
+    @FXML    private TextArea textMessages;
+    @FXML    private TextArea textLog;
+    @FXML    private Button botLog;
+    @FXML    private static ImageView imageTest;
 
 
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
@@ -82,9 +76,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     private static BotApiClient bot = new BotApiClient(vk);
     public  static UserActor actor = new UserActor(Integer.parseInt(PropertiesProgramWindowController.userId1), PropertiesProgramWindowController.token1);
     private static int countSleep = 0;                                          // период засыпания побочного потока
-
-
-
+    private static UserBot userBot;
 
     public static boolean databaseLoaded=false;
     private static boolean testSpeed=true;          // ТЕСТОВАЯ ПРОВЕРКА НА КОЛИЧЕСТВЕННОСТЬ СТАТИСТИКИ И ПОЖИРАНИЕ ПАМЯТИ
@@ -93,7 +85,6 @@ public class BotTabController extends AnchorPane implements Initializable {
     public static boolean priostanovka;            // команда приостановки бота
     public static boolean botStopped=false;            // команда длительной остановки бота
     public static boolean findMessage;
-
 
 
     private static List<BotCardController> childList;
@@ -211,7 +202,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     }
     static boolean ava=false;
     //-----------------запуск бота по кнопке включения бота------------------------//
-    static void  recursion() throws SQLException, ClassNotFoundException, ClientException, ApiException, IOException {
+    static void  recursion() throws SQLException, ClassNotFoundException {
         countSendMessageUser=0;
         countSendMessage = 0;
         timeZaprosFinishSumm=0;
@@ -226,25 +217,19 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         timeProgramStart = System.currentTimeMillis();
         pushPowerBot=true;
+        userBot = new UserBot(vk,actor);
+        setAvatarBot(childList,userBot);
+        userBot.run();
+    }
 
-        List<UserXtrCounters> botSelfInfo = vk.users().get(actor).fields(PHOTO_200).execute();
-        String botName = botSelfInfo.get(0).getFirstName() + " " + botSelfInfo.get(0).getLastName();
-        String botAvatar = botSelfInfo.get(0).getPhoto200();
-        URL daffyURL =new URL(botAvatar);
-        BufferedImage daffyDuckImage = ImageIO.read( daffyURL );
-        Image botimage = SwingFXUtils.toFXImage(daffyDuckImage,null);
+
+
+    private static void setAvatarBot(List<BotCardController> childList, UserBot bot)   {
         childList.forEach((BotCardController) -> {
-            BotCardController.settext(botName);
-            BotCardController.setavatar(botimage);
+            BotCardController.settext(bot.getBotName());
+            BotCardController.setavatar(bot.getBotImage());
         });
-        ThreadBot botsThread = new ThreadBot();             // создаем побочный поток
-        botsThread.start();
     }
-
-    private void setAvatarBot(){
-
-    }
-
 
 
     public static boolean reduction=false;
@@ -363,7 +348,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
     private static List<Dialog> createListMessageVK() throws ClientException, ApiException {
         long timezaprosstart =       System.currentTimeMillis();         // начало запроса непрочитанного запроса
-        List<Dialog> messages = vk.messages().getDialogs(ThreadBot.actor)                 // Листы сообщений
+        List<Dialog> messages = vk.messages().getDialogs(userBot.getActor())                 // Листы сообщений
                 .unread(true)
                 .execute().getItems();
         long timezaprosfinish = System.currentTimeMillis();
@@ -434,8 +419,6 @@ public class BotTabController extends AnchorPane implements Initializable {
             timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD;
             countUsedBigBD=countUsedBigBD+1;                                            // количество использований большой бд увеличилось на 1
             StatisticsWindowController.seriesBigBD.getData().add(new XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD));                        //ведение статистики задержки потока////здесь иногда ловится исключение
-       //     System.out.print("время операции по большой бд= "+ timeConsumedMillisBigBD + "\n");
-
         }
         return messages;
     }
@@ -493,6 +476,9 @@ public class BotTabController extends AnchorPane implements Initializable {
             Thread.sleep(timeDelayThread);
         }
     }
+
+
+
 
     private int o=0;
     private long[] usedBytes = new long[100];
