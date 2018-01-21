@@ -1,17 +1,28 @@
 package com.apiVKmanual.functions.bot;
 
+import com.apiVKmanual.actions.Messages;
 import net.aksingh.owmjapis.api.APIException;
-import net.aksingh.owmjapis.model.CurrentWeather;
 import net.aksingh.owmjapis.core.OWM;
+import net.aksingh.owmjapis.model.CurrentWeather;
 
 @SuppressWarnings("ConstantConditions, deprecation")
-class Functional {
-    static String weather(String city) throws  APIException {
+public class Functional extends Messages{
+    public Functional(com.apiVKmanual.client.BotApiClient client) {
+        super(client);
+    }
+
+    private final String apiKeqOWM="5c202047bca9a767f476b06c746ab856";
+    public String weather(String city)  {
         String pogoda="";
         // берем апи с OpenWeatherMap
-        OWM owm = new OWM("5c202047bca9a767f476b06c746ab856");
+        OWM owm = new OWM(apiKeqOWM);
         // выбираем город
-        CurrentWeather cwd = owm.currentWeatherByCityName(city);
+        CurrentWeather cwd = null;
+        try {
+            cwd = owm.currentWeatherByCityName(city);
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
         // проверка ячейки на валидность
         if (cwd.hasRespCode() && cwd.getRespCode() == 200) {
             // проверка доступен ли город

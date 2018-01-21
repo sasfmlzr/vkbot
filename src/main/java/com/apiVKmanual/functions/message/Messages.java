@@ -16,8 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.apiVKmanual.object.StatisticsVariable.timeItogoSendMessage;
 import static com.apiVKmanual.object.StatisticsVariable.countSendMessage;
+import static com.apiVKmanual.object.StatisticsVariable.timeItogoSendMessage;
 
 
     public class Messages extends BotApiClient {

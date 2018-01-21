@@ -2,9 +2,11 @@ package com.apiVKmanual.client;
 
 import com.apiVKmanual.actions.Messages;
 import com.apiVKmanual.actions.Other;
+import com.apiVKmanual.bot.AbstractBot;
+import com.apiVKmanual.functions.botdatabase.Database;
 import com.vk.api.sdk.client.VkApiClient;
 
-public class BotApiClient {
+public class BotApiClient extends AbstractBot{
 
     private VkApiClient vk;
 
@@ -21,4 +23,6 @@ public class BotApiClient {
     public Other other() {
         return new Other();
     }
+
+    public static Database database=new Database();
 }
