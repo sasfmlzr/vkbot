@@ -42,7 +42,7 @@ import static com.fomenko.vkbot.VkBot.loadLocale;
 
 public class IntroductionWindowController extends Application implements Initializable {
 
-    public final static String resourcePath = "com.fomenko.vkbot.resourcebundle.IntroductionWindow.messages";
+    private final static String resourcePath = "com.fomenko.vkbot.resourcebundle.IntroductionWindow.messages";
     private final static String fxmlPath = "/com/fomenko/vkbot/views/IntroductionWindow.fxml";
     @FXML private AnchorPane root;
     @FXML private GridPane grid;
@@ -117,9 +117,9 @@ public class IntroductionWindowController extends Application implements Initial
         SUCCESS
     }
     private State state = State.NONE;
-    private Signal1<String> sendCaptcha = new Signal1<>();
-    private Signal2<String, String> sendData = new Signal2<>();
-    private Signal0 sendPhoneConfirmed = new Signal0();
+    private final Signal1<String> sendCaptcha = new Signal1<>();
+    private final Signal2<String, String> sendData = new Signal2<>();
+    private final Signal0 sendPhoneConfirmed = new Signal0();
     private Stage taskStage;
     private Runnable clientRunnable;
     private Thread clientThread;

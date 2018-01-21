@@ -229,8 +229,8 @@ public abstract class Signal {
     private class SemSlotActuation extends SlotActuation {
         private final Semaphore semaphore;
 
-        public SemSlotActuation(final Slot s, final Object[] args,
-                final Semaphore sem) {
+        SemSlotActuation(final Slot s, final Object[] args,
+                         final Semaphore sem) {
             super(s, args);
             semaphore = sem;
         }

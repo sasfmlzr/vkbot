@@ -27,7 +27,7 @@ public class ThreadBot extends Thread		//(содержащее метод run())
                     actor=Client.actor;
             try {
                 BotTabController.sendMessageUser(actor);
-            } catch (ClientException | SQLException  | IOException | InterruptedException | ApiException e) {
+            } catch (ClientException | SQLException   | InterruptedException | ApiException e) {
                 exception = true;
                 e.printStackTrace();
                 System.out.print("Исключение в потоке бота \n");

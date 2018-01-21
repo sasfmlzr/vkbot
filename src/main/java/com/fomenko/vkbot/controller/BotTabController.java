@@ -79,7 +79,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     private static int[] userIDmassive = new int[30];                           // массив userID
     private static TransportClient transportClient = HttpTransportClient.getInstance();
 
-    public static VkApiClient vk = new VkApiClient(transportClient);
+    private static VkApiClient vk = new VkApiClient(transportClient);
     private static BotApiClient bot = new BotApiClient(vk);
  //  private static UserActor actor = new UserActor(idd, token);
 
@@ -256,7 +256,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         String botName = botSelfInfo.get(0).getFirstName() + " " + botSelfInfo.get(0).getLastName();
         String botAvatar = botSelfInfo.get(0).getPhoto200();
-        URL daffyURL =new URL(botAvatar);;
+        URL daffyURL =new URL(botAvatar);
         BufferedImage daffyDuckImage = ImageIO.read( daffyURL );
         Image botimage = SwingFXUtils.toFXImage(daffyDuckImage,null);
         ava=true;
@@ -270,7 +270,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     public static boolean reduction=false;
 
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
-        public static void sendMessageUser(UserActor actor) throws ClientException, ApiException, InterruptedException, IOException, SQLException, ClassNotFoundException {
+        public static void sendMessageUser(UserActor actor) throws ClientException, ApiException, InterruptedException, SQLException, ClassNotFoundException {
 
         while (pushPowerBot) {
             findMessage = false;        // совпадение с сообщением не найдено
@@ -393,7 +393,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------поиск сообщения в основной БД----------------------------------------------//
     private static String messageFromDataBase(String textMessageString, String message) {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages=message;
-        List<String> listMessages = new ArrayList();
+        List<String> listMessages = new ArrayList<>();
         if (!findMessage){      // если совпадение с сообщением не найдено, то
             long timeStartBD =       System.currentTimeMillis();
             // путешествие по списку объектов из БД
@@ -415,7 +415,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------поиск сообщения в большой БД-----------------------------------------------//
     private static String messageFromBigDataBase(String textMessageString, String message) {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages=message;
-        List<String> listMessages = new ArrayList();
+        List<String> listMessages = new ArrayList<>();
         if (!findMessage){      // если совпадение с сообщением не найдено, то
             long timeStartBigBD =       System.currentTimeMillis();
             // путешествие по списку объектов из большой БД

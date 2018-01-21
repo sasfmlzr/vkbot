@@ -29,7 +29,7 @@ public class test {
 
 
 
-    ArrayList<String> step1 = new ArrayList();
+    ArrayList<String> step1 = new ArrayList<>();
 
 
 

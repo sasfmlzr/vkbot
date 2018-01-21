@@ -43,7 +43,7 @@ public class DataBaseWindowController implements Initializable
     public static ObservableList<BotDatabase_IdRequest> AforismMessagesData = FXCollections.observableArrayList();
     public static ObservableList<BotDatabase_IdRequest> StatusMessagesData = FXCollections.observableArrayList();
     public static ObservableList<BotDatabase_RequestResponse> BigMessagesData = FXCollections.observableArrayList();
-    public static ObservableList<UserIdRightsBD> userRightsData = FXCollections.observableArrayList();
+    private static ObservableList<UserIdRightsBD> userRightsData = FXCollections.observableArrayList();
    // static ObservableList<BotDatabase_RequestResponse> BigMessagesData = FXCollections.observableArrayList();
     @FXML
     private TableView<BotDatabase_IdRequestResponse> tableTextBot;
@@ -171,7 +171,7 @@ public class DataBaseWindowController implements Initializable
      * починить баг дублирования элементов
      */
 
-    public void closeView() throws SQLException, ClassNotFoundException {
+    public void closeView() {
 
         //CloseDB();
 
@@ -224,7 +224,7 @@ public class DataBaseWindowController implements Initializable
 
 
     // --------Инициализация моей БД и заполнение object--------
-    public static void InitDB() throws ClassNotFoundException, SQLException
+    public static void InitDB() throws SQLException
     {
         botData.clear();
         botRandomData.clear();

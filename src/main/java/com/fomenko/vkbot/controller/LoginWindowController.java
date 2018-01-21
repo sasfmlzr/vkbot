@@ -35,9 +35,9 @@ import com.api.util.sig4j.signal.*;
 
 public class LoginWindowController implements Initializable
 {
-	private Signal1<String> sendCaptcha = new Signal1<>();
-	private Signal2<String, String> sendData = new Signal2<>();
-	private Signal0 sendPhoneConfirmed = new Signal0();	
+	private final Signal1<String> sendCaptcha = new Signal1<>();
+	private final Signal2<String, String> sendData = new Signal2<>();
+	private final Signal0 sendPhoneConfirmed = new Signal0();
 	
 	private enum State
 	{

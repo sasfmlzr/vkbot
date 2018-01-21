@@ -13,8 +13,7 @@ public class LogWindowController implements Initializable
 {
 	public final static String resourcePath = "com.fomenko.vkbot.resourcebundle.LogWindow.messages";
 	public final static String fxmlPath = "LogWindow.fxml";
-;
-	@FXML private TextArea textLog;
+    @FXML private TextArea textLog;
 
 
 	public void initialize(URL location, ResourceBundle resources)

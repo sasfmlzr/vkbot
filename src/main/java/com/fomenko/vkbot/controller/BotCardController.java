@@ -15,7 +15,6 @@ import com.vk.api.sdk.exceptions.ClientException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,7 +26,7 @@ import static com.fomenko.vkbot.controller.BotTabController.ava;
 import static com.fomenko.vkbot.controller.BotTabController.recursion;
 
 
-public class BotCardController extends  AnchorPane implements Initializable
+class BotCardController extends  AnchorPane implements Initializable
 {
 	public final static String resourcePath = "com.fomenko.vkbot.resourcebundle.BotCard.messages";
 	public final static String fxmlPath = "/com/fomenko/vkbot/views/BotCard.fxml";
@@ -56,7 +55,8 @@ public class BotCardController extends  AnchorPane implements Initializable
 
 	}
 
-	@FXML public ImageView avatar;
+	@FXML
+	private ImageView avatar;
 
 
 
@@ -65,9 +65,11 @@ public class BotCardController extends  AnchorPane implements Initializable
 	
 //	@FXML private Button buttonToggle;
 	@FXML private Button buttonLoad;
-    @FXML public Button buttonPowerBot;
+    @FXML
+	private Button buttonPowerBot;
 
-	@FXML public  Label nameBot;
+	@FXML
+	private Label nameBot;
 
 
 	static boolean pushPowerBot=true;

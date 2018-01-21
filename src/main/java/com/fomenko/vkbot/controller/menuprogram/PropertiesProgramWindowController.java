@@ -25,7 +25,7 @@ public class PropertiesProgramWindowController implements Initializable
 
 	}
 
-	public void initWindow() throws IOException {
+	public void initWindow() {
 
 		textLog.setText("");
 		/*
