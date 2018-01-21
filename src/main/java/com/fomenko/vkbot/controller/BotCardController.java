@@ -1,15 +1,8 @@
 package com.fomenko.vkbot.controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.api.util.Effects;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
+import com.apiVKmanual.bot.UserBot;
+import com.fomenko.vkbot.controller.menuprogram.StatisticsWindowController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,8 +11,17 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import static com.fomenko.vkbot.controller.BotTabController.recursion;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.apiVKmanual.object.StatisticsVariable.*;
+import static com.fomenko.vkbot.StaticModel.*;
 
 public class BotCardController extends  AnchorPane implements Initializable
 {
@@ -42,7 +44,7 @@ public class BotCardController extends  AnchorPane implements Initializable
 	@FXML private Button buttonLoad;
     @FXML	private Button buttonPowerBot;
 	@FXML	private Label nameBot;
-	static boolean pushPowerBot=true;
+
 	public void initWindow(){	}
 	public Image getavatar(){
 	return avatar.getImage();
@@ -60,22 +62,43 @@ public class BotCardController extends  AnchorPane implements Initializable
 	public void initialize(URL location, ResourceBundle resources)	{
 	}
 
+	public void  recursion() throws SQLException, ClassNotFoundException {
+		countSendMessageUser=0;
+		countSendMessage = 0;
+		timeZaprosFinishSumm=0;
+		StatisticsWindowController.seriesZaprosVk.getData().clear();          //обнуление статистики запросов
+		StatisticsWindowController.seriesItogVk.getData().clear();          //обнуление статистики запросов
+		StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
+
+		if (!databaseLoaded){
+			userBot.botApiClient().database.connectDatabase();            //подключение бд
+			userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
+		}
+		timeProgramStart = System.currentTimeMillis();
+		pushPowerBot=true;
+		setAvatarBot(this,userBot);
+		userBot.run();
+	}
+
+	private void setAvatarBot(BotCardController childList, UserBot bot)   {
+		childList.settext(bot.getBotName());
+		childList.setavatar(bot.getBotImage());
+	}
 
 
-	@FXML public void onButtonPowerBot() throws SQLException, ClassNotFoundException, ClientException, ApiException, IOException {
+	@FXML public void onButtonPowerBot() throws SQLException, ClassNotFoundException {
 		toggleButtonActive (buttonPowerBot);
 		if (!buttonPowerBot.isFocused())
 		{
-			System.out.print("включено = " + "asdasdasdasdasdasdsda" + "\n");
+			System.out.print("Bot working" + "\n");
 			pushPowerBot =true;
             recursion();
 		}
 		else
 		{
-			System.out.print("выключено = " + "asdasdasdasdasdasdsda" + "\n");
+			System.out.print("Bot not working" + "\n");
 			pushPowerBot =false;
 		}
-
 	}
 
 

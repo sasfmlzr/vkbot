@@ -1,13 +1,16 @@
-package com.apiVKmanual;
+package com.apiVKmanual.bot;
 
+import com.apiVKmanual.client.BotApiClient;
 import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.UserActor;
 
 public abstract class AbstractBot {
     int userID;
     String botName;
     VkApiClient vk;
 
+    public BotApiClient botApiClient(){
+        return new BotApiClient(vk);
+    }
     public VkApiClient getVk() {
         return vk;
     }

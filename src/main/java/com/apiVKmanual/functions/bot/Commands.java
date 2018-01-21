@@ -1,45 +1,43 @@
 package com.apiVKmanual.functions.bot;
 
+import com.apiVKmanual.actions.Messages;
 import com.apiVKmanual.client.BotApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import net.aksingh.owmjapis.api.APIException;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import static com.apiVKmanual.functions.bot.Functional.weather;
-import static com.apiVKmanual.functions.botdatabase.DatabaseRequest.addToDB;
-import static com.apiVKmanual.object.StatisticsVariable.countSendMessageUser;
-import static com.apiVKmanual.object.StatisticsVariable.timeProgramStart;
-import static com.apiVKmanual.object.StatisticsVariable.timeZaprosFinishSumm;
-import static com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController.*;
-import static com.fomenko.vkbot.controller.BotTabController.priostanovka;
-import static com.fomenko.vkbot.controller.BotTabController.findMessage;
-import static com.fomenko.vkbot.controller.BotTabController.botStopped;
-import static com.fomenko.vkbot.controller.BotTabController.reduction;
 
-public class Commands {
+import static com.apiVKmanual.object.StatisticsVariable.*;
+import static com.fomenko.vkbot.StaticModel.*;
+
+public class Commands  extends Messages{
+
+    public Commands(com.apiVKmanual.client.BotApiClient client) {
+        super(client);
+    }
 
     //-----------------команды бота-----------------------------------------------//
-    public static String commandsBot(String textMessageString, String messages, UserActor actor, List<com.vk.api.sdk.objects.messages.Dialog> messagesList, BotApiClient bot) throws  SQLException, ClassNotFoundException, ClientException, ApiException {
+    public String commandsBot(String textMessageString, String messages, UserActor actor, List<com.vk.api.sdk.objects.messages.Dialog> messagesList, BotApiClient bot) throws  SQLException, ClientException, ApiException {
         String message=messages;
 
         if (textMessageString.equals("го стих")){
             System.out.print("Пришло сообщение = " +textMessageString+ "\n");
-            message = StihMessagesData.get(bot.other().randomId(StihMessagesData.size())).response;
+            message = BotApiClient.database.getStihMessagesData().get(bot.other().randomId(BotApiClient.database.getStihMessagesData().size())).response;
         }
         if (textMessageString.equals("го афоризм")){
             System.out.print("Пришло сообщение = " +textMessageString+ "\n");
-            message = AforismMessagesData.get(bot.other().randomId(AforismMessagesData.size())).response;
+            message = BotApiClient.database.getAforismMessagesData().get(bot.other().randomId(BotApiClient.database.getAforismMessagesData().size())).response;
         }
         if (textMessageString.equals("го анекдот")){
             System.out.print("Пришло сообщение = " +textMessageString+ "\n");
-            message = AnekdotMessagesData.get(bot.other().randomId(AnekdotMessagesData.size())).response;
+            message = BotApiClient.database.getAnekdotMessagesData().get(bot.other().randomId(BotApiClient.database.getAnekdotMessagesData().size())).response;
         }
         if (textMessageString.equals("го статус")){
             System.out.print("Пришло сообщение = " +textMessageString+ "\n");
-            message = StatusMessagesData.get(bot.other().randomId(StatusMessagesData.size())).response;
+            message = BotApiClient.database.getStatusMessagesData().get(bot.other().randomId(BotApiClient.database.getStatusMessagesData().size())).response;
         }
         if (textMessageString.equals("го справку")){
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
@@ -62,7 +60,7 @@ public class Commands {
 
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
 
-            message = addToDB(textMessageString);
+            message = BotApiClient.database.databaseRequest(BotApiClient.database.getStatmt()).addToDB(textMessageString);
         }
 
         if (textMessageString.contains("го мем")){
@@ -85,11 +83,7 @@ public class Commands {
                 message="Введите город по типу -Колян, го погоду Москва-";
             }else {
                 System.out.println("Запрос на погоду - город: " + city);
-                try {
-                    message= weather(city);
-                } catch (APIException e) {
-                    e.printStackTrace();
-                }
+                message= super.functional().weather(city);
             }
         }
         if (textMessageString.equals("го приостановка бота")){
@@ -115,7 +109,7 @@ public class Commands {
         return message;
     }
     //-----------------админские команды бота-----------------------------------------------//
-    public static String adminCommandsBot(String textMessageString, String messages)  {
+    public String adminCommandsBot(String textMessageString, String messages)  {
         String message=messages;
 
 

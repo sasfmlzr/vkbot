@@ -1,4 +1,4 @@
-package com.apiVKmanual;
+package com.apiVKmanual.bot;
 
 import com.apiVKmanual.thread.ThreadBot;
 import com.vk.api.sdk.client.VkApiClient;
@@ -9,6 +9,7 @@ import com.vk.api.sdk.objects.users.UserXtrCounters;
 import com.vk.api.sdk.queries.users.UserField;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,14 +17,13 @@ import java.net.URL;
 
 public class UserBot extends AbstractBot{
 
-
     private UserActor actor;
-
     private Image botImage;
-
+    public ThreadBot threadBot;
     public UserBot(VkApiClient vkApiClient,UserActor actor){
         this.actor=actor;
         vk=vkApiClient;
+        threadBot = new ThreadBot(actor);
         try {
             UserXtrCounters botSelfInfo = vk.users().get(actor).fields(UserField.PHOTO_200).execute().get(0);
             userID = botSelfInfo.getId();
@@ -43,10 +43,13 @@ public class UserBot extends AbstractBot{
         this.botImage = botImage;
     }
 
+
+
     public void run(){
         //Create thread bot
-        ThreadBot botThread = new ThreadBot(actor);
-        botThread.start();
+        Runnable r = threadBot;
+        new Thread(r).start();
+       // threadBot.run();
     }
 
     public UserActor getActor() {

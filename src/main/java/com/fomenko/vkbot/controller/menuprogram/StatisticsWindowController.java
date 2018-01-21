@@ -1,21 +1,22 @@
 package com.fomenko.vkbot.controller.menuprogram;
 
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedAreaChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import static com.apiVKmanual.object.StatisticsVariable.countSendMessageUser;
-import static com.apiVKmanual.object.StatisticsVariable.timeItogoMsMinusVK;
-import static com.apiVKmanual.object.StatisticsVariable.timeZaprosFinishItogo;
-import static com.fomenko.vkbot.controller.BotTabController.botWork;
 
+import static com.apiVKmanual.object.StatisticsVariable.*;
+import static com.fomenko.vkbot.StaticModel.botWork;
 
 public class StatisticsWindowController  implements Initializable
 

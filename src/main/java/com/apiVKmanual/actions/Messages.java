@@ -26,4 +26,8 @@ public class Messages extends AbstractAction {
     public void vkSendMessageUser(UserActor actor, String message, int userID) throws ClientException, ApiException {
         new com.apiVKmanual.functions.message.Messages(getClient().getVkApiClient()).vkSendMessageUser(actor,message,userID, super.getClient().getVkApiClient());
     }
+
+    public Commands commands (){ return new com.apiVKmanual.actions.Commands(getClient());}
+    public Functional functional() {return new com.apiVKmanual.actions.Functional(getClient());}
+
 }
