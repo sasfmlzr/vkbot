@@ -78,14 +78,9 @@ public class BotTabController extends AnchorPane implements Initializable {
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
     private static int[] userIDmassive = new int[30];                           // массив userID
     private static TransportClient transportClient = HttpTransportClient.getInstance();
-
     private static VkApiClient vk = new VkApiClient(transportClient);
     private static BotApiClient bot = new BotApiClient(vk);
- //  private static UserActor actor = new UserActor(idd, token);
-
     public  static UserActor actor = new UserActor(Integer.parseInt(PropertiesProgramWindowController.userId1), PropertiesProgramWindowController.token1);
-
- //   public  static UserActor actor = new UserActor(294987132, "aa0d8021ebad7a339d9b3fd0f77ec9a00d8580ef71acfb3ade98c9cf30ec4e7199d33427f28774af62c96");
     private static int countSleep = 0;                                          // период засыпания побочного потока
 
 
@@ -105,7 +100,6 @@ public class BotTabController extends AnchorPane implements Initializable {
 
 
     BotTabController() {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fomenko/vkbot/views/BotTab.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -115,8 +109,6 @@ public class BotTabController extends AnchorPane implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(BotTabController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
 
