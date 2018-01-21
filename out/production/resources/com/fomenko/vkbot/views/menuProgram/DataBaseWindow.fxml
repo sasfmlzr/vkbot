@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fomenko.vkbot.controller.menuprogram.DataBaseWindowController">
+<children>
+    <!-- Таблица в которую мы будем выводит наш pojo -->
+    <TableView fx:id="tableTextBot" layoutX="12.0" layoutY="62.0" prefHeight="264.0" prefWidth="600.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="62.0">
+        <columns>
+            <!-- Колонки таблицы -->
+            <TableColumn fx:id="idColumn" prefWidth="80.0" text="№" />
+            <TableColumn fx:id="requestTextMessage" prefWidth="227.0" text="Присылаемое сообщение" />
+            <TableColumn fx:id="sendTextMessage" prefWidth="290.0" text="Отправляемое сообщение" />
+        </columns>
+    </TableView>
+    <Label fx:id="textTable" layoutX="14.0" layoutY="18.0">
+        <font>
+            <Font name="Verdana" size="24.0" />
+        </font>
+    </Label>
+      <Button layoutX="303.0" layoutY="396.0" mnemonicParsing="false" onAction="#refreshTable" text="Обновить таблицу" AnchorPane.bottomAnchor="21.0" />
+      <Button layoutX="53.0" layoutY="396.0" mnemonicParsing="false" onAction="#addElement" text="Добавить элемент" AnchorPane.bottomAnchor="21.0" />
+      <TextField fx:id="zapros" layoutX="126.0" layoutY="353.0" AnchorPane.bottomAnchor="64.0" />
+      <TextField fx:id="otvet" layoutX="369.0" layoutY="353.0" AnchorPane.bottomAnchor="64.0" />
+      <Label layoutX="53.0" layoutY="357.0" text="Запрос" AnchorPane.bottomAnchor="68.0" />
+      <Label layoutX="303.0" layoutY="357.0" text="Ответ" AnchorPane.bottomAnchor="68.0" />
+      <Button fx:id="close" layoutX="444.0" layoutY="396.0" mnemonicParsing="false" onAction="#closeView" text="Закрыть" AnchorPane.bottomAnchor="21.0" />
+</children>
+</AnchorPane>

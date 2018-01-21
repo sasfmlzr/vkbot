@@ -125,26 +125,9 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     //-----------------инициалихация-----------------------------------------------//
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
-
-        //ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BotCardController.resourcePath);
-
-
         childList = new ArrayList<>();
         childList.add(new BotCardController());
         botCardPane.getChildren().addAll( childList);
-        //   botCardPane.getChildren().add(FXMLLoader.load(this.getClass().getResource(BotCardController.fxmlPath), bundle));
-
-
-        // botCardPane.getChildren().add(new BotCardController());
-
-        // botCardPane=Main.getfxmlLoader().load();
-
-
-
-
     }
     //-----------------при нажатии на диалог---------------------------------------//   // test
     public void dialog() {
@@ -243,29 +226,34 @@ public class BotTabController extends AnchorPane implements Initializable {
         StatisticsWindowController.seriesZaprosVk.getData().clear();          //обнуление статистики запросов
         StatisticsWindowController.seriesItogVk.getData().clear();          //обнуление статистики запросов
         StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
+
         if (!databaseLoaded){
             DataBaseWindowController.connectDatabase();            //подключение бд
             DataBaseWindowController.InitDB();          //инициализация таблиц бд в объект
         }
-        //   ObservableList<BotDatabase_IdRequestResponse>  botData = DataBaseWindowController.botData;
+
         timeProgramStart = System.currentTimeMillis();
         pushPowerBot=true;
-        ThreadBot botsThread = new ThreadBot();             // создаем побочный поток
 
         List<UserXtrCounters> botSelfInfo = vk.users().get(actor).fields(PHOTO_200).execute();
-
         String botName = botSelfInfo.get(0).getFirstName() + " " + botSelfInfo.get(0).getLastName();
         String botAvatar = botSelfInfo.get(0).getPhoto200();
         URL daffyURL =new URL(botAvatar);
         BufferedImage daffyDuckImage = ImageIO.read( daffyURL );
         Image botimage = SwingFXUtils.toFXImage(daffyDuckImage,null);
-        ava=true;
         childList.forEach((BotCardController) -> {
             BotCardController.settext(botName);
             BotCardController.setavatar(botimage);
         });
+        ThreadBot botsThread = new ThreadBot();             // создаем побочный поток
         botsThread.start();
     }
+
+    private void setAvatarBot(){
+
+    }
+
+
 
     public static boolean reduction=false;
 

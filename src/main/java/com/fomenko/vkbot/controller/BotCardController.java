@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 import com.api.util.Effects;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -20,9 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
-
-import static com.fomenko.vkbot.controller.BotTabController.ava;
 import static com.fomenko.vkbot.controller.BotTabController.recursion;
 
 
@@ -34,25 +29,14 @@ class BotCardController extends  AnchorPane implements Initializable
 	BotCardController() {
 
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fomenko/vkbot/views/BotCard.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 		loader.setRoot(this);
 		loader.setController(this);
-
 		try {
 			loader.load();
 		} catch (IOException ex) {
 			Logger.getLogger(BotCardController.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
-
-
-
-	//	FXMLLoader loader=new FXMLLoader();;
-	//	loader.setLocation(getClass().getResource("BotCard.fxml"));
-	//	loader.setController(this);
-		//loader.load();
-
-
 	}
 
 	@FXML
@@ -63,7 +47,7 @@ class BotCardController extends  AnchorPane implements Initializable
 	//@FXML private ResourceBundle resources;
 	@FXML private AnchorPane root;
 	
-//	@FXML private Button buttonToggle;
+
 	@FXML private Button buttonLoad;
     @FXML
 	private Button buttonPowerBot;
@@ -75,74 +59,34 @@ class BotCardController extends  AnchorPane implements Initializable
 	static boolean pushPowerBot=true;
 
 	public void initWindow(){
-		if (ava){
-			Image ss = avatar.getImage();
-			avatar.setImage(ss);
-			avatar.setImage(null);
-		}
 	}
 
 	public Image getavatar(){
 	return avatar.getImage();
 	}
-
 	public void setavatar(Image image){
 		avatar.setImage(image);
 	}
 	public String gettext(){
 		return nameBot.getText();
 	}
-
 	public void settext(String text){
 		nameBot.setText(text);
 	}
 
-
-	public void initialize(URL location, ResourceBundle resources)
-	{
-
-		//this.resources = resources;
-
-
-		//Image ss = avatar.getImage();
-		//avatar.setImage(ss);
-		//avatar.setImage(null);
-	//	fxmlLoader.setLocation(location);
-	//	fxmlLoader.setRoot(this);
-	//	fxmlLoader.setController(this);
-		//Parent root;
-
-
-		/*
-		try {
-			root = Main.getfxmlLoader().load();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-
-
-//		brr= Main.getfxmlLoader().getController();
-
+	public void initialize(URL location, ResourceBundle resources)	{
 	}
-
-
 
 
 
 	@FXML public void onButtonPowerBot() throws SQLException, ClassNotFoundException, ClientException, ApiException, IOException {
 		toggleButtonActive (buttonPowerBot);
-
-
-
-
 		if (!buttonPowerBot.isFocused())
 		{
 			System.out.print("включено = " + "asdasdasdasdasdasdsda" + "\n");
 			pushPowerBot =true;
             recursion();
 		}
-
-
 		else
 		{
 			System.out.print("выключено = " + "asdasdasdasdasdasdsda" + "\n");
@@ -157,26 +101,9 @@ class BotCardController extends  AnchorPane implements Initializable
 		toggleButtonActive (buttonLoad);
 	}
 
-	//public static BotCardController Controller;
 
-
-
-	//private static BotCardController controllers;
 	@FXML private void onSettings()
 	{
-		//BotCardController Controller = BotCardController.fxmlLoader.getController();
-		//StageКлассКонтроллер контроллер = StageКласс.getFxmlLoader().getController();
-		//Main Controller = Main.getFxmlLoader().getController();
-
-		//BotCardController Controller = new Main.fxmlBotCard.getController();
-	//	settext("assssssss");
-		//bot = new BotCardController();
-
-
-
-
-	//	Image s = Controller.avatar.getImage();
-
 	}
 	
 	@FXML private void onInfo()

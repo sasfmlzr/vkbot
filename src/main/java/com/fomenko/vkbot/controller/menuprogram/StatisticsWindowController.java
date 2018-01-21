@@ -80,7 +80,7 @@ public class StatisticsWindowController  implements Initializable
 
 	public static XYChart.Series seriesItogVk = new XYChart.Series();
 	public static XYChart.Series seriesZaprosVk = new XYChart.Series();
-	public static XYChart.Series seriesThread = new XYChart.Series();
+	public static XYChart.Series<Integer,Integer> seriesThread = new XYChart.Series<>();
 	public static XYChart.Series<Integer,Integer> seriesBigBD = new XYChart.Series<>();
 
 

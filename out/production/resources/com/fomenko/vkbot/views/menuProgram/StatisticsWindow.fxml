@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="605.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fomenko.vkbot.controller.menuprogram.StatisticsWindowController">
+   <children>
+      <TextArea fx:id="textLog" editable="false" layoutX="419.0" layoutY="64.0" minHeight="300.0" minWidth="139.0" prefHeight="358.0" prefWidth="153.0" text="Логи" wrapText="true" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="419.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="64.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextArea>
+      <Button fx:id="button" layoutX="179.0" layoutY="365.0" mnemonicParsing="false" onAction="#blabla" text="Button" visible="false" />
+      <StackedAreaChart fx:id="timeZaprosVk" layoutX="21.0" layoutY="28.0" prefHeight="170.0" prefWidth="387.0" title="Время запроса вк">
+        <xAxis>
+          <NumberAxis fx:id="timeZaprosVkX" lowerBound="1.0" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="timeZaprosVkY" side="LEFT" />
+        </yAxis>
+      </StackedAreaChart>
+      <StackedAreaChart fx:id="timeThread" layoutX="21.0" layoutY="195.0" prefHeight="170.0" prefWidth="387.0" title="Время задержки потока">
+         <xAxis>
+            <NumberAxis fx:id="timeThreadX" side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis fx:id="timeThreadY" side="LEFT" />
+         </yAxis>
+      </StackedAreaChart>
+      <ToolBar layoutX="370.0" layoutY="-6.0" prefHeight="47.0" prefWidth="235.0" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="370.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <RadioButton fx:id="setTen" mnemonicParsing="false" onAction="#punchRadioButton" text="10" />
+            <RadioButton fx:id="setFiveteen" mnemonicParsing="false" onAction="#punchRadioButton" text="50" />
+            <RadioButton fx:id="setHungry" mnemonicParsing="false" onAction="#punchRadioButton" text="100" />
+            <RadioButton fx:id="setThousand" mnemonicParsing="false" onAction="#punchRadioButton" text="1000" />
+            <RadioButton fx:id="setAuto" mnemonicParsing="false" onAction="#punchRadioButton" text="auto" />
+         </items>
+      </ToolBar>
+   </children>
+</AnchorPane>
