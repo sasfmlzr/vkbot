@@ -1,6 +1,7 @@
 package com.fomenko.vkbot.controller;
 
 import com.api.util.Effects;
+import com.apiVKmanual.bot.GroupBot;
 import com.apiVKmanual.bot.UserBot;
 import com.fomenko.vkbot.controller.menuprogram.StatisticsWindowController;
 import javafx.fxml.FXML;
@@ -80,19 +81,36 @@ public class BotCardController extends  AnchorPane implements Initializable
 		userBot.run();
 	}
 
+	public void  recursionGroup() throws SQLException, ClassNotFoundException {
+
+		if (!databaseLoaded){
+			userBot.botApiClient().database.connectDatabase();            //подключение бд
+			userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
+		}
+		timeProgramStart = System.currentTimeMillis();
+		pushPowerBot=true;
+		setAvatarBot(this,groupBot);
+		groupBot.run();
+	}
+
+
+
 	private void setAvatarBot(BotCardController childList, UserBot bot)   {
 		childList.settext(bot.getBotName());
 		childList.setavatar(bot.getBotImage());
 	}
 
-
+	private void setAvatarBot(BotCardController childList, GroupBot bot)   {
+		childList.settext(bot.getBotName());
+		childList.setavatar(bot.getBotImage());
+	}
 	@FXML public void onButtonPowerBot() throws SQLException, ClassNotFoundException {
 		toggleButtonActive (buttonPowerBot);
 		if (!buttonPowerBot.isFocused())
 		{
 			System.out.print("Bot working" + "\n");
 			pushPowerBot =true;
-            recursion();
+			recursionGroup();
 		}
 		else
 		{
