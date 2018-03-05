@@ -19,13 +19,13 @@ import static com.fomenko.vkbot.StaticModel.*;
 
 
 
-public class ThreadBot implements Runnable 		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
+public class ThreadUserBot implements Runnable 		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
 
     private boolean stoped = false;
 
     private UserActor actor;
-    public ThreadBot(UserActor actor){
+    public ThreadUserBot(UserActor actor){
 
         this.actor=actor;
     }
