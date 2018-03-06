@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<fx:root type ="javafx.scene.layout.AnchorPane" fx:id="root" style="-fx-background-color: #2d2d2d;" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<fx:root fx:id="root" style="-fx-background-color: #2d2d2d;" stylesheets="@dark.css" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar layoutY="2.0" prefHeight="25.0" stylesheets="@dark.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -11,6 +11,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#onMenuFileAdd" text="%MainWindow.fileItemNew.text" />
                   <MenuItem mnemonicParsing="false" text="%MainWindow.fileItemOpen.text" />
                   <MenuItem fx:id="menuFileClose" mnemonicParsing="false" onAction="#onMenuFileClose" text="%MainWindow.fileItemExit.text" />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuFileAdd" text="%MainWindow.fileItemNewBot.text" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="%MainWindow.menuBot.text">

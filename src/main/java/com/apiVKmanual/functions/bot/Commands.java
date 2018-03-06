@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.apiVKmanual.object.StatisticsVariable.*;
-import static com.fomenko.vkbot.StaticModel.*;
+
 
 public class Commands  extends Messages{
 
@@ -68,7 +68,7 @@ public class Commands  extends Messages{
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
 
             bot.messages().vksendImageMessages(actor,messagesList);
-            reduction=true;
+             getClient().stateBot.reduction=true;
         }
 
 
@@ -89,7 +89,7 @@ public class Commands  extends Messages{
         if (textMessageString.equals("го приостановка бота")){
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Ок, бот приостановлен на минуту ";
-            priostanovka =true;
+            getClient().stateBot.priostanovka =true;
         }
         if (textMessageString.equals("го пинг")){
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
@@ -103,7 +103,7 @@ public class Commands  extends Messages{
         }
 
         if(!Objects.equals(message, messages)){
-            findMessage=true;
+            getClient().stateBot.findMessage=true;
             System.out.print("сработали команды \n");
         }
         return message;
@@ -116,16 +116,16 @@ public class Commands  extends Messages{
         if (textMessageString.equals("выключись")){
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Выключаюсь(";
-            botStopped =true;
+            getClient().stateBot.botStopped =true;
         }
         if (textMessageString.equals("включись")){
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Смотри скай поехал";
-            botStopped =false;
+            getClient().stateBot.botStopped =false;
         }
 
         if(!Objects.equals(message, messages)){
-            findMessage=true;
+            getClient().stateBot.findMessage=true;
             System.out.print("сработали админ команды \n");
         }
         return message;

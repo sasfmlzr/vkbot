@@ -23,7 +23,7 @@ public class GroupBot extends AbstractBot {
     public GroupBot(VkApiClient vkApiClient, GroupActor actor){
         this.actor=actor;
         vk=vkApiClient;
-        threadGroupBot = new ThreadGroupBot(actor);
+        threadGroupBot = new ThreadGroupBot(botApiClient(),actor);
         try {
             List<UserXtrCounters> listCounters = vk.users().get(actor).fields(UserField.PHOTO_200).execute();
             if (!listCounters.isEmpty()) {

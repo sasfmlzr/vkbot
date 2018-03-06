@@ -11,10 +11,10 @@ public class Functional extends Messages{
         super(client);
     }
 
-    private final String apiKeqOWM="5c202047bca9a767f476b06c746ab856";
     public String weather(String city)  {
         String pogoda="";
         // берем апи с OpenWeatherMap
+        String apiKeqOWM = "5c202047bca9a767f476b06c746ab856";
         OWM owm = new OWM(apiKeqOWM);
         // выбираем город
         CurrentWeather cwd = null;

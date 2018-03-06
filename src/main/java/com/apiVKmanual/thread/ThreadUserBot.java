@@ -1,6 +1,7 @@
 package com.apiVKmanual.thread;
 
 import com.api.client.Client;
+import com.apiVKmanual.client.BotApiClient;
 import com.apiVKmanual.object.UserRights;
 import com.fomenko.vkbot.controller.menuprogram.StatisticsWindowController;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -15,30 +16,27 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.apiVKmanual.object.StatisticsVariable.*;
-import static com.fomenko.vkbot.StaticModel.*;
+import static com.fomenko.vkbot.StaticModel.userBot;
 
 
 
 public class ThreadUserBot implements Runnable 		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
-
-    private boolean stoped = false;
-
-    private UserActor actor;
-    public ThreadUserBot(UserActor actor){
-
+    private BotApiClient client;
+    public ThreadUserBot(com.apiVKmanual.client.BotApiClient client,UserActor actor) {
+        this.client=client;
         this.actor=actor;
     }
+
+    private boolean stoped = false;
+    private UserActor actor;
+
 
     public void run()         //Этот метод будет выполняться в побочном потоке
     {
 
         while (!stoped) {
             boolean exception = false;
-                if (Client.actor==null){
-                    //TODO: staticmodel
-                   // actor= s;
-                }else
                     actor=Client.actor;
             try {
                 sendMessageUser(actor);
@@ -68,14 +66,14 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
     public void sendMessageUser(UserActor actor) throws ClientException, ApiException, InterruptedException, SQLException {
 
-        while (pushPowerBot) {
-            findMessage = false;        // совпадение с сообщением не найдено
+        while (client.stateBot.pushPowerBot) {
+            client.stateBot.findMessage = false;        // совпадение с сообщением не найдено
             countSendMessageUser = countSendMessageUser + 1;
             long timeStartFunction = System.currentTimeMillis();
 
 
-            botWork = true;           // если метод запущен, то бот включен
-            priostanovka = false;   // для приостановки бота
+            client.stateBot.botWork = true;           // если метод запущен, то бот включен
+            client.stateBot.priostanovka = false;   // для приостановки бота
             String message;         // сообщение бота
             String obrachenie = "Колян, ";                      //обращение к боту
 
@@ -93,7 +91,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
 
 
 
-            UserRights userRight= new UserRights();
+            UserRights userRight;
 
             if (messagesList.size() != 0) {
                 int userID =  messagesList.get(0).getMessage().getUserId();               // запись userID пользователя
@@ -108,7 +106,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
 
                 String textMessageString = messagesList.get(0).getMessage().getBody().toLowerCase();       // прием сообщения в переменную
                 if (userRight.getAdminCommands()) {
-                    if (!findMessage) {     // если совпадение с сообщением не найдено, то
+                    if (!client.stateBot.findMessage) {     // если совпадение с сообщением не найдено, то
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
 
                             textMessageString = textMessageString.replaceAll(obrachenie.toLowerCase(), "");
@@ -124,7 +122,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
                 }
             }
 
-            if (!botStopped) {
+            if (!client.stateBot.botStopped) {
 
 
 
@@ -134,15 +132,15 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
 
 
                     //    statmt.execute("SELECT 'login','userID','UserRights' FROM 'UserRights' WHERE login="+actor.getId()+" AND userID="+userID);
-                    reduction = false;
-                    if (!findMessage) {     // если совпадение с сообщением не найдено, то
+                    client.stateBot.reduction = false;
+                    if (!client.stateBot.findMessage) {     // если совпадение с сообщением не найдено, то
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
                             textMessageString = textMessageString.replaceAll(obrachenie.toLowerCase(), "");
                             message = userBot.botApiClient().messages().commands().commandsBot(textMessageString, message, actor, messagesList, userBot.botApiClient());         //проверка на команды бота
                             textMessageString = textMessageString.replaceAll("[^ A-Za-zА-Яа-я0-9?]", "");       // замена знаков
                         }
                     }
-                    if (!reduction) {
+                    if (!client.stateBot.reduction) {
                         message = messageFromDataBase(textMessageString, message);       // бд коляна
                         message = messageFromBigDataBase(textMessageString, message);    // большая бд
                         userBot.botApiClient().messages().vkSendMessage(actor, message, messagesList);       // отправка сообщения и пометка его прочитанным
@@ -158,7 +156,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
                     timeItogoMsMinusVK = timeConsumedMilliss - timeZaprosFinishItogo;
                     //            System.out.print("время прохода минус запросвк= " + timeItogoMsMinusVK + "\n");
                 }
-                if (priostanovka) {
+                if (client.stateBot.priostanovka) {
                     //                System.out.print("бот приостановлен \n");
                     Thread.sleep(60000);
                 }
@@ -174,7 +172,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
             StatisticsWindowController.seriesThread.getData().add(new XYChart.Data(countSendMessageUser, timeDelayThread));                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         userBot.botApiClient().database.CloseDB();         //закрытие бд
-        botWork = false;
+        client.stateBot.botWork = false;
     }
 
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
@@ -191,16 +189,16 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
     private  String messageFromDataBase(String textMessageString, String message) {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages=message;
         List<String> listMessages = new ArrayList<>();
-        if (!findMessage){      // если совпадение с сообщением не найдено, то
+        if (!client.stateBot.findMessage){      // если совпадение с сообщением не найдено, то
             long timeStartBD =       System.currentTimeMillis();
             // путешествие по списку объектов из БД
             for (int countDB = 0; countDB <= userBot.botApiClient().database.getBotData().size() - 1; countDB = countDB + 1) {
                 if ( userBot.botApiClient().database.getBotData().get(countDB).request.toLowerCase().equals(textMessageString.toLowerCase()))  {  // сравниваем нижний регистр
                     listMessages.add(userBot.botApiClient().database.getBotData().get(countDB).response);
-                    findMessage=true;                                                           // совпадение с сообщением найдено
+                    client.stateBot.findMessage=true;                                                           // совпадение с сообщением найдено
                 }
             }
-            if (findMessage)    // если совпадение с сообщением найдено, то
+            if (client.stateBot.findMessage)    // если совпадение с сообщением найдено, то
                 messages = listMessages.get(userBot.botApiClient().other().randomId(listMessages.size()));    // выбираем рандомно из найденного сообщение
             long timeFinishBD =      System.currentTimeMillis();
             timeConsumedMillisBD = timeFinishBD - timeStartBD;
@@ -213,7 +211,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
     private String messageFromBigDataBase(String textMessageString, String message) {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages=message;
         List<String> listMessages = new ArrayList<>();
-        if (!findMessage){      // если совпадение с сообщением не найдено, то
+        if (!client.stateBot.findMessage){      // если совпадение с сообщением не найдено, то
             long timeStartBigBD =       System.currentTimeMillis();
             // путешествие по списку объектов из большой БД
 
@@ -237,11 +235,11 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
                 if ( userBot.botApiClient().database.getBigMessagesData().get(countDB).request.toLowerCase().equals(textMessageString))  {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
                     listMessages.add(userBot.botApiClient().database.getBigMessagesData().get(countDB).response);
-                    findMessage=true;                                                   // совпадение с сообщением найдено
+                    client.stateBot.findMessage=true;                                                   // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
             }
-            if (findMessage)                                                            // если совпадение с сообщением найдено, то
+            if (client.stateBot.findMessage)                                                            // если совпадение с сообщением найдено, то
             {
                 messages = listMessages.get(userBot.botApiClient().other().randomId(listMessages.size()));          // выбираем рандомно из найденного сообщение
             }
@@ -253,24 +251,24 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
         return messages;
     }
     //-----------------задержка потока-----------------------------------------------//         //test
-    private static void delayThread(List messagesList) throws InterruptedException {
-        if (!testSpeed){
+    private void delayThread(List messagesList) throws InterruptedException {
+        if (!client.stateBot.testSpeed){
             if (messagesList.size() != 0) {
-                countSleep = 0;
+                client.stateBot.countSleep = 0;
                 timeDelayThread = 300;
                 Thread.sleep(timeDelayThread);
             }
-            if (countSleep <= 5) {
-                countSleep = countSleep + 1;
-                timeDelayThread = 700 + countSleep * 100;
+            if (client.stateBot.countSleep <= 5) {
+                client.stateBot.countSleep ++;
+                timeDelayThread = 700 + client.stateBot.countSleep * 100;
                 Thread.sleep(timeDelayThread);
             } else {
-                countSleep = countSleep + 1;
-                timeDelayThread = 1500 + countSleep * 100;
+                client.stateBot.countSleep ++;
+                timeDelayThread = 1500 + client.stateBot.countSleep * 100;
                 Thread.sleep(timeDelayThread);
             }
-            if (countSleep >= 30) {
-                countSleep = 6;
+            if (client.stateBot.countSleep >= 30) {
+                client.stateBot.countSleep = 6;
             }
         }
         else {

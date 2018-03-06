@@ -16,7 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.apiVKmanual.object.StatisticsVariable.*;
-import static com.fomenko.vkbot.StaticModel.botWork;
+import static com.fomenko.vkbot.StaticModel.userBot;
+
 
 public class StatisticsWindowController  implements Initializable
 
@@ -42,7 +43,7 @@ public class StatisticsWindowController  implements Initializable
 	public void initialize(URL location, ResourceBundle resources)	{	}
 	public void initWindow() {
 		textLog.setText("");
-		if (botWork) {
+		if (userBot.botApiClient().stateBot.botWork) {
 			/*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
 			System.out.println(bReader);
 			String s;

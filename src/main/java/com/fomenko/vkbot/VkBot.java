@@ -1,6 +1,6 @@
 package com.fomenko.vkbot;
 
-import com.apiVKmanual.client.ModeBot;
+
 import com.fomenko.vkbot.controller.MainWindowController;
 import com.fomenko.vkbot.controller.menuprogram.PropertiesProgramWindowController;
 import javafx.application.Application;
@@ -22,9 +22,8 @@ public class VkBot extends Application {
     public void start(Stage primaryStage) {
        // ResourceBundle bundle = loadLocale(Locale.getDefault(), MainWindowController.resourcePath);
 
-        ModeBot modeBot = new ModeBot();
         initializeIni();
-        modeBot.setModeBot(PropertiesProgramWindowController.mode1);
+
 
         Scene scene = new Scene(new MainWindowController());
 

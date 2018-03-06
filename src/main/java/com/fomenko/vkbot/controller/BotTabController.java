@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 
 import static com.api.client.Client.idBot;
 import static com.apiVKmanual.object.StatisticsVariable.*;
-import static com.fomenko.vkbot.StaticModel.botWork;
 import static com.fomenko.vkbot.StaticModel.userBot;
 
 @SuppressWarnings("unused")
@@ -170,13 +169,6 @@ public class BotTabController extends AnchorPane implements Initializable {
     static boolean ava=false;
     //-----------------запуск бота по кнопке включения бота------------------------//
 
-/*
-    private void setAvatarBot(List<BotCardController> childList, UserBot bot)   {
-        childList.forEach((BotCardController) -> {
-            BotCardController.settext(bot.getBotName());
-            BotCardController.setavatar(bot.getBotImage());
-        });
-    }*/
 
 
 
@@ -191,7 +183,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------заполнение окна логов-----------------------------------------------//
     @FXML
     public void logFill() {
-        if (botWork)
+        if (userBot.botApiClient().stateBot.botWork)
         {
             String statistic="Время, затраченное на последнюю операцию запроса непрочитанных сообщений "+timeZaprosFinishItogo+"мс\n" +
                     "Время, затраченное на последние остальные операции "+timeItogoMsMinusVK+"мс\n" +

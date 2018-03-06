@@ -22,7 +22,7 @@ public class UserBot extends AbstractBot{
     public UserBot(VkApiClient vkApiClient,UserActor actor){
         this.actor=actor;
         vk=vkApiClient;
-        threadUserBot = new ThreadUserBot(actor);
+        threadUserBot = new ThreadUserBot(botApiClient(),actor);
         try {
             UserXtrCounters botSelfInfo = vk.users().get(actor).fields(UserField.PHOTO_200).execute().get(0);
             userID = botSelfInfo.getId();
