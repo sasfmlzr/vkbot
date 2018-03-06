@@ -47,14 +47,8 @@ public class BotCardController extends  AnchorPane implements Initializable
 	@FXML	private Label nameBot;
 
 	public void initWindow(){	}
-	public Image getavatar(){
-	return avatar.getImage();
-	}
 	public void setavatar(Image image){
 		avatar.setImage(image);
-	}
-	public String gettext(){
-		return nameBot.getText();
 	}
 	public void settext(String text){
 		nameBot.setText(text);
@@ -142,23 +136,16 @@ public class BotCardController extends  AnchorPane implements Initializable
 	private void toggleButtonActive(Button button)
 	{
 		if (!Objects.equals(button.getId(), "button-active"))
-			setButtonActive(button);
+		{
+			button.setId("button-active");
+			button.setEffect(Effects.imageButtonActive);
+			root.requestFocus();
+		}
 		else
-			setButtonInactive(button);
-	}
-	
-	private void setButtonActive(Button button)
-	{
-		button.setId("button-active");
-		//TODO: разобраться с effects.java (new innershadow)
-		button.setEffect(Effects.imageButtonActive);
-		root.requestFocus();
-	}
-	
-	private void setButtonInactive(Button button)
-	{
-		button.setId("button");
-		button.setEffect(null);
+		{
+			button.setId("button");
+			button.setEffect(null);
+		}
 	}
 
 
