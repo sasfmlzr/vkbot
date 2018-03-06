@@ -60,7 +60,7 @@ public class Commands  extends Messages{
 
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
 
-            message = BotApiClient.database.databaseRequest(BotApiClient.database.getStatmt()).addToDB(textMessageString);
+            message = BotApiClient.database.databaseRequest(BotApiClient.database.getStatmt()).addToDB(textMessageString, actor.getId());
         }
 
         if (textMessageString.contains("го мем")){

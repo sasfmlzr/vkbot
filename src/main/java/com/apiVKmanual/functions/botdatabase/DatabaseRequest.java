@@ -1,7 +1,6 @@
 package com.apiVKmanual.functions.botdatabase;
 
-import com.api.client.Client;
-import com.fomenko.vkbot.StaticModel;
+
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -131,16 +130,12 @@ public class DatabaseRequest extends Database{
 
 
 
-    public void addElementinDialog(String request, String response) throws SQLException {
+    public void addElementinDialog(String request, String response, int actorId) throws SQLException {
         System.out.println(request);
         System.out.println(response);
-        int idBot;
-        if (Client.actor==null){
-            idBot= StaticModel.userBot.getActor().getId();
-        }else
-            idBot=Client.actor.getId();
 
-       statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  ('"+request+"', '"+response+"', "+idBot+"); ");
+
+        statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  ('"+request+"', '"+response+"', "+ actorId +"); ");
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         System.out.println("Успешно занесено в БД");
         InitDB();
@@ -153,7 +148,7 @@ public class DatabaseRequest extends Database{
 
     // парсер добавления в таблицу через вк
 
-    public String addToDB(String word) throws SQLException {
+    public String addToDB(String word, int actorId) throws SQLException {
 
         String firstWord="", secondWord="";
         char[] chars = new char[50];
@@ -188,7 +183,7 @@ public class DatabaseRequest extends Database{
         secondWord=secondWord.replaceAll("\\u0000", "");
         System.out.println("firstWord " + firstWord);
         System.out.println("secondWord " + secondWord);
-        addElementinDialog(firstWord,secondWord);
+        addElementinDialog(firstWord,secondWord, actorId);
         return "Сделано!";
     }
 

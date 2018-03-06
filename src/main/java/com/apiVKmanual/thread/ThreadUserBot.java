@@ -20,7 +20,7 @@ import static com.fomenko.vkbot.StaticModel.userBot;
 
 
 
-public class ThreadUserBot implements Runnable 		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
+public class ThreadUserBot extends ThreadBot implements Runnable 		//(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
     private BotApiClient client;
     public ThreadUserBot(com.apiVKmanual.client.BotApiClient client,UserActor actor) {
@@ -160,7 +160,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
                     //                System.out.print("бот приостановлен \n");
                     Thread.sleep(60000);
                 }
-                delayThread(messagesList);          // поток засыпает
+                delayThread(messagesList, client);          // поток засыпает
 
             }else{
                 Thread.sleep(2000);
@@ -250,32 +250,7 @@ public class ThreadUserBot implements Runnable 		//(содержащее мет�
         }
         return messages;
     }
-    //-----------------задержка потока-----------------------------------------------//         //test
-    private void delayThread(List messagesList) throws InterruptedException {
-        if (!client.stateBot.testSpeed){
-            if (messagesList.size() != 0) {
-                client.stateBot.countSleep = 0;
-                timeDelayThread = 300;
-                Thread.sleep(timeDelayThread);
-            }
-            if (client.stateBot.countSleep <= 5) {
-                client.stateBot.countSleep ++;
-                timeDelayThread = 700 + client.stateBot.countSleep * 100;
-                Thread.sleep(timeDelayThread);
-            } else {
-                client.stateBot.countSleep ++;
-                timeDelayThread = 1500 + client.stateBot.countSleep * 100;
-                Thread.sleep(timeDelayThread);
-            }
-            if (client.stateBot.countSleep >= 30) {
-                client.stateBot.countSleep = 6;
-            }
-        }
-        else {
-            timeDelayThread = 1500;
-            Thread.sleep(timeDelayThread);
-        }
-    }
+
 
 
 }
