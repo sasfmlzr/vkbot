@@ -1,10 +1,12 @@
 package com.fomenko.vkbot;
 
+import com.apiVKmanual.bot.GroupBot;
 import com.apiVKmanual.bot.UserBot;
 import com.apiVKmanual.functions.botdatabase.Database;
 import com.fomenko.vkbot.controller.menuprogram.PropertiesProgramWindowController;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
@@ -33,4 +35,16 @@ public final class StaticModel {
     public static boolean findMessage;
     public static boolean pushPowerBot=true;
     public static boolean reduction=false;
+
+
+
+    private static GroupActor groupActor = new GroupActor(144853761,"0ed42462bb7ff49865bd92343711fbcab31b18ce3e7bfeabffed19019e05eb84aa25fa982d6412a9ab979");
+    // саит
+    //private static GroupActor groupActor = new GroupActor(103545242,"072970b1f3026aa56332213f5292335206000af4c2b808152138b6991ce440be875ea1b1cd8cd2c5fc53c");
+    public  static GroupBot groupBot = new GroupBot(vk, groupActor);
+
+
+
+
+
 }

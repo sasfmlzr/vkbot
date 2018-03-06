@@ -5,7 +5,6 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Dialog;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ThreadGroupBot implements Runnable{
             boolean exception = false;
             try {
                 sendMessageUser(actor);
-            } catch (ClientException | SQLException | InterruptedException | ApiException e) {
+            } catch (ClientException | InterruptedException | ApiException e) {
                 exception = true;
                 e.printStackTrace();
                 System.out.println("Исключение в потоке бота");
@@ -52,7 +51,7 @@ public class ThreadGroupBot implements Runnable{
     }
 
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
-    public void sendMessageUser(GroupActor actor) throws ClientException, ApiException, InterruptedException, SQLException {
+    public void sendMessageUser(GroupActor actor) throws ClientException, ApiException, InterruptedException {
 
         while (pushPowerBot) {
             findMessage = false;        // совпадение с сообщением не найдено

@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.ini4j.Ini;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -34,7 +35,7 @@ public class VkBot extends Application {
 
         primaryStage = new Stage();
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1100);
+        primaryStage.setMinWidth(700);
         primaryStage.setMinHeight(600);
         primaryStage.setTitle("Test VKBot");
         primaryStage.show();
@@ -61,7 +62,7 @@ public class VkBot extends Application {
 
 
     //////////Инициализация ini файла настроек на 4 бота
-    private static void initializeIni() {
+    public static void initializeIni() {
         Ini ini = null;
         try {
             ini = new Ini(new File("src/main/resources/com/fomenko/vkbot/resourcebundle/PropertiesProgramWindow/Properties.ini"));

@@ -123,7 +123,7 @@ public class DatabaseRequest extends Database{
 
     }
     // --------Создание первичной записи в таблице--------
-    public void InsertIntoTablePrimary() throws SQLException {
+    public void InsertIntoTablePrimary() {
        //statmt.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
     }
 
