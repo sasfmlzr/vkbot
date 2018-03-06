@@ -7,14 +7,8 @@ import java.util.List;
 import static com.apiVKmanual.object.StatisticsVariable.timeDelayThread;
 
 abstract class ThreadBot {
-
-
-
-
-
     //-----------------задержка потока-----------------------------------------------//         //test
     void delayThread(List messagesList, BotApiClient client) throws InterruptedException {
-        System.out.println();
         //if (!client.stateBot.testSpeed)
             if (!client.stateBot.testSpeed)
         {

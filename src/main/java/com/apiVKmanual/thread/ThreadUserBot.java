@@ -32,7 +32,6 @@ public class ThreadUserBot extends ThreadBot implements Runnable 		//(содер
 
     public void run()         //Этот метод будет выполняться в побочном потоке
     {
-
         while (!stoped) {
             boolean exception = false;
             try {
@@ -51,7 +50,6 @@ public class ThreadUserBot extends ThreadBot implements Runnable 		//(содер
                     e.printStackTrace();
                 }
             }
-
         }
         System.out.print("Побочный поток завершён \n");
     }
@@ -74,7 +72,6 @@ public class ThreadUserBot extends ThreadBot implements Runnable 		//(содер
             client.stateBot.priostanovka = false;   // для приостановки бота
             String message;         // сообщение бота
             String obrachenie = "Колян, ";                      //обращение к боту
-
             message = client.database.getBotRandomData().
                     get(client.other().randomId(client.database.
                             getBotRandomData().size())).response;          //сообщение берется из рандомной базы коляна
@@ -93,7 +90,7 @@ public class ThreadUserBot extends ThreadBot implements Runnable 		//(содер
 
             if (messagesList.size() != 0) {
                 int userID =  messagesList.get(0).getMessage().getUserId();               // запись userID пользователя
-                client.database.databaseRequest(client.database.getStatmt()).addInfoUser(userID, actor, client.getVk());       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
+                client.database.databaseRequest(client.database.getStatmt()).addInfoUser(userID, actor, client.getVkApiClient());       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
                 client.database.databaseRequest(client.database.getStatmt()).addInfoUserRights(userID, actor);    // добавить права пользователю, если нет
                 String userRightString = client.database.databaseRequest(client.database.getStatmt()).findUserRights(userID, actor);  // запись права текущего пользователя в ячейку
                 userRight = new UserRights(userRightString);  // наследование прав пользователем
@@ -176,7 +173,7 @@ public class ThreadUserBot extends ThreadBot implements Runnable 		//(содер
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
     private List<Dialog> createListMessageVK() throws ClientException, ApiException {
         long timezaprosstart =       System.currentTimeMillis();         // начало запроса непрочитанного запроса
-        List<Dialog> messages = client.getVk().messages().getDialogs(actor)                 // Листы сообщений
+        List<Dialog> messages = client.getVkApiClient().messages().getDialogs(actor)                 // Листы сообщений
                 .unread(true)
                 .execute().getItems();
         long timezaprosfinish = System.currentTimeMillis();
