@@ -21,8 +21,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.apiVKmanual.State.databaseLoaded;
 import static com.apiVKmanual.object.StatisticsVariable.*;
-import static com.fomenko.vkbot.StaticModel.*;
+import static com.fomenko.vkbot.StaticModel.groupBot;
+import static com.fomenko.vkbot.StaticModel.userBot;
 
 public class BotCardController extends  AnchorPane implements Initializable
 {
@@ -47,14 +49,8 @@ public class BotCardController extends  AnchorPane implements Initializable
 	@FXML	private Label nameBot;
 
 	public void initWindow(){	}
-	public Image getavatar(){
-	return avatar.getImage();
-	}
 	public void setavatar(Image image){
 		avatar.setImage(image);
-	}
-	public String gettext(){
-		return nameBot.getText();
 	}
 	public void settext(String text){
 		nameBot.setText(text);
@@ -76,7 +72,7 @@ public class BotCardController extends  AnchorPane implements Initializable
 			userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
-		pushPowerBot=true;
+		userBot.botApiClient().stateBot.pushPowerBot=true;
 		setAvatarBot(this,userBot);
 		userBot.run();
 	}
@@ -88,7 +84,7 @@ public class BotCardController extends  AnchorPane implements Initializable
 			userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
-		pushPowerBot=true;
+		userBot.botApiClient().stateBot.pushPowerBot=true;
 		setAvatarBot(this,groupBot);
 		groupBot.run();
 	}
@@ -109,13 +105,13 @@ public class BotCardController extends  AnchorPane implements Initializable
 		if (!buttonPowerBot.isFocused())
 		{
 			System.out.print("Bot working" + "\n");
-			pushPowerBot =true;
+			userBot.botApiClient().stateBot.pushPowerBot =true;
 			recursionGroup();
 		}
 		else
 		{
 			System.out.print("Bot not working" + "\n");
-			pushPowerBot =false;
+			userBot.botApiClient().stateBot.pushPowerBot =false;
 		}
 	}
 
@@ -142,23 +138,16 @@ public class BotCardController extends  AnchorPane implements Initializable
 	private void toggleButtonActive(Button button)
 	{
 		if (!Objects.equals(button.getId(), "button-active"))
-			setButtonActive(button);
+		{
+			button.setId("button-active");
+			button.setEffect(Effects.imageButtonActive);
+			root.requestFocus();
+		}
 		else
-			setButtonInactive(button);
-	}
-	
-	private void setButtonActive(Button button)
-	{
-		button.setId("button-active");
-		//TODO: разобраться с effects.java (new innershadow)
-		button.setEffect(Effects.imageButtonActive);
-		root.requestFocus();
-	}
-	
-	private void setButtonInactive(Button button)
-	{
-		button.setId("button");
-		button.setEffect(null);
+		{
+			button.setId("button");
+			button.setEffect(null);
+		}
 	}
 
 

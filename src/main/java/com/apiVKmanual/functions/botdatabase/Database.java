@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
-import static com.fomenko.vkbot.StaticModel.databaseLoaded;
+import static com.apiVKmanual.State.databaseLoaded;
 public class Database {
     private Connection conn;          //SQL connection
     private Statement statmt;

@@ -1,6 +1,6 @@
 package com.fomenko.vkbot;
 
-import com.apiVKmanual.client.ModeBot;
+
 import com.fomenko.vkbot.controller.MainWindowController;
 import com.fomenko.vkbot.controller.menuprogram.PropertiesProgramWindowController;
 import javafx.application.Application;
@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.ini4j.Ini;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -21,9 +22,8 @@ public class VkBot extends Application {
     public void start(Stage primaryStage) {
        // ResourceBundle bundle = loadLocale(Locale.getDefault(), MainWindowController.resourcePath);
 
-        ModeBot modeBot = new ModeBot();
         initializeIni();
-        modeBot.setModeBot(PropertiesProgramWindowController.mode1);
+
 
         Scene scene = new Scene(new MainWindowController());
 
@@ -34,7 +34,7 @@ public class VkBot extends Application {
 
         primaryStage = new Stage();
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1100);
+        primaryStage.setMinWidth(700);
         primaryStage.setMinHeight(600);
         primaryStage.setTitle("Test VKBot");
         primaryStage.show();
@@ -61,7 +61,7 @@ public class VkBot extends Application {
 
 
     //////////Инициализация ini файла настроек на 4 бота
-    private static void initializeIni() {
+    public static void initializeIni() {
         Ini ini = null;
         try {
             ini = new Ini(new File("src/main/resources/com/fomenko/vkbot/resourcebundle/PropertiesProgramWindow/Properties.ini"));

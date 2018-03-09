@@ -16,8 +16,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static com.fomenko.vkbot.StaticModel.botWork;
-
+import static com.fomenko.vkbot.StaticModel.userBot;
 
 
 public class DataBaseWindowController implements Initializable
@@ -51,7 +50,7 @@ public class DataBaseWindowController implements Initializable
     public void initWindow() throws SQLException {
 
 
-        if (botWork) {
+        if (userBot.botApiClient().stateBot.botWork) {
             textTable.setText("БД:" + "\n");
        /*     try {
                 ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);

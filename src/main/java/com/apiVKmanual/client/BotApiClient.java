@@ -25,4 +25,7 @@ public class BotApiClient extends AbstractBot{
     }
 
     public static Database database=new Database();
+
+    public StateBot stateBot=new StateBot();
+
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -232,7 +233,7 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuDatabaseBot() throws IOException, SQLException, ClassNotFoundException {
+    @FXML private void onMenuDatabaseBot() throws IOException, SQLException {
 
         ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), DataBaseWindowController.resourcePath);
 

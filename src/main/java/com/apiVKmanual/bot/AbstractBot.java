@@ -2,11 +2,19 @@ package com.apiVKmanual.bot;
 
 import com.apiVKmanual.client.BotApiClient;
 import com.vk.api.sdk.client.VkApiClient;
+import javafx.scene.image.Image;
 
 public abstract class AbstractBot {
     int userID;
     String botName;
     VkApiClient vk;
+    Image botImage;
+
+
+
+
+
+
 
     public BotApiClient botApiClient(){
         return new BotApiClient(vk);
@@ -37,8 +45,12 @@ public abstract class AbstractBot {
         this.botName = botName;
     }
 
+    public Image getBotImage() {
+        return botImage;
+    }
 
-
-
+    public void setBotImage(Image botImage) {
+        this.botImage = botImage;
+    }
 
 }
