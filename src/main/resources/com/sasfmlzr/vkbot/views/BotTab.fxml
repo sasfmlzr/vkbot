@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<fx:root fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="1046.0" style="-fx-background-color: #2d2d2d;" stylesheets="@dark.css" type="javafx.scene.layout.AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ListView fx:id="vkdialog" layoutX="25.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onContextMenuRequested="#requestMessage" prefHeight="511.0" prefWidth="167.0" style="-fx-background-color: #3d3d3d;" stylesheets="@dark.css">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </ListView>
+      <TextArea fx:id="textMessages" editable="false" layoutX="208.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="489.0" stylesheets="@dark.css" text="Name Surname: Привет!&#10;Me: П..привет&#10;">
+         <font>
+            <Font size="14.0" />
+         </font></TextArea>
+      <TextArea fx:id="textLog" editable="false" layoutX="720.0" layoutY="274.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="306.0" stylesheets="@dark.css" text="[01.01.1970 00:00] Send message to id342423: &quot;This is a test message&quot;&#10;[01.01.1970 00:10] Check dialogs: 0 unread.&#10;" wrapText="true" />
+      <Button layoutX="483.0" layoutY="379.0" mnemonicParsing="false" onAction="#pushButton" prefHeight="30.0" prefWidth="219.0" stylesheets="@dark.css" text="Отправить сообщение" />
+      <TextField fx:id="textMessage" layoutX="208.0" layoutY="456.0" prefHeight="25.0" prefWidth="202.0" promptText="Text Message" stylesheets="@dark.css" />
+      <TextField fx:id="users_id" layoutX="208.0" layoutY="418.0" prefHeight="30.0" prefWidth="202.0" promptText="User id" stylesheets="@dark.css" />
+      <Button fx:id="botLog" layoutX="482.0" layoutY="452.0" mnemonicParsing="false" onAction="#logFill" prefHeight="30.0" prefWidth="219.0" stylesheets="@dark.css" text="Показать логи" />
+      <Button layoutX="483.0" layoutY="416.0" mnemonicParsing="false" onAction="#refreshDialogs" prefHeight="30.0" prefWidth="219.0" stylesheets="@dark.css" text="Обновить список диалогов" />
+      <Button layoutX="482.0" layoutY="489.0" mnemonicParsing="false" onAction="#requestMessage" prefHeight="30.0" prefWidth="219.0" stylesheets="@dark.css" text="Обновить сообщения" />
+      <Button layoutX="182.0" layoutY="296.0" mnemonicParsing="false" stylesheets="@dark.css" text="Переопределить токен" visible="false" AnchorPane.bottomAnchor="119.0" />
+      <ImageView fx:id="imageTest" fitHeight="150.0" fitWidth="200.0" layoutX="436.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="309.0" layoutY="358.0" mnemonicParsing="false" onAction="#test" stylesheets="@dark.css" text="Button" />
+      <FlowPane fx:id="botCardPane" layoutX="720.0" layoutY="14.0" prefHeight="251.0" prefWidth="306.0" />
+   </children>
+</fx:root>
