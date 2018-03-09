@@ -1,16 +1,7 @@
 package com.api.client;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
-import javax.swing.text.Element;
-import javax.swing.text.ElementIterator;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
+
+import com.api.util.sig4j.signal.Signal0;
+import com.api.util.sig4j.signal.Signal1;
 import com.vk.api.sdk.client.actors.UserActor;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.CookieStore;
@@ -22,7 +13,13 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import com.api.util.sig4j.signal.*;
+
+import javax.swing.text.Element;
+import javax.swing.text.ElementIterator;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import java.io.*;
 
 public class Client implements Serializable
 {

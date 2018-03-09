@@ -2,8 +2,8 @@ package com.api.util.sig4j.signal;
 
 import com.api.util.sig4j.ConnectionType;
 import com.api.util.sig4j.Signal;
-import com.api.util.sig4j.SlotDispatcher;
 import com.api.util.sig4j.Slot;
+import com.api.util.sig4j.SlotDispatcher;
 import com.api.util.sig4j.slot.Slot4;
 
 /**

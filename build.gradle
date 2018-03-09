@@ -1,6 +1,7 @@
 group 'vkbot'
 version '1.1'
 apply plugin: 'java'
+
 sourceSets {
     main {
         java {
@@ -18,13 +19,23 @@ jar {
         attributes 'Main-Class': 'com.fomenko.vkbot.VkBot'
     }
 }
+
+
 compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = 1.8
+
+
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
+
+
 dependencies {
     compile 'com.vk.api:sdk:0.5.11'
+    //compile 'com.sasfmlzr.apiVK:1.0'
+    compile 'com.github.sasfmlzr:apiVK:1.0.1'
+    //compile group: 'org.exist-db', name: 'exist-core', version: '4.0.0'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
     compile group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
     compile 'net.aksingh:owm-japis:2.5.2.1'
