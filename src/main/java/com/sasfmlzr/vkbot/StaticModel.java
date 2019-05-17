@@ -1,6 +1,5 @@
 package com.sasfmlzr.vkbot;
 
-
 import com.sasfmlzr.apiVK.bot.GroupBot;
 import com.sasfmlzr.apiVK.bot.UserBot;
 import com.sasfmlzr.apiVK.functions.botdatabase.Database;

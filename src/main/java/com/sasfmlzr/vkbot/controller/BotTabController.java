@@ -37,21 +37,26 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     //final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotTab.fxml";
 
-    @FXML    private FlowPane botCardPane;
-    @FXML    private ListView vkdialog;
-    @FXML    private TextField textMessage;
-    @FXML    private TextField users_id;
-    @FXML    private TextArea textMessages;
-    @FXML    private TextArea textLog;
-    @FXML    private Button botLog;
-    @FXML    private static ImageView imageTest;
+    @FXML
+    private FlowPane botCardPane;
+    @FXML
+    private ListView vkdialog;
+    @FXML
+    private TextField textMessage;
+    @FXML
+    private TextField users_id;
+    @FXML
+    private TextArea textMessages;
+    @FXML
+    private TextArea textLog;
+    @FXML
+    private Button botLog;
+    @FXML
+    private static ImageView imageTest;
 
 
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
     private static int[] userIDmassive = new int[30];                           // массив userID
-
-
-
 
 
     private static List<BotCardController> childList;
@@ -70,26 +75,26 @@ public class BotTabController extends AnchorPane implements Initializable {
     }
 
 
-
-
-
     //-----------------инициалихация-----------------------------------------------//
     public void initialize(URL location, ResourceBundle resources) {
-       // childList = new ArrayList<>();
-       // childList.add(new BotCardController());
+        // childList = new ArrayList<>();
+        // childList.add(new BotCardController());
         //botCardPane.getChildren().addAll( childList);
-        botCardPane.getChildren().addAll( new BotCardController());
+        botCardPane.getChildren().addAll(new BotCardController());
 
     }
+
     //-----------------при нажатии на диалог---------------------------------------//   // test
     public void dialog() {
         System.out.println("UserID = " + "\n");
     }
+
     //-----------------ручная отправка сообщения-----------------------------------//
     public void pushButton() throws ClientException, ApiException {
         if (!Objects.equals(textMessage.getText(), ""))
-            userBot.botApiClient().messages().vkSendMessageUser(userBot.getActor(),textMessage.getText(),Integer.parseInt(users_id.getText()));
+            userBot.botApiClient().messages().vkSendMessageUser(userBot.getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
     }
+
     //-----------------обновление сообщений----------------------------------------//
     public void requestMessage() throws ClientException, ApiException {
 
@@ -100,7 +105,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         UserSettings infoAccount = userBot.getVk().account().getProfileInfo(actor)
                 .execute();
         String firstNameAccount = infoAccount.getFirstName();                   //имя и фамилия клинта приложения
-        String lastNameNameAccount =  infoAccount.getLastName();
+        String lastNameNameAccount = infoAccount.getLastName();
         int useridmessage = userIDmassive[vkdialog.getSelectionModel().getSelectedIndex()];
 
         textMessages.setText("");                   //имя и фамилия клинта приложения
@@ -130,6 +135,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         //   vkdialog.getSelectionModel().getSelectedItem();
         //  System.out.print("getLongPollHistory = ");
     }
+
     //-----------------обновить диалоги--------------------------------------------//
     public void refreshDialogs() throws ClientException, ApiException {
         vkdialog.getItems().clear();
@@ -137,7 +143,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         String token = Client.token;
         UserActor actor = new UserActor(idBot, token);
 ////////////////////////////////
-                                      // создаем объект user id
+        // создаем объект user id
         List<Dialog> dialogList = userBot.getVk().messages().getDialogs(actor)            // записываем в лист результат работы запроса
                 .count(30)
                 .execute().getItems();
@@ -145,7 +151,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         StringBuilder summUserID = new StringBuilder();                                     // список userID через запятую
         for (countDialog = 0; countDialog <= dialogList.size() - 1; countDialog = countDialog + 1) {
-                                 //получаем диалог countSendMessageUser
+            //получаем диалог countSendMessageUser
             int userID = dialogList.get(countDialog).getMessage().getUserId();        // получаем userID диалога
             userIDmassive[countDialog] = userID;
             summUserID.append(userIDmassive[countDialog]).append(",");
@@ -166,58 +172,49 @@ public class BotTabController extends AnchorPane implements Initializable {
             vkdialog.getItems().add(lfName[countDialog]);                                                    // загрузка в лист
         }
     }
-    static boolean ava=false;
+
+    static boolean ava = false;
     //-----------------запуск бота по кнопке включения бота------------------------//
-
-
-
-
-
-
-
-
-
-
 
 
     //-----------------заполнение окна логов-----------------------------------------------//
     @FXML
     public void logFill() {
-        if (userBot.botApiClient().stateBot.botWork)
-        {
-            String statistic="Время, затраченное на последнюю операцию запроса непрочитанных сообщений "+timeZaprosFinishItogo+"мс\n" +
-                    "Время, затраченное на последние остальные операции "+timeItogoMsMinusVK+"мс\n" +
+        if (userBot.botApiClient().stateBot.botWork) {
+            String statistic = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + timeZaprosFinishItogo + "мс\n" +
+                    "Время, затраченное на последние остальные операции " + timeItogoMsMinusVK + "мс\n" +
                     "Подробнее:\n";
-            if (timeConsumedMillisBD!=0)
-                statistic=statistic+"Время последней выборки из бд коляна составляет " + timeConsumedMillisBD+"мс\n";
-            if (timeConsumedMillisBigBD!=0)
-                statistic=statistic+"Время последней выборки из большой бд составляет " + timeConsumedMillisBigBD+"мс\n";
-            if (timeItogoSendMessage!=0)
-                statistic=statistic+"Время затраченное на последнюю отправку сообщения составляет " + timeItogoSendMessage+"мс\n" +
+            if (timeConsumedMillisBD != 0)
+                statistic = statistic + "Время последней выборки из бд коляна составляет " + timeConsumedMillisBD + "мс\n";
+            if (timeConsumedMillisBigBD != 0)
+                statistic = statistic + "Время последней выборки из большой бд составляет " + timeConsumedMillisBigBD + "мс\n";
+            if (timeItogoSendMessage != 0)
+                statistic = statistic + "Время затраченное на последнюю отправку сообщения составляет " + timeItogoSendMessage + "мс\n" +
                         "Количество отправленных сообщений равно " + countSendMessage + "\n";
             long timeProgramFinish = System.currentTimeMillis();
-            long timeProgramItog = timeProgramFinish-timeProgramStart;
-            statistic = statistic+"Время работы бота равно " + Math.round(timeProgramItog/1000) + "c\n"+
-                    "Среднее время запроса до вк равно " + Math.round (100*timeZaprosFinishSumm/ countSendMessageUser)/100 +"мс\n" +
+            long timeProgramItog = timeProgramFinish - timeProgramStart;
+            statistic = statistic + "Время работы бота равно " + Math.round(timeProgramItog / 1000) + "c\n" +
+                    "Среднее время запроса до вк равно " + Math.round(100 * timeZaprosFinishSumm / countSendMessageUser) / 100 + "мс\n" +
                     "Количество совершенных циклов работы бота равно " + countSendMessageUser + "\n";
-            if (countUsedBD!=0)
-                statistic=statistic+"Количество обращений к основной таблицы БД равно " + countUsedBD+"\n";
-            if (countUsedBigBD!=0)
-                statistic=statistic+"Количество обращений к большой таблице БД равно " + countUsedBigBD+"\n";
+            if (countUsedBD != 0)
+                statistic = statistic + "Количество обращений к основной таблицы БД равно " + countUsedBD + "\n";
+            if (countUsedBigBD != 0)
+                statistic = statistic + "Количество обращений к большой таблице БД равно " + countUsedBigBD + "\n";
             textLog.setText(statistic);
-        }else
+        } else
             textLog.setText("Сначала включи бота");
     }
-    private int o=0;
+
+    private int o = 0;
     private long[] usedBytes = new long[100];
 
-    public void test()  {
-        usedBytes[0]=0;
+    public void test() {
+        usedBytes[0] = 0;
         o++;
-        usedBytes[o]=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
-        System.out.println(usedBytes[o]-usedBytes[o-1]);
+        usedBytes[o] = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        System.out.println(usedBytes[o] - usedBytes[o - 1]);
     }
-    }
+}
 
 
 

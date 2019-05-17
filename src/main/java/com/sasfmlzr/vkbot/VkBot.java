@@ -16,11 +16,9 @@ import java.util.ResourceBundle;
 
 public class VkBot extends Application {
 
-
-
     @Override
     public void start(Stage primaryStage) {
-       // ResourceBundle bundle = loadLocale(Locale.getDefault(), MainWindowController.resourcePath);
+        // ResourceBundle bundle = loadLocale(Locale.getDefault(), MainWindowController.resourcePath);
 
         initializeIni();
 
@@ -46,18 +44,15 @@ public class VkBot extends Application {
     }
 
 
-    public static ResourceBundle loadLocale(Locale locale, String resourcePath)
-    {
+    public static ResourceBundle loadLocale(Locale locale, String resourcePath) {
         Locale.setDefault(locale);
         return ResourceBundle.getBundle(resourcePath, Locale.getDefault());
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
-
 
 
     //////////Инициализация ini файла настроек на 4 бота
@@ -68,19 +63,19 @@ public class VkBot extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-  //      java.util.prefs.Preferences prefs = new IniPreferences(ini);
+        //      java.util.prefs.Preferences prefs = new IniPreferences(ini);
         System.out.println("Настройки успешно инициализировались");
         assert ini != null;
-        PropertiesProgramWindowController.token1=ini.get("TokenBots", "Token1");
-        PropertiesProgramWindowController.token2=ini.get("TokenBots", "Token2");
-        PropertiesProgramWindowController.token3=ini.get("TokenBots", "Token3");
-        PropertiesProgramWindowController.token4=ini.get("TokenBots", "Token4");
-        PropertiesProgramWindowController.userId1=ini.get("TokenBots", "UserId1");
-        PropertiesProgramWindowController.userId2=ini.get("TokenBots", "UserId2");
-        PropertiesProgramWindowController.userId3=ini.get("TokenBots", "UserId3");
-        PropertiesProgramWindowController.userId4=ini.get("TokenBots", "UserId4");
-        PropertiesProgramWindowController.mode1=ini.get("ModeWorking", "Mode1");
-        PropertiesProgramWindowController.mode2=ini.get("ModeWorking", "Mode2");
+        PropertiesProgramWindowController.token1 = ini.get("TokenBots", "Token1");
+        PropertiesProgramWindowController.token2 = ini.get("TokenBots", "Token2");
+        PropertiesProgramWindowController.token3 = ini.get("TokenBots", "Token3");
+        PropertiesProgramWindowController.token4 = ini.get("TokenBots", "Token4");
+        PropertiesProgramWindowController.userId1 = ini.get("TokenBots", "UserId1");
+        PropertiesProgramWindowController.userId2 = ini.get("TokenBots", "UserId2");
+        PropertiesProgramWindowController.userId3 = ini.get("TokenBots", "UserId3");
+        PropertiesProgramWindowController.userId4 = ini.get("TokenBots", "UserId4");
+        PropertiesProgramWindowController.mode1 = ini.get("ModeWorking", "Mode1");
+        PropertiesProgramWindowController.mode2 = ini.get("ModeWorking", "Mode2");
 
 
     }
