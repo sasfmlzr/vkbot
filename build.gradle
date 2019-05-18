@@ -42,17 +42,25 @@ patchPluginXml {
 }
 
 task execute(type:JavaExec) {
-    main = 'com.fomenko.vkbot.VkBot'
+    main = 'com.sasfmlzr.vkbot.VkBot'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task fatJar(type: Jar) {
+jar {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version,
-                'Main-Class': 'com.fomenko.vkbot.VkBot'
+        attributes "Main-Class": "com.sasfmlzr.vkbot.VkBot"
     }
-    baseName = project.name + '-all'
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.sasfmlzr.vkbot.VkBot'
+    }
+    baseName = 'all-in-one-jar'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
