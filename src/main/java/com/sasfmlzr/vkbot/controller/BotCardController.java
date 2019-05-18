@@ -67,11 +67,11 @@ public class BotCardController extends  AnchorPane implements Initializable
 		StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
 		if (!databaseLoaded){
-			StaticModel.userBot.botApiClient().database.connectDatabase();            //подключение бд
-			StaticModel.userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
+			StaticModel.userBot.botApiClient().Companion.getDatabase().connectDatabase();            //подключение бд
+			StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
-		StaticModel.userBot.botApiClient().stateBot.pushPowerBot=true;
+		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
 		setAvatarBot(this, StaticModel.userBot);
 		StaticModel.userBot.run();
 	}
@@ -79,11 +79,11 @@ public class BotCardController extends  AnchorPane implements Initializable
 	public void  recursionGroup() throws SQLException, ClassNotFoundException {
 
 		if (!databaseLoaded){
-			StaticModel.userBot.botApiClient().database.connectDatabase();            //подключение бд
-			StaticModel.userBot.botApiClient().database.InitDB();          //инициализация таблиц бд в объект
+			StaticModel.userBot.botApiClient().Companion.getDatabase().connectDatabase();            //подключение бд
+			StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
-		StaticModel.userBot.botApiClient().stateBot.pushPowerBot=true;
+		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
 		setAvatarBot(this, StaticModel.groupBot);
 		StaticModel.groupBot.run();
 	}
@@ -104,14 +104,14 @@ public class BotCardController extends  AnchorPane implements Initializable
 		if (!buttonPowerBot.isFocused())
 		{
 			System.out.print("Bot working" + "\n");
-			StaticModel.userBot.botApiClient().stateBot.pushPowerBot =true;
+			StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
 			recursion();
 			//recursionGroup();
 		}
 		else
 		{
 			System.out.print("Bot not working" + "\n");
-			StaticModel.userBot.botApiClient().stateBot.pushPowerBot =false;
+			StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(false);
 		}
 	}
 

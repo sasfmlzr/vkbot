@@ -54,19 +54,18 @@ public class ThreadGroupBot extends ThreadBot implements Runnable {
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
     public void sendMessageUser(GroupActor actor) throws ClientException, ApiException, InterruptedException {
 
-        while (client.stateBot.pushPowerBot) {
-            client.stateBot.findMessage = false;        // совпадение с сообщением не найдено
+        while (client.getStateBot().getPushPowerBot()) {
+            client.getStateBot().setFindMessage(false);        // совпадение с сообщением не найдено
             StatisticsVariable.countSendMessageUser = StatisticsVariable.countSendMessageUser + 1;
             long timeStartFunction = System.currentTimeMillis();
 
-
-            client.stateBot.botWork = true;           // если метод запущен, то бот включен
-            client.stateBot.priostanovka = false;   // для приостановки бота
+            client.getStateBot().setBotWork(true);           // если метод запущен, то бот включен
+            client.getStateBot().setPriostanovka(false);   // для приостановки бота
             String message;         // сообщение бота
 
 
-            message = client.database.getBotRandomData().
-                    get(client.other().randomId(client.database.
+            message = client.Companion.getDatabase().getBotRandomData().
+                    get(client.other().randomId(client.Companion.getDatabase().
                             getBotRandomData().size())).response;          //сообщение берется из рандомной базы коляна
                         /*
            if (textMessageString.equals("")){
@@ -75,17 +74,15 @@ public class ThreadGroupBot extends ThreadBot implements Runnable {
            }*/
             List<Dialog> messagesList = createListMessageVK();                   // делается запрос непрочитанных сообщений
 
-
-            if (!client.stateBot.botStopped) {
-
+            if (!client.getStateBot().getBotStopped()) {
 
                 if (messagesList.size() != 0) {                                             // если нет непрочитанных, сообщений, то не выполнять
                     String textMessageString = messagesList.get(0).getMessage().getBody().toLowerCase();       // прием сообщения в переменную              TEST
 
 
-                    client.stateBot.reduction = false;
+                    client.getStateBot().setReduction(false);
 
-                    if (!client.stateBot.reduction) {
+                    if (!client.getStateBot().getReduction()) {
                         message = messageFromBigDataBase(textMessageString, message);
                         client.messages().vkSendMessage(actor, message, messagesList);       // отправка сообщения и пометка его прочитанным
                     } else {
@@ -100,8 +97,8 @@ public class ThreadGroupBot extends ThreadBot implements Runnable {
                 Thread.sleep(2000);
             }
         }
-        client.database.CloseDB();         //закрытие бд
-        client.stateBot.botWork = false;
+        client.Companion.getDatabase().CloseDB();         //закрытие бд
+        client.getStateBot().setBotWork(false);
     }
 
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
@@ -121,16 +118,16 @@ public class ThreadGroupBot extends ThreadBot implements Runnable {
     private String messageFromDataBase(String textMessageString, String message) {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages = message;
         List<String> listMessages = new ArrayList<>();
-        if (!client.stateBot.findMessage) {      // если совпадение с сообщением не найдено, то
+        if (!client.getStateBot().getFindMessage()) {      // если совпадение с сообщением не найдено, то
             long timeStartBD = System.currentTimeMillis();
             // путешествие по списку объектов из БД
-            for (int countDB = 0; countDB <= client.database.getBotData().size() - 1; countDB = countDB + 1) {
-                if (client.database.getBotData().get(countDB).request.toLowerCase().equals(textMessageString.toLowerCase())) {  // сравниваем нижний регистр
-                    listMessages.add(client.database.getBotData().get(countDB).response);
-                    client.stateBot.findMessage = true;                                                           // совпадение с сообщением найдено
+            for (int countDB = 0; countDB <= client.Companion.getDatabase().getBotData().size() - 1; countDB = countDB + 1) {
+                if (client.Companion.getDatabase().getBotData().get(countDB).request.toLowerCase().equals(textMessageString.toLowerCase())) {  // сравниваем нижний регистр
+                    listMessages.add(client.Companion.getDatabase().getBotData().get(countDB).response);
+                    client.getStateBot().setFindMessage(true);                                                       // совпадение с сообщением найдено
                 }
             }
-            if (client.stateBot.findMessage)    // если совпадение с сообщением найдено, то
+            if (client.getStateBot().getFindMessage())    // если совпадение с сообщением найдено, то
                 messages = listMessages.get(client.other().randomId(listMessages.size()));    // выбираем рандомно из найденного сообщение
             long timeFinishBD = System.currentTimeMillis();
             StatisticsVariable.timeConsumedMillisBD = timeFinishBD - timeStartBD;
@@ -144,17 +141,17 @@ public class ThreadGroupBot extends ThreadBot implements Runnable {
     private String messageFromBigDataBase(String textMessageString, String message) {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages = message;
         List<String> listMessages = new ArrayList<>();
-        if (!client.stateBot.findMessage) {      // если совпадение с сообщением не найдено, то
+        if (!client.getStateBot().getFindMessage()) {      // если совпадение с сообщением не найдено, то
 
-            for (int countDB = 0; countDB <= client.database.getBigMessagesData().size() - 1; countDB = countDB + 1) {
-                if (client.database.getBigMessagesData().get(countDB).request.toLowerCase().equals(textMessageString)) {  // сравниваем нижний регистр
+            for (int countDB = 0; countDB <= client.Companion.getDatabase().getBigMessagesData().size() - 1; countDB = countDB + 1) {
+                if (client.Companion.getDatabase().getBigMessagesData().get(countDB).request.toLowerCase().equals(textMessageString)) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
-                    listMessages.add(client.database.getBigMessagesData().get(countDB).response);
-                    client.stateBot.findMessage = true;                                                   // совпадение с сообщением найдено
+                    listMessages.add(client.Companion.getDatabase().getBigMessagesData().get(countDB).response);
+                    client.getStateBot().setFindMessage(true);                                                   // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
             }
-            if (client.stateBot.findMessage)                                                            // если совпадение с сообщением найдено, то
+            if (client.getStateBot().getFindMessage()) // если совпадение с сообщением найдено, то
             {
                 messages = listMessages.get(client.other().randomId(listMessages.size()));          // выбираем рандомно из найденного сообщение
             }

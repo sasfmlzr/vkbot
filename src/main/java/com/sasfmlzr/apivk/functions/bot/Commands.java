@@ -24,19 +24,19 @@ public class Commands extends Messages {
 
         if (textMessageString.equals("го стих")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
-            message = BotApiClient.database.getStihMessagesData().get(bot.other().randomId(BotApiClient.database.getStihMessagesData().size())).response;
+            message = BotApiClient.Companion.getDatabase().getStihMessagesData().get(bot.other().randomId(BotApiClient.Companion.getDatabase().getStihMessagesData().size())).response;
         }
         if (textMessageString.equals("го афоризм")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
-            message = BotApiClient.database.getAforismMessagesData().get(bot.other().randomId(BotApiClient.database.getAforismMessagesData().size())).response;
+            message = BotApiClient.Companion.getDatabase().getAforismMessagesData().get(bot.other().randomId(BotApiClient.Companion.getDatabase().getAforismMessagesData().size())).response;
         }
         if (textMessageString.equals("го анекдот")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
-            message = BotApiClient.database.getAnekdotMessagesData().get(bot.other().randomId(BotApiClient.database.getAnekdotMessagesData().size())).response;
+            message = BotApiClient.Companion.getDatabase().getAnekdotMessagesData().get(bot.other().randomId(BotApiClient.Companion.getDatabase().getAnekdotMessagesData().size())).response;
         }
         if (textMessageString.equals("го статус")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
-            message = BotApiClient.database.getStatusMessagesData().get(bot.other().randomId(BotApiClient.database.getStatusMessagesData().size())).response;
+            message = BotApiClient.Companion.getDatabase().getStatusMessagesData().get(bot.other().randomId(BotApiClient.Companion.getDatabase().getStatusMessagesData().size())).response;
         }
         if (textMessageString.equals("го справку")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
@@ -59,7 +59,7 @@ public class Commands extends Messages {
 
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
 
-            message = BotApiClient.database.databaseRequest(BotApiClient.database.getStatmt()).addToDB(textMessageString, actor.getId());
+            message = BotApiClient.Companion.getDatabase().databaseRequest(BotApiClient.Companion.getDatabase().getStatmt()).addToDB(textMessageString, actor.getId());
         }
 
         if (textMessageString.contains("го мем")) {
@@ -67,12 +67,12 @@ public class Commands extends Messages {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
 
             bot.messages().vksendImageMessages(actor, messagesList);
-            getClient().stateBot.reduction = true;
+            getClient().getStateBot().setReduction(true);
         }
         if (textMessageString.equals("го приостановка бота")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Ок, бот приостановлен на минуту ";
-            getClient().stateBot.priostanovka = true;
+            getClient().getStateBot().setPriostanovka(true);
         }
         if (textMessageString.equals("го пинг")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
@@ -86,7 +86,7 @@ public class Commands extends Messages {
         }
 
         if (!Objects.equals(message, messages)) {
-            getClient().stateBot.findMessage = true;
+            getClient().getStateBot().setFindMessage(true);
             System.out.print("сработали команды \n");
         }
         return message;
@@ -100,16 +100,16 @@ public class Commands extends Messages {
         if (textMessageString.equals("выключись")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Выключаюсь(";
-            getClient().stateBot.botStopped = true;
+            getClient().getStateBot().setBotStopped(true);
         }
         if (textMessageString.equals("включись")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");
             message = "Смотри скай поехал";
-            getClient().stateBot.botStopped = false;
+            getClient().getStateBot().setBotStopped(false);
         }
 
         if (!Objects.equals(message, messages)) {
-            getClient().stateBot.findMessage = true;
+            getClient().getStateBot().setFindMessage(true);
             System.out.print("сработали админ команды \n");
         }
         return message;

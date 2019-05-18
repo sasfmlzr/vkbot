@@ -41,7 +41,7 @@ public class StatisticsWindowController  implements Initializable
 	public void initialize(URL location, ResourceBundle resources)	{	}
 	public void initWindow() {
 		textLog.setText("");
-		if (userBot.botApiClient().stateBot.botWork) {
+		if (userBot.botApiClient().getStateBot().getBotWork()) {
 			/*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
 			System.out.println(bReader);
 			String s;

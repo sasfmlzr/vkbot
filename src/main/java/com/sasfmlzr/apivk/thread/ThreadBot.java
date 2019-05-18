@@ -9,23 +9,23 @@ abstract class ThreadBot {
     //-----------------задержка потока-----------------------------------------------//         //test
     void delayThread(List messagesList, BotApiClient client) throws InterruptedException {
         //if (!client.stateBot.testSpeed)
-        if (!client.stateBot.testSpeed) {
+        if (!client.getStateBot().getTestSpeed()) {
             if (messagesList.size() != 0) {
-                client.stateBot.countSleep = 0;
+                client.getStateBot().setCountSleep(0);
                 StatisticsVariable.timeDelayThread = 300;
                 Thread.sleep(StatisticsVariable.timeDelayThread);
             }
-            if (client.stateBot.countSleep <= 5) {
-                client.stateBot.countSleep++;
-                StatisticsVariable.timeDelayThread = 700 + client.stateBot.countSleep * 100;
+            if (client.getStateBot().getCountSleep() <= 5) {
+                client.getStateBot().setCountSleep(client.getStateBot().getCountSleep()+1);
+                StatisticsVariable.timeDelayThread = 700 + client.getStateBot().getCountSleep() * 100;
                 Thread.sleep(StatisticsVariable.timeDelayThread);
             } else {
-                client.stateBot.countSleep++;
-                StatisticsVariable.timeDelayThread = 1500 + client.stateBot.countSleep * 100;
+                client.getStateBot().setCountSleep(client.getStateBot().getCountSleep()+1);
+                StatisticsVariable.timeDelayThread = 1500 + client.getStateBot().getCountSleep() * 100;
                 Thread.sleep(StatisticsVariable.timeDelayThread);
             }
-            if (client.stateBot.countSleep >= 30) {
-                client.stateBot.countSleep = 6;
+            if (client.getStateBot().getCountSleep() >= 30) {
+                client.getStateBot().setCountSleep(6);
             }
         } else {
             StatisticsVariable.timeDelayThread = 1500;

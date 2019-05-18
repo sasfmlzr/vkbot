@@ -180,7 +180,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------заполнение окна логов-----------------------------------------------//
     @FXML
     public void logFill() {
-        if (userBot.botApiClient().stateBot.botWork) {
+        if (userBot.botApiClient().getStateBot().getBotWork()) {
             String statistic = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + timeZaprosFinishItogo + "мс\n" +
                     "Время, затраченное на последние остальные операции " + timeItogoMsMinusVK + "мс\n" +
                     "Подробнее:\n";

@@ -56,18 +56,18 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
     private void sendMessageUser(UserActor actor) throws ClientException, ApiException, InterruptedException, SQLException {
 
-        while (client.stateBot.pushPowerBot) {
-            client.stateBot.findMessage = false;        // совпадение с сообщением не найдено
+        while (client.getStateBot().getPushPowerBot()) {
+            client.getStateBot().setFindMessage(false);        // совпадение с сообщением не найдено
             StatisticsVariable.countSendMessageUser = StatisticsVariable.countSendMessageUser + 1;
             long timeStartFunction = System.currentTimeMillis();
 
 
-            client.stateBot.botWork = true;           // если метод запущен, то бот включен
-            client.stateBot.priostanovka = false;   // для приостановки бота
+            client.getStateBot().setBotWork(true);           // если метод запущен, то бот включен
+            client.getStateBot().setPriostanovka(false);   // для приостановки бота
             String message;         // сообщение бота
             String obrachenie = "Колян, ";                      //обращение к боту
-            message = client.database.getBotRandomData().
-                    get(client.other().randomId(client.database.
+            message = client.Companion.getDatabase().getBotRandomData().
+                    get(client.other().randomId(client.Companion.getDatabase().
                             getBotRandomData().size())).response;          //сообщение берется из рандомной базы коляна
                         /*
            if (textMessageString.equals("")){
@@ -83,9 +83,9 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
 
             if (messagesList.size() != 0) {
                 int userID = messagesList.get(0).getMessage().getUserId();               // запись userID пользователя
-                client.database.databaseRequest(client.database.getStatmt()).addInfoUser(userID, actor, client.getVkApiClient());       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
-                client.database.databaseRequest(client.database.getStatmt()).addInfoUserRights(userID, actor);    // добавить права пользователю, если нет
-                String userRightString = client.database.databaseRequest(client.database.getStatmt()).findUserRights(userID, actor);  // запись права текущего пользователя в ячейку
+                client.Companion.getDatabase().databaseRequest(client.Companion.getDatabase().getStatmt()).addInfoUser(userID, actor, client.getVkApiClient());       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
+                client.Companion.getDatabase().databaseRequest(client.Companion.getDatabase().getStatmt()).addInfoUserRights(userID, actor);    // добавить права пользователю, если нет
+                String userRightString = client.Companion.getDatabase().databaseRequest(client.Companion.getDatabase().getStatmt()).findUserRights(userID, actor);  // запись права текущего пользователя в ячейку
                 userRight = new UserRights(userRightString);  // наследование прав пользователем
                 //    System.out.print(userRight.getNameRight() + " может админить? -" + userRight.getAdminCommands() + "\n" +
                 //           userRight.getNameRight() + " может писать боту? -" + userRight.getAllowWriteToBot() + "\n");
@@ -93,7 +93,7 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
 
                 String textMessageString = messagesList.get(0).getMessage().getBody().toLowerCase();       // прием сообщения в переменную
                 if (userRight.getAdminCommands()) {
-                    if (!client.stateBot.findMessage) {     // если совпадение с сообщением не найдено, то
+                    if (!client.getStateBot().getBotStopped()) {     // если совпадение с сообщением не найдено, то
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
 
                             textMessageString = textMessageString.replaceAll(obrachenie.toLowerCase(), "");
@@ -109,22 +109,22 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
                 }
             }
 
-            if (!client.stateBot.botStopped) {
+            if (!client.getStateBot().getBotStopped()) {
 
                 if (messagesList.size() != 0) {                                             // если нет непрочитанных, сообщений, то не выполнять
                     String textMessageString = messagesList.get(0).getMessage().getBody().toLowerCase();       // прием сообщения в переменную              TEST
 
 
                     //    statmt.execute("SELECT 'login','userID','UserRights' FROM 'UserRights' WHERE login="+actor.getId()+" AND userID="+userID);
-                    client.stateBot.reduction = false;
-                    if (!client.stateBot.findMessage) {     // если совпадение с сообщением не найдено, то
+                    client.getStateBot().setReduction(false);
+                    if (!client.getStateBot().getFindMessage()) {     // если совпадение с сообщением не найдено, то
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
                             textMessageString = textMessageString.replaceAll(obrachenie.toLowerCase(), "");
                             message = client.messages().commands().commandsBot(textMessageString, message, actor, messagesList, client);         //проверка на команды бота
                             textMessageString = textMessageString.replaceAll("[^ A-Za-zА-Яа-я0-9?]", "");       // замена знаков
                         }
                     }
-                    if (!client.stateBot.reduction) {
+                    if (!client.getStateBot().getReduction()) {
                         message = messageFromDataBase(textMessageString, message);       // бд коляна
                         message = messageFromBigDataBase(textMessageString, message);    // большая бд
                         client.messages().vkSendMessage(actor, message, messagesList);       // отправка сообщения и пометка его прочитанным
@@ -140,7 +140,7 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
                     StatisticsVariable.timeItogoMsMinusVK = timeConsumedMilliss - StatisticsVariable.timeZaprosFinishItogo;
                     //            System.out.print("время прохода минус запросвк= " + timeItogoMsMinusVK + "\n");
                 }
-                if (client.stateBot.priostanovka) {
+                if (client.getStateBot().getPriostanovka()) {
                     //                System.out.print("бот приостановлен \n");
                     Thread.sleep(60000);
                 }
@@ -155,8 +155,8 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
             //StatisticsWindowController.seriesItogVk.getData().add(new XYChart.Data(countSendMessageUser, timeItogoMsMinusVK));          //ведение статистики запросов
             //StatisticsWindowController.seriesThread.getData().add(new XYChart.Data(countSendMessageUser, timeDelayThread));                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
-        client.database.CloseDB();         //закрытие бд
-        client.stateBot.botWork = false;
+        client.Companion.getDatabase().CloseDB();         //закрытие бд
+        client.getStateBot().setBotWork(false);
     }
 
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
@@ -174,16 +174,16 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
     private String messageFromDataBase(String textMessageString, String message) {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages = message;
         List<String> listMessages = new ArrayList<>();
-        if (!client.stateBot.findMessage) {      // если совпадение с сообщением не найдено, то
+        if (!client.getStateBot().getFindMessage()) {      // если совпадение с сообщением не найдено, то
             long timeStartBD = System.currentTimeMillis();
             // путешествие по списку объектов из БД
-            for (int countDB = 0; countDB <= client.botApiClient().database.getBotData().size() - 1; countDB = countDB + 1) {
-                if (client.database.getBotData().get(countDB).request.toLowerCase().equals(textMessageString.toLowerCase())) {  // сравниваем нижний регистр
-                    listMessages.add(client.database.getBotData().get(countDB).response);
-                    client.stateBot.findMessage = true;                                                           // совпадение с сообщением найдено
+            for (int countDB = 0; countDB <= client.botApiClient().Companion.getDatabase().getBotData().size() - 1; countDB = countDB + 1) {
+                if (client.Companion.getDatabase().getBotData().get(countDB).request.toLowerCase().equals(textMessageString.toLowerCase())) {  // сравниваем нижний регистр
+                    listMessages.add(client.Companion.getDatabase().getBotData().get(countDB).response);
+                    client.getStateBot().setFindMessage(true);                                                           // совпадение с сообщением найдено
                 }
             }
-            if (client.stateBot.findMessage)    // если совпадение с сообщением найдено, то
+            if (client.getStateBot().getFindMessage())    // если совпадение с сообщением найдено, то
                 messages = listMessages.get(client.other().randomId(listMessages.size()));    // выбираем рандомно из найденного сообщение
             long timeFinishBD = System.currentTimeMillis();
             StatisticsVariable.timeConsumedMillisBD = timeFinishBD - timeStartBD;
@@ -197,7 +197,7 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
     private String messageFromBigDataBase(String textMessageString, String message) {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         String messages = message;
         List<String> listMessages = new ArrayList<>();
-        if (!client.stateBot.findMessage) {      // если совпадение с сообщением не найдено, то
+        if (!client.getStateBot().getFindMessage()) {      // если совпадение с сообщением не найдено, то
             long timeStartBigBD = System.currentTimeMillis();
             // путешествие по списку объектов из большой БД
 
@@ -217,15 +217,15 @@ public class ThreadUserBot extends ThreadBot implements Runnable        //(со�
                 messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
 */
 
-            for (int countDB = 0; countDB <= client.database.getBigMessagesData().size() - 1; countDB = countDB + 1) {
-                if (client.database.getBigMessagesData().get(countDB).request.toLowerCase().equals(textMessageString)) {  // сравниваем нижний регистр
+            for (int countDB = 0; countDB <= client.Companion.getDatabase().getBigMessagesData().size() - 1; countDB = countDB + 1) {
+                if (client.Companion.getDatabase().getBigMessagesData().get(countDB).request.toLowerCase().equals(textMessageString)) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
-                    listMessages.add(client.database.getBigMessagesData().get(countDB).response);
-                    client.stateBot.findMessage = true;                                                   // совпадение с сообщением найдено
+                    listMessages.add(client.Companion.getDatabase().getBigMessagesData().get(countDB).response);
+                    client.getStateBot().setFindMessage(true);                                                 // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
             }
-            if (client.stateBot.findMessage)                                                            // если совпадение с сообщением найдено, то
+            if (client.getStateBot().getFindMessage())                                                            // если совпадение с сообщением найдено, то
             {
                 messages = listMessages.get(client.other().randomId(listMessages.size()));          // выбираем рандомно из найденного сообщение
             }

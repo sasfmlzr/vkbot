@@ -43,7 +43,7 @@ public class DataBaseWindowController implements Initializable {
 
     public void initWindow() throws SQLException {
 
-        if (StaticModel.userBot.botApiClient().stateBot.botWork) {
+        if (StaticModel.userBot.botApiClient().getStateBot().getBotWork()) {
             textTable.setText("БД:" + "\n");
        /*     try {
                 ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
@@ -124,8 +124,8 @@ public class DataBaseWindowController implements Initializable {
         sendTextMessage.setCellValueFactory(new PropertyValueFactory<>("response"));
         requestTextMessage.setCellValueFactory(new PropertyValueFactory<>("request"));
 
-        tableTextBot.setItems(StaticModel.userBot.botApiClient().database.getBotData());
-        StaticModel.userBot.botApiClient().database.InitDB();
+        tableTextBot.setItems(StaticModel.userBot.botApiClient().Companion.getDatabase().getBotData());
+        StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();
 
 
     }
@@ -155,7 +155,7 @@ public class DataBaseWindowController implements Initializable {
                 idBot = StaticModel.userBot.getActor().getId();
             } else
                 idBot = Client.actor.getId();
-            StaticModel.userBot.botApiClient().database.getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
+            StaticModel.userBot.botApiClient().Companion.getDatabase().getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
             System.out.println("Таблица заполнена");
             refreshTable();
         } else {
