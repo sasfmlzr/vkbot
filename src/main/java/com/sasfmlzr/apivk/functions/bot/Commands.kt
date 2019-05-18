@@ -2,7 +2,7 @@ package com.sasfmlzr.apivk.functions.bot
 
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.*
 import com.sasfmlzr.apivk.actions.Messages
-import com.sasfmlzr.apivk.bot.DatabaseEntity
+import com.database.DatabaseEntity
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -63,7 +63,7 @@ class Commands(client: BotApiClient) : Messages(client) {
 
             print("Пришло сообщение = $textMessageString\n")
 
-            message = DatabaseEntity.database.databaseRequest(DatabaseEntity.database.statmt)
+            message = DatabaseEntity.database.databaseRequest
                 .addToDB(textMessageString, actor.id!!)
         }
 

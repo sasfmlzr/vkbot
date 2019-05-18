@@ -2,7 +2,7 @@ package com.sasfmlzr.vkbot.controller.menuprogram;
 
 
 import com.api.client.Client;
-import com.sasfmlzr.apivk.bot.DatabaseEntity;
+import com.database.DatabaseEntity;
 import com.sasfmlzr.apivk.object.BotDatabase_IdRequestResponse;
 import com.sasfmlzr.vkbot.StaticModel;
 import javafx.fxml.FXML;

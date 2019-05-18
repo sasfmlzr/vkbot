@@ -1,7 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.util.Effects;
-import com.sasfmlzr.apivk.bot.DatabaseEntity;
+import com.database.DatabaseEntity;
 import com.sasfmlzr.apivk.bot.GroupBot;
 import com.sasfmlzr.apivk.bot.UserBot;
 import com.sasfmlzr.vkbot.StaticModel;

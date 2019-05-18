@@ -2,7 +2,7 @@ package com.sasfmlzr.apivk.thread
 
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.`object`.UserRights
-import com.sasfmlzr.apivk.bot.DatabaseEntity
+import com.database.DatabaseEntity
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -89,15 +89,15 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
             if (messagesList.size != 0) {
                 val userID = messagesList[0].message.userId!!               // запись userID пользователя
-                DatabaseEntity.database.databaseRequest(DatabaseEntity.database.statmt).addInfoUser(
+                DatabaseEntity.database.databaseRequest.addInfoUser(
                     userID,
                     actor,
                     client.vkApiClient
                 )       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
-                DatabaseEntity.database.databaseRequest(DatabaseEntity.database.statmt)
+                DatabaseEntity.database.databaseRequest
                     .addInfoUserRights(userID, actor)    // добавить права пользователю, если нет
                 val userRightString =
-                    DatabaseEntity.database.databaseRequest(DatabaseEntity.database.statmt)
+                    DatabaseEntity.database.databaseRequest
                         .findUserRights(userID, actor)  // запись права текущего пользователя в ячейку
                 userRight = UserRights(userRightString)  // наследование прав пользователем
                 //    System.out.print(userRight.getNameRight() + " может админить? -" + userRight.getAdminCommands() + "\n" +
