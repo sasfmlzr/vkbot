@@ -14,10 +14,12 @@ public class Commands extends AbstractAction {
     Commands(BotApiClient client) {
         super(client);
     }
+
     public String commandsBot(String textMessageString, String messages, UserActor actor, List<Dialog> messagesList, BotApiClient bot) throws SQLException, ApiException, ClientException {
-             return new com.sasfmlzr.apiVK.functions.bot.Commands(getClient()).commandsBot(textMessageString, messages, actor, messagesList, bot);
+        return new com.sasfmlzr.apiVK.functions.bot.Commands(getClient()).commandsBot(textMessageString, messages, actor, messagesList, bot);
     }
-    public String adminCommandsBot(String textMessageString, String messages){
-            return new com.sasfmlzr.apiVK.functions.bot.Commands(getClient()).adminCommandsBot(textMessageString, messages);
+
+    public String adminCommandsBot(String textMessageString, String messages) {
+        return new com.sasfmlzr.apiVK.functions.bot.Commands(getClient()).adminCommandsBot(textMessageString, messages);
     }
 }

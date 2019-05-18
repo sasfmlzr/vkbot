@@ -1,8 +1,5 @@
 package com.sasfmlzr.apivk.client;
 
-
-import com.sasfmlzr.apiVK.client.BotApiClient;
-
 public abstract class AbstractAction {
     private com.sasfmlzr.apiVK.client.BotApiClient BotApiClient;
 
@@ -13,9 +10,5 @@ public abstract class AbstractAction {
     protected com.sasfmlzr.apiVK.client.BotApiClient getClient() {
         return BotApiClient;
     }
-
-
-
-
 
 }

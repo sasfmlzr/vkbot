@@ -20,45 +20,44 @@ public class GroupBot extends AbstractBot {
     private GroupActor actor;
     private ThreadGroupBot threadGroupBot;
 
-
-    public GroupBot(VkApiClient vkApiClient, GroupActor actor){
-        this.actor=actor;
-        vk=vkApiClient;
-        threadGroupBot = new ThreadGroupBot(botApiClient(),actor);
+    public GroupBot(VkApiClient vkApiClient, GroupActor actor) {
+        this.actor = actor;
+        vk = vkApiClient;
+        threadGroupBot = new ThreadGroupBot(botApiClient(), actor);
         try {
             List<UserXtrCounters> listCounters = vk.users().get(actor).fields(UserField.PHOTO_200).execute();
             if (!listCounters.isEmpty()) {
                 UserXtrCounters botSelfInfo = listCounters.get(0);
                 userID = botSelfInfo.getId();
                 botName = botSelfInfo.getFirstName() + " " + botSelfInfo.getLastName();
-                BufferedImage daffyDuckImage = ImageIO.read( new URL(botSelfInfo.getPhoto200()) );
-                setBotImage(SwingFXUtils.toFXImage(daffyDuckImage,null));
-            }else {
+                BufferedImage daffyDuckImage = ImageIO.read(new URL(botSelfInfo.getPhoto200()));
+                setBotImage(SwingFXUtils.toFXImage(daffyDuckImage, null));
+            } else {
                 setBotName("Бот САИТ");
                 URL urls = getClass().getResource("/Yes.jpg");
                 if (urls == null) {
                     System.out.println("Could not find image!");
-                }else {
+                } else {
                     BufferedImage daffyDuckImage = ImageIO.read(urls);
-                    setBotImage(SwingFXUtils.toFXImage(daffyDuckImage,null));
+                    setBotImage(SwingFXUtils.toFXImage(daffyDuckImage, null));
                     System.out.println("find image!");
                 }
             }
-
-
 
         } catch (ApiException | ClientException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void run(){
+    public void run() {
         Runnable r = threadGroupBot;
         new Thread(r).start();
     }
+
     public GroupActor getActor() {
         return actor;
     }
+
     public void setActor(GroupActor actor) {
         this.actor = actor;
     }

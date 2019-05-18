@@ -10,12 +10,6 @@ public abstract class AbstractBot {
     VkApiClient vk;
     Image botImage;
 
-
-
-
-
-
-
     public BotApiClient botApiClient(){
         return new BotApiClient(vk);
     }
@@ -26,8 +20,6 @@ public abstract class AbstractBot {
     public void setVk(VkApiClient vk) {
         this.vk = vk;
     }
-
-
 
     public int getUserID() {
         return userID;

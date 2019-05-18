@@ -1,8 +1,6 @@
 package com.sasfmlzr.apivk.object;
 
-
 public class UserIdRightsBD {
-
 
     private int userID;
     private String login;
@@ -42,8 +40,4 @@ public class UserIdRightsBD {
         this.nameRight = nameRight;
     }
 
-
-
 }
-
-

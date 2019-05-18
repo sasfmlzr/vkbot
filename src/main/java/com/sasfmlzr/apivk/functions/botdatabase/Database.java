@@ -11,27 +11,23 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 
 import static com.sasfmlzr.apiVK.State.databaseLoaded;
+
 public class Database {
     private Connection conn;          //SQL connection
     private Statement statmt;
 
-    private  ObservableList<BotDatabase_IdRequestResponse> botData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_IdRequestResponse> botData = FXCollections.observableArrayList();
     private ObservableList<BotDatabase_IdRequest> botRandomData = FXCollections.observableArrayList();
-    private  ObservableList<BotDatabase_IdRequest> stihMessagesData = FXCollections.observableArrayList();
-    private  ObservableList<BotDatabase_IdRequest> anekdotMessagesData = FXCollections.observableArrayList();
-    private  ObservableList<BotDatabase_IdRequest> aforismMessagesData = FXCollections.observableArrayList();
-    private  ObservableList<BotDatabase_IdRequest> statusMessagesData = FXCollections.observableArrayList();
-    private  ObservableList<BotDatabase_RequestResponse> bigMessagesData = FXCollections.observableArrayList();
-    private  ObservableList<UserIdRightsBD> userRightsData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_IdRequest> stihMessagesData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_IdRequest> anekdotMessagesData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_IdRequest> aforismMessagesData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_IdRequest> statusMessagesData = FXCollections.observableArrayList();
+    private ObservableList<BotDatabase_RequestResponse> bigMessagesData = FXCollections.observableArrayList();
+    private ObservableList<UserIdRightsBD> userRightsData = FXCollections.observableArrayList();
 
-
-
-
-    public DatabaseRequest databaseRequest(Statement statmt){
+    public DatabaseRequest databaseRequest(Statement statmt) {
         return new DatabaseRequest(this.statmt);
     }
-
-
 
     public Connection getConn() {
         return conn;
@@ -49,14 +45,12 @@ public class Database {
         this.statmt = statmt;
     }
 
-    public Database(){
+    public Database() {
 
     }
 
-
-
     // --------CONNECTION TO DATABASE--------
-    public void connectDatabase() throws ClassNotFoundException, SQLException    {
+    public void connectDatabase() throws ClassNotFoundException, SQLException {
         conn = null;
         Class.forName("org.sqlite.JDBC");
         setConn(DriverManager.getConnection("jdbc:sqlite:Database.db"));
@@ -64,34 +58,39 @@ public class Database {
         setStatmt(getConn().createStatement());
         System.out.println("Database connection!");
     }
+
     // --------CLOSE DATABASE--------
     public void CloseDB() {
-        try { conn.close(); } catch(SQLException se) { /*can't do anything */ }
-        try { statmt.close(); } catch(SQLException se) { /*can't do anything */ }
+        try {
+            conn.close();
+        } catch (SQLException se) { /*can't do anything */ }
+        try {
+            statmt.close();
+        } catch (SQLException se) { /*can't do anything */ }
         //  try { resSet.close(); } catch(SQLException se) { /*can't do anything */ }
-        databaseLoaded=true;
+        databaseLoaded = true;
         System.out.println("?????????? ???????");
     }
+
     // initialize table ID REQUEST
-    private void InitOneDB_Id_Request(String tableDB, ObservableList<BotDatabase_IdRequest> objectData) throws SQLException{
+    private void InitOneDB_Id_Request(String tableDB, ObservableList<BotDatabase_IdRequest> objectData) throws SQLException {
         ResultSet resSet;
-        resSet = statmt.executeQuery("SELECT * FROM "+ tableDB);
-        while(resSet.next())
-        {
-            String  requesttextbot = resSet.getString("request");
-            int id =  Integer.parseInt(resSet.getString("id"));
-            objectData.add(new BotDatabase_IdRequest(id,requesttextbot));
+        resSet = statmt.executeQuery("SELECT * FROM " + tableDB);
+        while (resSet.next()) {
+            String requesttextbot = resSet.getString("request");
+            int id = Integer.parseInt(resSet.getString("id"));
+            objectData.add(new BotDatabase_IdRequest(id, requesttextbot));
         }
         resSet.close();
     }
+
     // initialize table   REQUEST RESPONSE
-    private void InitOneDB_Request_Response(String tableDB, ObservableList<BotDatabase_RequestResponse> objectData) throws SQLException{
+    private void InitOneDB_Request_Response(String tableDB, ObservableList<BotDatabase_RequestResponse> objectData) throws SQLException {
         ResultSet resSet;
-        resSet = statmt.executeQuery("SELECT * FROM "+ tableDB);
-        while(resSet.next())
-        {
-            String  requesttextbot = resSet.getString("requesttextbot");
-            String  responsetextbot = resSet.getString("responsetextbot");
+        resSet = statmt.executeQuery("SELECT * FROM " + tableDB);
+        while (resSet.next()) {
+            String requesttextbot = resSet.getString("requesttextbot");
+            String responsetextbot = resSet.getString("responsetextbot");
 
             /*  System.out.println( "ID = " + id );
             System.out.println( "request = " + requesttextbot );
@@ -102,16 +101,16 @@ public class Database {
         }
         resSet.close();
     }
+
     // initialize table InitOneDB_userRights
-    private void InitOneDB_userRights(ObservableList<UserIdRightsBD> objectData) throws SQLException{
+    private void InitOneDB_userRights(ObservableList<UserIdRightsBD> objectData) throws SQLException {
 
         ResultSet resSet;
         resSet = statmt.executeQuery("SELECT * FROM UserRights");
-        while(resSet.next())
-        {
-            String  loginBot = resSet.getString("login");
-            int  userID = resSet.getInt("userID");
-            String  nameRight = resSet.getString("nameRight");
+        while (resSet.next()) {
+            String loginBot = resSet.getString("login");
+            int userID = resSet.getInt("userID");
+            String nameRight = resSet.getString("nameRight");
             /*  System.out.println( "ID = " + id );
             System.out.println( "request = " + requesttextbot );
             System.out.println();*/
@@ -121,8 +120,7 @@ public class Database {
     }
 
     // --------initialize database and put in object--------
-    public void InitDB() throws SQLException
-    {
+    public void InitDB() throws SQLException {
         botData.clear();
         botRandomData.clear();
         stihMessagesData.clear();
@@ -147,18 +145,17 @@ public class Database {
         InitOneDB_Id_Request("StatusMessages", statusMessagesData);
         InitOneDB_Request_Response("RandomBazaBot", bigMessagesData);
         InitOneDB_userRights(userRightsData);
-        System.out.println( "БД проинициализировалась"  );
-    }
-    private  void addData(ResultSet resSet) throws SQLException {
-        while(resSet.next())
-        {
-            String  requesttextbot = resSet.getString("requesttextbot");
-            int id =  Integer.parseInt(resSet.getString("id"));
-            String  responseTextBot = resSet.getString("responsetextbot");
-            botData.add(new BotDatabase_IdRequestResponse(id,requesttextbot,responseTextBot));
-        }
+        System.out.println("БД проинициализировалась");
     }
 
+    private void addData(ResultSet resSet) throws SQLException {
+        while (resSet.next()) {
+            String requesttextbot = resSet.getString("requesttextbot");
+            int id = Integer.parseInt(resSet.getString("id"));
+            String responseTextBot = resSet.getString("responsetextbot");
+            botData.add(new BotDatabase_IdRequestResponse(id, requesttextbot, responseTextBot));
+        }
+    }
 
     public ObservableList<BotDatabase_IdRequestResponse> getBotData() {
         return botData;

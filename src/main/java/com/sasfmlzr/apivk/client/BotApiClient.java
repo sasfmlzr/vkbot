@@ -11,11 +11,13 @@ public class BotApiClient extends AbstractBot {
 
     private VkApiClient vk;
 
-    public BotApiClient(VkApiClient vkApi){
-        vk=vkApi;
+    public BotApiClient(VkApiClient vkApi) {
+        vk = vkApi;
     }
 
-    public VkApiClient getVkApiClient(){return this.vk;}
+    public VkApiClient getVkApiClient() {
+        return this.vk;
+    }
 
     public Messages messages() {
         return new Messages(this);
@@ -25,8 +27,8 @@ public class BotApiClient extends AbstractBot {
         return new Other();
     }
 
-    public static Database database=new Database();
+    public static Database database = new Database();
 
-    public com.sasfmlzr.apiVK.client.StateBot stateBot=new StateBot();
+    public com.sasfmlzr.apiVK.client.StateBot stateBot = new StateBot();
 
 }

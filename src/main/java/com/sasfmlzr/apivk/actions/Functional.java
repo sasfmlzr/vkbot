@@ -7,7 +7,8 @@ public class Functional extends AbstractAction {
     Functional(BotApiClient botApiClient) {
         super(botApiClient);
     }
-    public String weather(String city){
+
+    public String weather(String city) {
         return new com.sasfmlzr.apiVK.functions.bot.Functional(getClient()).weather(city);
     }
 }

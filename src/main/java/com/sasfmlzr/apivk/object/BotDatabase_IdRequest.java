@@ -1,21 +1,14 @@
 package com.sasfmlzr.apivk.object;
 
-
 public class BotDatabase_IdRequest {
-
 
     private int id;
     public String response;
 
-
     public BotDatabase_IdRequest(int id, String response) {
         this.id = id;
-
         this.response = response;
-
     }
-
-
 
     public int getId() {
         return id;
@@ -25,7 +18,6 @@ public class BotDatabase_IdRequest {
         this.id = id;
     }
 
-
     public String getResponse() {
         return response;
     }
@@ -34,9 +26,4 @@ public class BotDatabase_IdRequest {
         this.response = response;
     }
 
-
-
-
 }
-
-

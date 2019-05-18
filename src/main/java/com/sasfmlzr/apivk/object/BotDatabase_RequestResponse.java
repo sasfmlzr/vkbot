@@ -1,6 +1,5 @@
 package com.sasfmlzr.apivk.object;
 
-
 public class BotDatabase_RequestResponse {
     public String request;
     public String response;
@@ -25,7 +24,4 @@ public class BotDatabase_RequestResponse {
     public void setResponse(String response) {
         this.response = response;
     }
-
 }
-
-
