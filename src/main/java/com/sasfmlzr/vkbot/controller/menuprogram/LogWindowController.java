@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
-
 public class LogWindowController implements Initializable
 {
 	public final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LogWindow.messages";
@@ -35,6 +33,4 @@ public class LogWindowController implements Initializable
 		}
 //////////////логи берутся из файла
 	}
-
-
 }

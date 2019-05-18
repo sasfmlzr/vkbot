@@ -1,7 +1,7 @@
 package com.sasfmlzr.apivk.functions.bot;
 
-import com.sasfmlzr.apiVK.actions.Messages;
-import com.sasfmlzr.apiVK.client.BotApiClient;
+import com.sasfmlzr.apivk.actions.Messages;
+import com.sasfmlzr.apivk.client.BotApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.*;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
 
 public class Commands extends Messages {
 
-    public Commands(com.sasfmlzr.apiVK.client.BotApiClient client) {
+    public Commands(BotApiClient client) {
         super(client);
     }
 
@@ -68,19 +68,6 @@ public class Commands extends Messages {
 
             bot.messages().vksendImageMessages(actor, messagesList);
             getClient().stateBot.reduction = true;
-        }
-
-        String city;
-        if (textMessageString.contains("го погоду")) {
-            System.out.print("Пришло сообщение = " + textMessageString + "\n");
-            city = textMessageString.substring(9);
-            city = city.trim();
-            if (Objects.equals(city, "")) {
-                message = "Введите город по типу -Колян, го погоду Москва-";
-            } else {
-                System.out.println("Запрос на погоду - город: " + city);
-                message = super.functional().weather(city);
-            }
         }
         if (textMessageString.equals("го приостановка бота")) {
             System.out.print("Пришло сообщение = " + textMessageString + "\n");

@@ -6,7 +6,7 @@ public class Other {
     }
 
     public int randomId(int sizeTable) {
-        return new com.sasfmlzr.apiVK.functions.other.Other().randomId(sizeTable);
+        return new com.sasfmlzr.apivk.functions.other.Other().randomId(sizeTable);
     }
 
 }

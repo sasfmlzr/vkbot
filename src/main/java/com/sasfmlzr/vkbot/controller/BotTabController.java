@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.api.client.Client.idBot;
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.*;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
 import static com.sasfmlzr.vkbot.StaticModel.userBot;
 
 @SuppressWarnings("unused")

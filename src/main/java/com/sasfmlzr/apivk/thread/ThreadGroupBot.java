@@ -1,7 +1,7 @@
 package com.sasfmlzr.apivk.thread;
 
-import com.sasfmlzr.apiVK.client.BotApiClient;
-import com.sasfmlzr.apiVK.object.StatisticsVariable;
+import com.sasfmlzr.apivk.client.BotApiClient;
+import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;

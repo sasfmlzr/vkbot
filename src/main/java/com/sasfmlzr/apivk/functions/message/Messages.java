@@ -1,6 +1,6 @@
 package com.sasfmlzr.apivk.functions.message;
 
-import com.sasfmlzr.apiVK.client.BotApiClient;
+import com.sasfmlzr.apivk.client.BotApiClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -17,8 +17,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.countSendMessage;
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.timeItogoSendMessage;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.countSendMessage;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.timeItogoSendMessage;
 
 @SuppressWarnings("Duplicates")
 public class Messages extends BotApiClient {

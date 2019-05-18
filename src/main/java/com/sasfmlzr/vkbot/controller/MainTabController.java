@@ -6,21 +6,16 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+public class MainTabController extends AnchorPane implements Initializable {
+    //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
+    final static String fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml";
 
+    //@FXML private AnchorPane root;
+    //@FXML private FlowPane flowPane;
 
+    public void initialize(URL location, ResourceBundle resources) {
 
-public class MainTabController extends AnchorPane implements Initializable
-{
-	//final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
-	final static String fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml";
-
-	//@FXML private AnchorPane root;
-	//@FXML private FlowPane flowPane;
-
-	public void initialize(URL location, ResourceBundle resources) 
-	{
-
-	//	ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BotCardController.resourcePath);
+        //	ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BotCardController.resourcePath);
 		/*
 		flowPane.prefWidthProperty().bind(root.widthProperty());
 		flowPane.prefHeightProperty().bind(root.heightProperty());
@@ -40,7 +35,7 @@ public class MainTabController extends AnchorPane implements Initializable
 		{
 			e.printStackTrace();
 		}*/
-	}
+    }
 
 
 }

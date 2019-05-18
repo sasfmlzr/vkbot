@@ -26,15 +26,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainWindowController extends AnchorPane implements Initializable {
-    @FXML private AnchorPane root;
-    @FXML private ResourceBundle resources;
-    @FXML private RadioMenuItem menuLangEn;
-    @FXML private RadioMenuItem menuLangRu;
-    @FXML private TabPane tabPane;
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private ResourceBundle resources;
+    @FXML
+    private RadioMenuItem menuLangEn;
+    @FXML
+    private RadioMenuItem menuLangRu;
+    @FXML
+    private TabPane tabPane;
 
     private final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.mainwindow.messages";
     private final static String menuProgramPath = "/com/sasfmlzr/vkbot/views/menuProgram/";
-    private final String fxmlPath="/com/sasfmlzr/vkbot/views/MainWindow.fxml";
+    private final String fxmlPath = "/com/sasfmlzr/vkbot/views/MainWindow.fxml";
 
     public MainWindowController() {
 
@@ -51,9 +56,6 @@ public class MainWindowController extends AnchorPane implements Initializable {
     }
 
 
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
@@ -66,10 +68,9 @@ public class MainWindowController extends AnchorPane implements Initializable {
         addBotTab("Boo");
 
     }
-    private void addMainTab()
-    {
-        try
-        {
+
+    private void addMainTab() {
+        try {
             AnchorPane pane = new AnchorPane();
             pane.getChildren().add(FXMLLoader.load(this.getClass().getResource(MainTabController.fxmlPath), resources));
 
@@ -77,20 +78,17 @@ public class MainWindowController extends AnchorPane implements Initializable {
             tabPane.getTabs().get(0).setOnClosed(new TabCloseHandler());
             tabPane.getTabs().get(0).setStyle("-fx-font-size: 14;");
 
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    private class TabCloseHandler implements EventHandler<Event>
-    {
-        public void handle(Event arg0)
-        {
+    private class TabCloseHandler implements EventHandler<Event> {
+        public void handle(Event arg0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("YOU, SCUM");
-            alert.setContentText("YOU CLOSED THE TAB: " + ((Tab)arg0.getSource()).getText()+ ", DIDN'T YOU?");
+            alert.setContentText("YOU CLOSED THE TAB: " + ((Tab) arg0.getSource()).getText() + ", DIDN'T YOU?");
 
             alert.showAndWait();
         }
@@ -114,39 +112,30 @@ public class MainWindowController extends AnchorPane implements Initializable {
     }
 
 
-
-    private class LangChangeHandler implements EventHandler<ActionEvent>
-    {
-        public void handle(ActionEvent evt)
-        {
-            if (evt.getSource().equals(menuLangEn))
-            {
+    private class LangChangeHandler implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent evt) {
+            if (evt.getSource().equals(menuLangEn)) {
                 resources = VkBot.loadLocale(new Locale("en", "US"), resourcePath);
-            }
-            else if (evt.getSource().equals(menuLangRu))
-            {
+            } else if (evt.getSource().equals(menuLangRu)) {
                 resources = VkBot.loadLocale(new Locale("ru", "RU"), resourcePath);
             }
-            try
-            {
+            try {
                 reload();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void reload() throws IOException
-    {
+    private void reload() throws IOException {
         Scene scene = root.getScene();
         scene.setRoot(FXMLLoader.load(getClass().getResource(fxmlPath), resources));
     }
 
-    @FXML private void onMenuLogOpen() throws IOException
-    {
+    @FXML
+    private void onMenuLogOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), LogWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), LogWindowController.resourcePath);
 
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + LogWindowController.fxmlPath), bundle);
@@ -166,13 +155,13 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuAboutOpen() throws IOException
-    {
+    @FXML
+    private void onMenuAboutOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), AboutProgramWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), AboutProgramWindowController.resourcePath);
 
         //FXMLLoader loader = new FXMLLoader(getClass().getResource(AboutProgramWindowController.fxmlPath), bundle);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath +AboutProgramWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + AboutProgramWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
@@ -189,12 +178,12 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuPropertiesOpen() throws IOException
-    {
+    @FXML
+    private void onMenuPropertiesOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), PropertiesProgramWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), PropertiesProgramWindowController.resourcePath);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath +PropertiesProgramWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + PropertiesProgramWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
@@ -211,12 +200,12 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuStatisticsBot() throws IOException
-    {
+    @FXML
+    private void onMenuStatisticsBot() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), StatisticsWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), StatisticsWindowController.resourcePath);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath +StatisticsWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + StatisticsWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
@@ -233,9 +222,10 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuDatabaseBot() throws IOException, SQLException {
+    @FXML
+    private void onMenuDatabaseBot() throws IOException, SQLException {
 
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), DataBaseWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + DataBaseWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
@@ -254,9 +244,9 @@ public class MainWindowController extends AnchorPane implements Initializable {
         logStage.show();
     }
 
-    @FXML private void onMenuFileAdd() throws IOException
-    {
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), LoginWindowController.resourcePath);
+    @FXML
+    private void onMenuFileAdd() throws IOException {
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), LoginWindowController.resourcePath);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(LoginWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
@@ -275,12 +265,11 @@ public class MainWindowController extends AnchorPane implements Initializable {
         loginStage.show();
     }
 
-    @FXML private void onMenuFileClose()
-    {
+    @FXML
+    private void onMenuFileClose() {
         Platform.exit();
         System.exit(0);
     }
-
 
 
 }

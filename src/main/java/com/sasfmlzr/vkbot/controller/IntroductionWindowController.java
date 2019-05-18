@@ -37,13 +37,14 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-
 public class IntroductionWindowController extends Application implements Initializable {
 
     private final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.IntroductionWindow.messages";
     private final static String fxmlPath = "/com/sasfmlzr/vkbot/views/IntroductionWindow.fxml";
-    @FXML private AnchorPane root;
-    @FXML private GridPane grid;
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private GridPane grid;
     @FXML
     Label statusText, loginLabel, passwordLabel;
     @FXML
@@ -52,10 +53,14 @@ public class IntroductionWindowController extends Application implements Initial
     PasswordField password;
     @FXML
     Button btnNext;
-    @FXML private ImageView captchaImage;
-    @FXML private TextField captchaKey;
-    @FXML private ImageView loadingImage;
-    @FXML private Pane statusPane;
+    @FXML
+    private ImageView captchaImage;
+    @FXML
+    private TextField captchaKey;
+    @FXML
+    private ImageView loadingImage;
+    @FXML
+    private Pane statusPane;
 
 
     @Override
@@ -77,13 +82,14 @@ public class IntroductionWindowController extends Application implements Initial
             Platform.exit();
             System.exit(0);
         });
-        test();}
+        test();
+    }
 
     private void test() {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-    //    this.resources = resources;
+        //    this.resources = resources;
         captchaKey.setVisible(false);
         captchaKey.setManaged(false);
         loadingImage.setVisible(false);
@@ -105,8 +111,8 @@ public class IntroductionWindowController extends Application implements Initial
     }
 
     private static int stageIntroduction = 0;
-    private enum State
-    {
+
+    private enum State {
         NONE,
         LOGGING_IN,
         NEED_CAPTCHA,
@@ -114,6 +120,7 @@ public class IntroductionWindowController extends Application implements Initial
         CONFIRM_PHONE,
         SUCCESS
     }
+
     private State state = State.NONE;
     private final Signal1<String> sendCaptcha = new Signal1<>();
     private final Signal2<String, String> sendData = new Signal2<>();
@@ -124,8 +131,7 @@ public class IntroductionWindowController extends Application implements Initial
     private Client client;
     private Boolean phoneConfirmationResult = false;
 
-    private void initClient()
-    {
+    private void initClient() {
         client = new Client();
         client.onCaptchaNeeded.connect(this::onCaptchaNeeded);
         client.onInvalidData.connect(this::onInvalidData);
@@ -137,21 +143,13 @@ public class IntroductionWindowController extends Application implements Initial
         sendPhoneConfirmed.connect(client::receivePhoneConfirmed);
 
 
-
-
-
-
     }
 
-    private void initClientThread()
-    {
+    private void initClientThread() {
         clientRunnable = () -> {
-            try
-            {
+            try {
                 client.connect(login.getText(), password.getText());
-            }
-            catch (IOException ioe)
-            {
+            } catch (IOException ioe) {
                 statusText.setText("Возникла ошибка сети");
                 showWarningAnimation();
                 loadingImage.setVisible(false);
@@ -159,13 +157,9 @@ public class IntroductionWindowController extends Application implements Initial
                 reloadThread();
 
                 state = State.NONE;
-            }
-            catch(InterruptedException ignored)
-            {
+            } catch (InterruptedException ignored) {
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
 
                 statusText.setText("Неизвестная ошибка");
@@ -175,15 +169,13 @@ public class IntroductionWindowController extends Application implements Initial
                 state = State.NONE;
             }
         };
-        clientThread = new Thread (clientRunnable);
+        clientThread = new Thread(clientRunnable);
     }
 
 
-    private void initTaskStage()
-    {
-        try
-        {
-            ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BotTaskWindowController.resourcePath);
+    private void initTaskStage() {
+        try {
+            ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), BotTaskWindowController.resourcePath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(BotTaskWindowController.fxmlPath), bundle);
             AnchorPane pane = loader.load();
 
@@ -199,22 +191,19 @@ public class IntroductionWindowController extends Application implements Initial
             ctrl.initWindow();
 
             taskStage.setTitle("Set api.bot task");
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
 
-    private void reloadThread()
-    {
+    private void reloadThread() {
         clientThread.interrupt();
-        clientThread = new Thread (clientRunnable);
+        clientThread = new Thread(clientRunnable);
     }
 
 
-    public  void nextStage () {
+    public void nextStage() {
 
         System.out.println(stageIntroduction);
 
@@ -222,7 +211,7 @@ public class IntroductionWindowController extends Application implements Initial
         btnNext.setEffect(shadow);
 
         switch (stageIntroduction) {
-            case 0:{
+            case 0: {
                 statusText.setText("Введите логин и пароль своего аккаунта Вконтакте");
                 login.setOpacity(0.6);
                 password.setOpacity(0.6);
@@ -269,16 +258,12 @@ public class IntroductionWindowController extends Application implements Initial
     }
 
 
-
     // --------При нажатии кнопки далее во ввода логина и пароля-------- //
-    @FXML private void onLogin()
-    {
-        switch(state)
-        {
-            case NONE:
-            {
-                if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), ""))
-                {
+    @FXML
+    private void onLogin() {
+        switch (state) {
+            case NONE: {
+                if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), "")) {
                     hideCaptchaAnimation();
                     hideWarningAnimation();
 
@@ -289,41 +274,32 @@ public class IntroductionWindowController extends Application implements Initial
                     state = State.LOGGING_IN;
 
 
-
-
                 }
                 break;
             }
-            case LOGGING_IN:
-            {
+            case LOGGING_IN: {
                 break;
             }
-            case NEED_CAPTCHA:
-            {
-                if (!Objects.equals(captchaKey.getText(), ""))
-                {
+            case NEED_CAPTCHA: {
+                if (!Objects.equals(captchaKey.getText(), "")) {
                     sendCaptcha.emit(captchaKey.getText());
                     loadingImage.setVisible(true);
                     state = State.LOGGING_IN;
                 }
                 break;
             }
-            case INVALID_DATA:
-            {
-                if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), ""))
-                {
+            case INVALID_DATA: {
+                if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), "")) {
                     sendData.emit(login.getText(), password.getText());
                     loadingImage.setVisible(true);
                     hideWarningAnimation();
                 }
                 break;
             }
-            case CONFIRM_PHONE:
-            {
+            case CONFIRM_PHONE: {
                 break;
             }
-            case SUCCESS:
-            {
+            case SUCCESS: {
                 stageIntroduction++;   // если успешно
                 break;
             }
@@ -332,8 +308,7 @@ public class IntroductionWindowController extends Application implements Initial
 
 
     // ---------------------Если нужна капча---------------------------- //
-    private void onCaptchaNeeded(String captchaURL)
-    {
+    private void onCaptchaNeeded(String captchaURL) {
         showCaptchaAnimation();
         hideWarningAnimation();
 
@@ -343,22 +318,19 @@ public class IntroductionWindowController extends Application implements Initial
         showCaptchaImage(captchaURL);
         state = State.NEED_CAPTCHA;
     }
+
     // --------Показать изображение капчи-------- //
-    private void showCaptchaImage(String captchaURL)
-    {
-        try
-        {
+    private void showCaptchaImage(String captchaURL) {
+        try {
             File captchaImageFile = FileSystem.downloadCaptchaToFile(captchaURL);
             captchaImage.setImage(new Image(captchaImageFile.toURI().toString(), true));
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
     // --------Если был введен некорректный пароль или логин-------- //
-    private void onInvalidData()
-    {
+    private void onInvalidData() {
         statusText.setText("Неправильный логин или пароль. Попробуйте еще раз.");
         password.clear();
         captchaKey.clear();
@@ -371,32 +343,26 @@ public class IntroductionWindowController extends Application implements Initial
 
         state = State.INVALID_DATA;
     }
+
     // --------Требуется подтвердить номер телефона-------- //
-    private void onSuspectLogin(String URL)
-    {
-        try
-        {
+    private void onSuspectLogin(String URL) {
+        try {
             statusText.setText("Требуется подтверждение номера телефона.");
             showBrowserDialog(URL);
 
-            if (phoneConfirmationResult)
-            {
+            if (phoneConfirmationResult) {
                 sendPhoneConfirmed.emit();
-            }
-            else
-            {
+            } else {
                 Platform.runLater(() -> root.getScene().getWindow().hide());
             }
-        }
-        catch (Exception ignored)
-        {
+        } catch (Exception ignored) {
 
         }
     }
+
     // --------Показать форму после диалога-------- //
-    private void showBrowserDialog(String URL) throws IOException
-    {
-        ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BrowserDialogWindowController.resourcePath);
+    private void showBrowserDialog(String URL) throws IOException {
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), BrowserDialogWindowController.resourcePath);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(BrowserDialogWindowController.fxmlPath), bundle);
         AnchorPane pane;
 
@@ -423,14 +389,14 @@ public class IntroductionWindowController extends Application implements Initial
 
         Platform.runLater(browserStage::show);
     }
+
     // --------Для успешного подтверждения телефона-------- //
-    private void receiveBrowserResult(Boolean success)
-    {
+    private void receiveBrowserResult(Boolean success) {
         phoneConfirmationResult = success;
     }
+
     // --------Если успешно подстверждено-------- //
-    private void onSuccess()
-    {
+    private void onSuccess() {
         state = State.SUCCESS;
 
         hideCaptchaAnimation();
@@ -439,59 +405,51 @@ public class IntroductionWindowController extends Application implements Initial
         loadingImage.setVisible(false);
 
 
-
-
         Platform.runLater(() -> {
             taskStage.show();
 //            root.getScene().getWindow().hide();
         });
     }
+
     // --------Анимация-------- //
-    private void showWarningAnimation()
-    {
+    private void showWarningAnimation() {
         showOrHide(true, 0, 45, statusPane);
     }
+
     // --------Анимация-------- //
-    private void showCaptchaAnimation()
-    {
+    private void showCaptchaAnimation() {
         showOrHide(true, 3, 111, captchaImage, captchaKey);
     }
+
     // --------Анимация-------- //
-    private void hideWarningAnimation()
-    {
+    private void hideWarningAnimation() {
         showOrHide(false, 0, 45, statusPane);
     }
+
     // --------Анимация-------- //
-    private void hideCaptchaAnimation()
-    {
+    private void hideCaptchaAnimation() {
         showOrHide(false, 3, 111, captchaImage, captchaKey);
     }
+
     // --------Анимация-------- //
-    private void showOrHide(boolean show, int gridIndex, int maxHeight, Node... nodes)
-    {
+    private void showOrHide(boolean show, int gridIndex, int maxHeight, Node... nodes) {
         KeyFrame start;
         KeyFrame end;
 
-        boolean expanded =  nodes[0].visibleProperty().get();
+        boolean expanded = nodes[0].visibleProperty().get();
 
-        if (expanded && !show)
-        {
+        if (expanded && !show) {
             start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
             end = new KeyFrame(Duration.millis(200), new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
 
-            for (Node n: nodes)
-            {
+            for (Node n : nodes) {
                 n.setVisible(false);
                 n.setManaged(false);
             }
-        }
-        else if (!expanded && show)
-        {
+        } else if (!expanded && show) {
             start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
             end = new KeyFrame(Duration.millis(200), new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
-        }
-        else
-        {
+        } else {
             start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
             end = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
         }
@@ -500,8 +458,7 @@ public class IntroductionWindowController extends Application implements Initial
 
         timeline.setOnFinished(event -> {
             if (!expanded && show)
-                for (Node n: nodes)
-                {
+                for (Node n : nodes) {
                     n.setVisible(true);
                     n.setManaged(true);
                 }
@@ -510,15 +467,7 @@ public class IntroductionWindowController extends Application implements Initial
     }
 
 
-
-
-
-
-
-
-
-
-    }
+}
 
 
 

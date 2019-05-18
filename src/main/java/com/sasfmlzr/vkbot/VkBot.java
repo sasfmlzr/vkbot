@@ -22,7 +22,6 @@ public class VkBot extends Application {
 
         initializeIni();
 
-
         Scene scene = new Scene(new MainWindowController());
 
         //AnchorPane root = FXMLLoader.load(getClass().getResource(MainWindowController.fxmlPath), bundle);

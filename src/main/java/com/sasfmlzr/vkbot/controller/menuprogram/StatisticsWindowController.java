@@ -1,6 +1,5 @@
 package com.sasfmlzr.vkbot.controller.menuprogram;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.NumberAxis;
@@ -15,9 +14,8 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.*;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
 import static com.sasfmlzr.vkbot.StaticModel.userBot;
-
 
 public class StatisticsWindowController  implements Initializable
 

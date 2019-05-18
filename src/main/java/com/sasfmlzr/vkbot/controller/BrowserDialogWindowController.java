@@ -14,50 +14,47 @@ import javafx.stage.Window;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BrowserDialogWindowController implements Initializable
-{
-	final Signal1<Boolean> sendBrowserResult = new Signal1<>();
-	
-	final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages";
-	final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml";
+public class BrowserDialogWindowController implements Initializable {
+    final Signal1<Boolean> sendBrowserResult = new Signal1<>();
 
-	@FXML private AnchorPane root;
-	@FXML private WebView webView;
+    final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages";
+    final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml";
 
-	private WebEngine engine;
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private WebView webView;
 
-	public void initialize(URL location, ResourceBundle resources)
-	{
-		this.engine = webView.getEngine();
-	}
-	
-	void initWindow()
-	{
-		Scene scene = root.getScene();
-		Window window = scene.getWindow();
-		
-		window.setOnCloseRequest(Event::consume);
-		
-		this.engine.locationProperty().addListener((prop, before, after) -> {
+    private WebEngine engine;
+
+    public void initialize(URL location, ResourceBundle resources) {
+        this.engine = webView.getEngine();
+    }
+
+    void initWindow() {
+        Scene scene = root.getScene();
+        Window window = scene.getWindow();
+
+        window.setOnCloseRequest(Event::consume);
+
+        this.engine.locationProperty().addListener((prop, before, after) -> {
             //true if OK
             Platform.runLater(this::close);
-       });
-	}
+        });
+    }
 
-	public void setURL (String URL)
-	{
-		this.engine.load(URL);
-	}
-	
-	@FXML private void onCancel()
-	{
-		sendBrowserResult.emit(false);
-		close();
-	}
-	
-	private void close()
-	{
-		root.getScene().getWindow().hide();
-		sendBrowserResult.clear();
-	}
+    public void setURL(String URL) {
+        this.engine.load(URL);
+    }
+
+    @FXML
+    private void onCancel() {
+        sendBrowserResult.emit(false);
+        close();
+    }
+
+    private void close() {
+        root.getScene().getWindow().hide();
+        sendBrowserResult.clear();
+    }
 }

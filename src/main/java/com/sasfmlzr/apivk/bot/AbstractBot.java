@@ -1,6 +1,6 @@
 package com.sasfmlzr.apivk.bot;
 
-import com.sasfmlzr.apiVK.client.BotApiClient;
+import com.sasfmlzr.apivk.client.BotApiClient;
 import com.vk.api.sdk.client.VkApiClient;
 import javafx.scene.image.Image;
 
@@ -10,9 +10,10 @@ public abstract class AbstractBot {
     VkApiClient vk;
     Image botImage;
 
-    public BotApiClient botApiClient(){
+    public BotApiClient botApiClient() {
         return new BotApiClient(vk);
     }
+
     public VkApiClient getVk() {
         return vk;
     }

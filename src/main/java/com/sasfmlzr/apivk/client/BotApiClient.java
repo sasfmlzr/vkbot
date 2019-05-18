@@ -1,10 +1,9 @@
 package com.sasfmlzr.apivk.client;
 
-import com.sasfmlzr.apiVK.actions.Messages;
-import com.sasfmlzr.apiVK.actions.Other;
-import com.sasfmlzr.apiVK.bot.AbstractBot;
-import com.sasfmlzr.apiVK.client.StateBot;
-import com.sasfmlzr.apiVK.functions.botdatabase.Database;
+import com.sasfmlzr.apivk.actions.Messages;
+import com.sasfmlzr.apivk.actions.Other;
+import com.sasfmlzr.apivk.bot.AbstractBot;
+import com.sasfmlzr.apivk.functions.botdatabase.Database;
 import com.vk.api.sdk.client.VkApiClient;
 
 public class BotApiClient extends AbstractBot {
@@ -29,6 +28,6 @@ public class BotApiClient extends AbstractBot {
 
     public static Database database = new Database();
 
-    public com.sasfmlzr.apiVK.client.StateBot stateBot = new StateBot();
+    public StateBot stateBot = new StateBot();
 
 }

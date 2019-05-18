@@ -1,6 +1,5 @@
 package com.sasfmlzr.apivk.functions.botdatabase;
 
-import com.sasfmlzr.apiVK.functions.botdatabase.Database;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;

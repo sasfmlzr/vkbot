@@ -1,16 +1,15 @@
 package com.sasfmlzr.apivk.functions.botdatabase;
 
-import com.sasfmlzr.apiVK.functions.botdatabase.DatabaseRequest;
-import com.sasfmlzr.apiVK.object.BotDatabase_IdRequest;
-import com.sasfmlzr.apiVK.object.BotDatabase_IdRequestResponse;
-import com.sasfmlzr.apiVK.object.BotDatabase_RequestResponse;
-import com.sasfmlzr.apiVK.object.UserIdRightsBD;
+import com.sasfmlzr.apivk.object.BotDatabase_IdRequest;
+import com.sasfmlzr.apivk.object.BotDatabase_IdRequestResponse;
+import com.sasfmlzr.apivk.object.BotDatabase_RequestResponse;
+import com.sasfmlzr.apivk.object.UserIdRightsBD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 
-import static com.sasfmlzr.apiVK.State.databaseLoaded;
+import static com.sasfmlzr.apivk.State.databaseLoaded;
 
 public class Database {
     private Connection conn;          //SQL connection

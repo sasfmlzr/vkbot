@@ -1,8 +1,8 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.util.Effects;
-import com.sasfmlzr.apiVK.bot.GroupBot;
-import com.sasfmlzr.apiVK.bot.UserBot;
+import com.sasfmlzr.apivk.bot.GroupBot;
+import com.sasfmlzr.apivk.bot.UserBot;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.sasfmlzr.vkbot.controller.menuprogram.StatisticsWindowController;
 import javafx.fxml.FXML;
@@ -22,8 +22,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.sasfmlzr.apiVK.State.databaseLoaded;
-import static com.sasfmlzr.apiVK.object.StatisticsVariable.*;
+import static com.sasfmlzr.apivk.State.databaseLoaded;
+import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
 
 public class BotCardController extends  AnchorPane implements Initializable
 {

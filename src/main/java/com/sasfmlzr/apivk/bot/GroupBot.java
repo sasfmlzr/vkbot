@@ -1,7 +1,6 @@
 package com.sasfmlzr.apivk.bot;
 
-import com.sasfmlzr.apiVK.bot.AbstractBot;
-import com.sasfmlzr.apiVK.thread.ThreadGroupBot;
+import com.sasfmlzr.apivk.thread.ThreadGroupBot;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;

@@ -2,7 +2,7 @@ package com.sasfmlzr.vkbot.controller.menuprogram;
 
 
 import com.api.client.Client;
-import com.sasfmlzr.apiVK.object.BotDatabase_IdRequestResponse;
+import com.sasfmlzr.apivk.object.BotDatabase_IdRequestResponse;
 import com.sasfmlzr.vkbot.StaticModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,19 +16,16 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-
-public class DataBaseWindowController implements Initializable
-{
-
+public class DataBaseWindowController implements Initializable {
 
     @FXML
     private TableView<BotDatabase_IdRequestResponse> tableTextBot;
     @FXML
     private TableColumn<BotDatabase_IdRequestResponse, String> idColumn;
     @FXML
-    private TableColumn<BotDatabase_IdRequestResponse, String>  sendTextMessage;
+    private TableColumn<BotDatabase_IdRequestResponse, String> sendTextMessage;
     @FXML
-    private TableColumn<BotDatabase_IdRequestResponse, String>  requestTextMessage;
+    private TableColumn<BotDatabase_IdRequestResponse, String> requestTextMessage;
     @FXML
     private TextField zapros;
     @FXML
@@ -41,12 +38,10 @@ public class DataBaseWindowController implements Initializable
     public final static String fxmlPath = "DataBaseWindow.fxml";
 
 
-
-    public void initialize(URL location, ResourceBundle resources)    {
+    public void initialize(URL location, ResourceBundle resources) {
     }
 
     public void initWindow() throws SQLException {
-
 
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
             textTable.setText("БД:" + "\n");
@@ -76,20 +71,18 @@ public class DataBaseWindowController implements Initializable
                 e.printStackTrace();
             }*/
             refreshTable();
-        }
-        else
-        {
+        } else {
             textTable.setText("Сначала запусти бота" + "\n");
         }
     }
 
 
-    public void start(Stage primaryStage)    {
+    public void start(Stage primaryStage) {
 
     }
 
 
-    private static ResourceBundle loadLocale(Locale locale, String resourcePath)    {
+    private static ResourceBundle loadLocale(Locale locale, String resourcePath) {
         Locale.setDefault(locale);
         return ResourceBundle.getBundle(resourcePath, Locale.getDefault());
     }
@@ -122,11 +115,11 @@ public class DataBaseWindowController implements Initializable
         */
       /*  for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
         }*/
-       // tableTextBot.getItems().clear();
+        // tableTextBot.getItems().clear();
 
-      //  connectdatabase;
+        //  connectdatabase;
 
-     //   InitDB();
+        //   InitDB();
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         sendTextMessage.setCellValueFactory(new PropertyValueFactory<>("response"));
         requestTextMessage.setCellValueFactory(new PropertyValueFactory<>("request"));
@@ -135,12 +128,9 @@ public class DataBaseWindowController implements Initializable
         StaticModel.userBot.botApiClient().database.InitDB();
 
 
-
-
     }
 
     /**
-     *
      * починить баг дублирования элементов
      */
 
@@ -159,18 +149,16 @@ public class DataBaseWindowController implements Initializable
 
 
     public void addElement() throws SQLException {
-        if ((!Objects.equals(zapros.getText(), "")) &&   (!Objects.equals(otvet.getText(), "")))
-        {
+        if ((!Objects.equals(zapros.getText(), "")) && (!Objects.equals(otvet.getText(), ""))) {
             int idBot;
-            if (Client.actor==null){
-                idBot= StaticModel.userBot.getActor().getId();
-            }else
-                idBot=Client.actor.getId();
-            StaticModel.userBot.botApiClient().database.getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+zapros.getText()+"', '"+ otvet.getText()+ "',  '"+idBot+"');");
+            if (Client.actor == null) {
+                idBot = StaticModel.userBot.getActor().getId();
+            } else
+                idBot = Client.actor.getId();
+            StaticModel.userBot.botApiClient().database.getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
             System.out.println("Таблица заполнена");
             refreshTable();
-        }
-        else  {
+        } else {
             System.out.println("Заполните ячейки");
         }
     }   // добавить новый элемент в таблицу
@@ -208,13 +196,4 @@ public class DataBaseWindowController implements Initializable
     }
 
     */
-
-
-
-
-
-
 }
-
-
-
