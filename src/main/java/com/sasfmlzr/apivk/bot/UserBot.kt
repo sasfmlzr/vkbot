@@ -8,7 +8,7 @@ import javafx.embed.swing.SwingFXUtils
 import java.net.URL
 import javax.imageio.ImageIO
 
-class UserBot(vkApiClient: VkApiClient, var actor: UserActor?) : AbstractBot() {
+class UserBot(vkApiClient: VkApiClient, var actor: UserActor) : AbstractBot() {
     private val threadUserBot: ThreadUserBot
 
     init {

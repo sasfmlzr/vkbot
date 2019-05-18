@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.util.Effects;
+import com.sasfmlzr.apivk.bot.DatabaseEntity;
 import com.sasfmlzr.apivk.bot.GroupBot;
 import com.sasfmlzr.apivk.bot.UserBot;
 import com.sasfmlzr.vkbot.StaticModel;
@@ -67,8 +68,8 @@ public class BotCardController extends  AnchorPane implements Initializable
 		StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
 		if (!databaseLoaded){
-			StaticModel.userBot.botApiClient().Companion.getDatabase().connectDatabase();            //подключение бд
-			StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();          //инициализация таблиц бд в объект
+			DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
+			DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
 		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
@@ -79,8 +80,8 @@ public class BotCardController extends  AnchorPane implements Initializable
 	public void  recursionGroup() throws SQLException, ClassNotFoundException {
 
 		if (!databaseLoaded){
-			StaticModel.userBot.botApiClient().Companion.getDatabase().connectDatabase();            //подключение бд
-			StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();          //инициализация таблиц бд в объект
+			DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
+			DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
 		}
 		timeProgramStart = System.currentTimeMillis();
 		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);

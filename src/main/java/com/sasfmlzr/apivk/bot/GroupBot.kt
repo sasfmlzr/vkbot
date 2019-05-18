@@ -8,7 +8,7 @@ import javafx.embed.swing.SwingFXUtils
 import java.net.URL
 import javax.imageio.ImageIO
 
-class GroupBot(vkApiClient: VkApiClient, var actor: GroupActor?) : AbstractBot() {
+class GroupBot(vkApiClient: VkApiClient, var actor: GroupActor) : AbstractBot() {
     private val threadGroupBot: ThreadGroupBot
 
     init {

@@ -11,7 +11,7 @@ abstract class AbstractBot {
     var botImage: Image? = null
 
     fun botApiClient(): BotApiClient {
-        return BotApiClient(vk)
+        return BotApiClient(vk!!)
     }
 
 }

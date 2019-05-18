@@ -2,6 +2,7 @@ package com.sasfmlzr.vkbot.controller.menuprogram;
 
 
 import com.api.client.Client;
+import com.sasfmlzr.apivk.bot.DatabaseEntity;
 import com.sasfmlzr.apivk.object.BotDatabase_IdRequestResponse;
 import com.sasfmlzr.vkbot.StaticModel;
 import javafx.fxml.FXML;
@@ -124,8 +125,8 @@ public class DataBaseWindowController implements Initializable {
         sendTextMessage.setCellValueFactory(new PropertyValueFactory<>("response"));
         requestTextMessage.setCellValueFactory(new PropertyValueFactory<>("request"));
 
-        tableTextBot.setItems(StaticModel.userBot.botApiClient().Companion.getDatabase().getBotData());
-        StaticModel.userBot.botApiClient().Companion.getDatabase().InitDB();
+        tableTextBot.setItems(DatabaseEntity.INSTANCE.getDatabase().getBotData());
+        DatabaseEntity.INSTANCE.getDatabase().InitDB();
 
 
     }
@@ -155,7 +156,7 @@ public class DataBaseWindowController implements Initializable {
                 idBot = StaticModel.userBot.getActor().getId();
             } else
                 idBot = Client.actor.getId();
-            StaticModel.userBot.botApiClient().Companion.getDatabase().getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
+            DatabaseEntity.INSTANCE.getDatabase().getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
             System.out.println("Таблица заполнена");
             refreshTable();
         } else {
