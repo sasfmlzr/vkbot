@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
+import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -28,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.api.client.Client.idBot;
-import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
 import static com.sasfmlzr.vkbot.StaticModel.userBot;
 
 @SuppressWarnings("unused")
@@ -181,25 +181,25 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     public void logFill() {
         if (userBot.botApiClient().getStateBot().getBotWork()) {
-            String statistic = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + timeZaprosFinishItogo + "мс\n" +
-                    "Время, затраченное на последние остальные операции " + timeItogoMsMinusVK + "мс\n" +
+            String statistic = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + StatisticsVariable.INSTANCE.getTimeZaprosFinishItogo() + "мс\n" +
+                    "Время, затраченное на последние остальные операции " + StatisticsVariable.INSTANCE.getTimeItogoMsMinusVK() + "мс\n" +
                     "Подробнее:\n";
-            if (timeConsumedMillisBD != 0)
-                statistic = statistic + "Время последней выборки из бд коляна составляет " + timeConsumedMillisBD + "мс\n";
-            if (timeConsumedMillisBigBD != 0)
-                statistic = statistic + "Время последней выборки из большой бд составляет " + timeConsumedMillisBigBD + "мс\n";
-            if (timeItogoSendMessage != 0)
-                statistic = statistic + "Время затраченное на последнюю отправку сообщения составляет " + timeItogoSendMessage + "мс\n" +
-                        "Количество отправленных сообщений равно " + countSendMessage + "\n";
+            if (StatisticsVariable.INSTANCE.getTimeConsumedMillisBD() != 0)
+                statistic = statistic + "Время последней выборки из бд коляна составляет " + StatisticsVariable.INSTANCE.getTimeConsumedMillisBD() + "мс\n";
+            if (StatisticsVariable.INSTANCE.getTimeConsumedMillisBigBD() != 0)
+                statistic = statistic + "Время последней выборки из большой бд составляет " + StatisticsVariable.INSTANCE.getTimeConsumedMillisBigBD() + "мс\n";
+            if (StatisticsVariable.INSTANCE.getTimeItogoSendMessage() != 0)
+                statistic = statistic + "Время затраченное на последнюю отправку сообщения составляет " + StatisticsVariable.INSTANCE.getTimeItogoSendMessage() + "мс\n" +
+                        "Количество отправленных сообщений равно " + StatisticsVariable.INSTANCE.getCountSendMessage() + "\n";
             long timeProgramFinish = System.currentTimeMillis();
-            long timeProgramItog = timeProgramFinish - timeProgramStart;
+            long timeProgramItog = timeProgramFinish - StatisticsVariable.INSTANCE.getTimeProgramStart();
             statistic = statistic + "Время работы бота равно " + Math.round(timeProgramItog / 1000) + "c\n" +
-                    "Среднее время запроса до вк равно " + Math.round(100 * timeZaprosFinishSumm / countSendMessageUser) / 100 + "мс\n" +
-                    "Количество совершенных циклов работы бота равно " + countSendMessageUser + "\n";
-            if (countUsedBD != 0)
-                statistic = statistic + "Количество обращений к основной таблицы БД равно " + countUsedBD + "\n";
-            if (countUsedBigBD != 0)
-                statistic = statistic + "Количество обращений к большой таблице БД равно " + countUsedBigBD + "\n";
+                    "Среднее время запроса до вк равно " + Math.round(100 * StatisticsVariable.INSTANCE.getTimeZaprosFinishSumm() / StatisticsVariable.INSTANCE.getCountSendMessageUser()) / 100 + "мс\n" +
+                    "Количество совершенных циклов работы бота равно " + StatisticsVariable.INSTANCE.getCountSendMessageUser() + "\n";
+            if (StatisticsVariable.INSTANCE.getCountUsedBD() != 0)
+                statistic = statistic + "Количество обращений к основной таблицы БД равно " + StatisticsVariable.INSTANCE.getCountUsedBD() + "\n";
+            if (StatisticsVariable.INSTANCE.getCountUsedBigBD() != 0)
+                statistic = statistic + "Количество обращений к большой таблице БД равно " + StatisticsVariable.INSTANCE.getCountUsedBigBD() + "\n";
             textLog.setText(statistic);
         } else
             textLog.setText("Сначала включи бота");

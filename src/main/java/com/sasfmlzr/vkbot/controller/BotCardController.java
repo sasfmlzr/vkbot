@@ -2,8 +2,10 @@ package com.sasfmlzr.vkbot.controller;
 
 import com.api.util.Effects;
 import com.database.DatabaseEntity;
+import com.sasfmlzr.apivk.State;
 import com.sasfmlzr.apivk.bot.GroupBot;
 import com.sasfmlzr.apivk.bot.UserBot;
+import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.sasfmlzr.vkbot.controller.menuprogram.StatisticsWindowController;
 import javafx.fxml.FXML;
@@ -23,133 +25,131 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.sasfmlzr.apivk.State.databaseLoaded;
-import static com.sasfmlzr.apivk.object.StatisticsVariable.*;
+public class BotCardController extends AnchorPane implements Initializable {
+    public final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotCard.messages";
+    public final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotCard.fxml";
 
-public class BotCardController extends  AnchorPane implements Initializable
-{
-	public final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotCard.messages";
-	public final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotCard.fxml";
+    BotCardController() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        loader.setRoot(this);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(BotCardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
-	BotCardController() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-		loader.setRoot(this);
-		loader.setController(this);
-		try {
-			loader.load();
-		} catch (IOException ex) {
-			Logger.getLogger(BotCardController.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
+    @FXML
+    private ImageView avatar;
+    @FXML
+    private AnchorPane root;
+    @FXML
+    private Button buttonLoad;
+    @FXML
+    private Button buttonPowerBot;
+    @FXML
+    private Label nameBot;
 
-	@FXML	private ImageView avatar;
-	@FXML private AnchorPane root;
-	@FXML private Button buttonLoad;
-    @FXML	private Button buttonPowerBot;
-	@FXML	private Label nameBot;
+    public void initWindow() {
+    }
 
-	public void initWindow(){	}
-	public void setavatar(Image image){
-		avatar.setImage(image);
-	}
-	public void settext(String text){
-		nameBot.setText(text);
-	}
+    public void setavatar(Image image) {
+        avatar.setImage(image);
+    }
 
-	public void initialize(URL location, ResourceBundle resources)	{
-	}
+    public void settext(String text) {
+        nameBot.setText(text);
+    }
 
-	public void  recursion() throws SQLException, ClassNotFoundException {
-		countSendMessageUser=0;
-		countSendMessage = 0;
-		timeZaprosFinishSumm=0;
-		StatisticsWindowController.seriesZaprosVk.getData().clear();          //обнуление статистики запросов
-		StatisticsWindowController.seriesItogVk.getData().clear();          //обнуление статистики запросов
-		StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
+    public void initialize(URL location, ResourceBundle resources) {
+    }
 
-		if (!databaseLoaded){
-			DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
-			DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
-		}
-		timeProgramStart = System.currentTimeMillis();
-		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
-		setAvatarBot(this, StaticModel.userBot);
-		StaticModel.userBot.run();
-	}
+    public void recursion() throws SQLException, ClassNotFoundException {
+        StatisticsVariable.INSTANCE.setCountSendMessageUser(0);
+        StatisticsVariable.INSTANCE.setCountSendMessage(0);
+        StatisticsVariable.INSTANCE.setTimeZaprosFinishSumm(0);
+        StatisticsWindowController.seriesZaprosVk.getData().clear();          //обнуление статистики запросов
+        StatisticsWindowController.seriesItogVk.getData().clear();          //обнуление статистики запросов
+        StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
-	public void  recursionGroup() throws SQLException, ClassNotFoundException {
+        if (!State.INSTANCE.getDatabaseLoaded()) {
+            DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
+            DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
+        }
+        StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
+        StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
+        setAvatarBot(this, StaticModel.userBot);
+        StaticModel.userBot.run();
+    }
 
-		if (!databaseLoaded){
-			DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
-			DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
-		}
-		timeProgramStart = System.currentTimeMillis();
-		StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
-		setAvatarBot(this, StaticModel.groupBot);
-		StaticModel.groupBot.run();
-	}
+    public void recursionGroup() throws SQLException, ClassNotFoundException {
 
-
-
-	private void setAvatarBot(BotCardController childList, UserBot bot)   {
-		childList.settext(bot.getBotName());
-		childList.setavatar(bot.getBotImage());
-	}
-
-	private void setAvatarBot(BotCardController childList, GroupBot bot)   {
-		childList.settext(bot.getBotName());
-		childList.setavatar(bot.getBotImage());
-	}
-	@FXML public void onButtonPowerBot() throws SQLException, ClassNotFoundException {
-		toggleButtonActive (buttonPowerBot);
-		if (!buttonPowerBot.isFocused())
-		{
-			System.out.print("Bot working" + "\n");
-			StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
-			recursion();
-			//recursionGroup();
-		}
-		else
-		{
-			System.out.print("Bot not working" + "\n");
-			StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(false);
-		}
-	}
+        if (!State.INSTANCE.getDatabaseLoaded()) {
+            DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
+            DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
+        }
+        StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
+        StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
+        setAvatarBot(this, StaticModel.groupBot);
+        StaticModel.groupBot.run();
+    }
 
 
-	@FXML private void onLoad()
-	{
-		toggleButtonActive (buttonLoad);
-	}
+    private void setAvatarBot(BotCardController childList, UserBot bot) {
+        childList.settext(bot.getBotName());
+        childList.setavatar(bot.getBotImage());
+    }
+
+    private void setAvatarBot(BotCardController childList, GroupBot bot) {
+        childList.settext(bot.getBotName());
+        childList.setavatar(bot.getBotImage());
+    }
+
+    @FXML
+    public void onButtonPowerBot() throws SQLException, ClassNotFoundException {
+        toggleButtonActive(buttonPowerBot);
+        if (!buttonPowerBot.isFocused()) {
+            System.out.print("Bot working" + "\n");
+            StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
+            recursion();
+            //recursionGroup();
+        } else {
+            System.out.print("Bot not working" + "\n");
+            StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(false);
+        }
+    }
 
 
-	@FXML private void onSettings()
-	{
-	}
-	
-	@FXML private void onInfo()
-	{
-	}
-	
-	@FXML private void onRemove()
-	{
+    @FXML
+    private void onLoad() {
+        toggleButtonActive(buttonLoad);
+    }
 
-	}
 
-	private void toggleButtonActive(Button button)
-	{
-		if (!Objects.equals(button.getId(), "button-active"))
-		{
-			button.setId("button-active");
-			button.setEffect(Effects.imageButtonActive);
-			root.requestFocus();
-		}
-		else
-		{
-			button.setId("button");
-			button.setEffect(null);
-		}
-	}
+    @FXML
+    private void onSettings() {
+    }
+
+    @FXML
+    private void onInfo() {
+    }
+
+    @FXML
+    private void onRemove() {
+
+    }
+
+    private void toggleButtonActive(Button button) {
+        if (!Objects.equals(button.getId(), "button-active")) {
+            button.setId("button-active");
+            button.setEffect(Effects.imageButtonActive);
+            root.requestFocus();
+        } else {
+            button.setId("button");
+            button.setEffect(null);
+        }
+    }
 
 
 }
