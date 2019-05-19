@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller.menuprogram;
 
 import com.sasfmlzr.apivk.object.StatisticsVariable;
+import com.sasfmlzr.vkbot.StaticModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.NumberAxis;
@@ -14,8 +15,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.sasfmlzr.vkbot.StaticModel.userBot;
 
 public class StatisticsWindowController implements Initializable {
     public final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.StatisticsWindow.messages";
@@ -53,7 +52,7 @@ public class StatisticsWindowController implements Initializable {
 
     public void initWindow() {
         textLog.setText("");
-        if (userBot.botApiClient().getStateBot().getBotWork()) {
+        if (StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().getBotWork()) {
 			/*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
 			System.out.println(bReader);
 			String s;

@@ -2,6 +2,7 @@ package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
 import com.sasfmlzr.apivk.object.StatisticsVariable;
+import com.sasfmlzr.vkbot.StaticModel;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
@@ -27,9 +28,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.api.client.Client.idBot;
-import static com.sasfmlzr.vkbot.StaticModel.userBot;
 
 @SuppressWarnings("unused")
 public class BotTabController extends AnchorPane implements Initializable {
@@ -92,17 +90,18 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------ручная отправка сообщения-----------------------------------//
     public void pushButton() throws ClientException, ApiException {
         if (!Objects.equals(textMessage.getText(), ""))
-            userBot.botApiClient().messages().vkSendMessageUser(userBot.getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
+            StaticModel.INSTANCE.getUserBot().botApiClient().messages().vkSendMessageUser(
+                    StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
     }
 
     //-----------------обновление сообщений----------------------------------------//
     public void requestMessage() throws ClientException, ApiException {
 
 
-        String token = Client.token;
-        UserActor actor = new UserActor(idBot, token);
+        String token = Client.Companion.getToken();
+        UserActor actor = new UserActor(Client.Companion.getIdBot(), token);
 
-        UserSettings infoAccount = userBot.getVk().account().getProfileInfo(actor)
+        UserSettings infoAccount = StaticModel.INSTANCE.getUserBot().getVk().account().getProfileInfo(actor)
                 .execute();
         String firstNameAccount = infoAccount.getFirstName();                   //имя и фамилия клинта приложения
         String lastNameNameAccount = infoAccount.getLastName();
@@ -110,7 +109,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         textMessages.setText("");                   //имя и фамилия клинта приложения
 
-        List messageList = userBot.getVk().messages().getHistory(actor)
+        List messageList = StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
                 .count(40)
                 .userId(useridmessage)
                 .execute().getItems();
@@ -140,11 +139,11 @@ public class BotTabController extends AnchorPane implements Initializable {
     public void refreshDialogs() throws ClientException, ApiException {
         vkdialog.getItems().clear();
 
-        String token = Client.token;
-        UserActor actor = new UserActor(idBot, token);
+        String token = Client.Companion.getToken();
+        UserActor actor = new UserActor(Client.Companion.getIdBot(), token);
 ////////////////////////////////
         // создаем объект user id
-        List<Dialog> dialogList = userBot.getVk().messages().getDialogs(actor)            // записываем в лист результат работы запроса
+        List<Dialog> dialogList = StaticModel.INSTANCE.getUserBot().getVk().messages().getDialogs(actor)            // записываем в лист результат работы запроса
                 .count(30)
                 .execute().getItems();
         int countDialog;                                        // счетчик диалогов
@@ -158,7 +157,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 ////////////////////////////////получение userID диалога
         }
 ////////////////////////////получение имени и фамилии
-        List<UserXtrCounters> infoUser = userBot.getVk().users().get(actor)                                                                //берем информацию о пользователе
+        List<UserXtrCounters> infoUser = StaticModel.INSTANCE.getUserBot().getVk().users().get(actor)                                                                //берем информацию о пользователе
                 .userIds(String.valueOf(summUserID.toString()))
                 .execute();
         String[] lastName = new String[30];                                                                  // массив строк из листа - фамилия
@@ -180,7 +179,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     //-----------------заполнение окна логов-----------------------------------------------//
     @FXML
     public void logFill() {
-        if (userBot.botApiClient().getStateBot().getBotWork()) {
+        if (StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().getBotWork()) {
             String statistic = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + StatisticsVariable.INSTANCE.getTimeZaprosFinishItogo() + "мс\n" +
                     "Время, затраченное на последние остальные операции " + StatisticsVariable.INSTANCE.getTimeItogoMsMinusVK() + "мс\n" +
                     "Подробнее:\n";

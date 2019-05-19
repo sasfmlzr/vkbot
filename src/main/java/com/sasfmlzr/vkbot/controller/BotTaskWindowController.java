@@ -10,8 +10,6 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.api.client.Client.idBot;
-
 public class BotTaskWindowController implements Initializable {
     final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotTaskWindow.messages";
     final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml";
@@ -27,8 +25,8 @@ public class BotTaskWindowController implements Initializable {
 
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
-        String mam = Client.token;
-        int ID = idBot;
+        String mam = Client.Companion.getToken();
+        int ID = Client.Companion.getIdBot();
         System.out.print("id = " + ID + "\n");
         System.out.print("token = " + mam + "\n");
         UserActor actor = new UserActor(ID, mam);

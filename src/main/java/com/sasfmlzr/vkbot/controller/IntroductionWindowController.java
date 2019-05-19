@@ -133,16 +133,15 @@ public class IntroductionWindowController extends Application implements Initial
 
     private void initClient() {
         client = new Client();
-        client.onCaptchaNeeded.connect(this::onCaptchaNeeded);
-        client.onInvalidData.connect(this::onInvalidData);
-        client.onSuspectLogin.connect(this::onSuspectLogin);
-        client.onSuccess.connect(this::onSuccess);
+
+        client.getOnCaptchaNeeded().connect(this::onCaptchaNeeded);
+        client.getOnInvalidData().connect(this::onInvalidData);
+        client.getOnSuspectLogin().connect(this::onSuspectLogin);
+        client.getOnSuccess().connect(this::onSuccess);
 
         sendCaptcha.connect(client::receiveCaptcha);
         sendData.connect(client::receiveData);
         sendPhoneConfirmed.connect(client::receivePhoneConfirmed);
-
-
     }
 
     private void initClientThread() {
@@ -202,7 +201,6 @@ public class IntroductionWindowController extends Application implements Initial
         clientThread = new Thread(clientRunnable);
     }
 
-
     public void nextStage() {
 
         System.out.println(stageIntroduction);
@@ -254,9 +252,7 @@ public class IntroductionWindowController extends Application implements Initial
                 statusText.setText("fff");
                 break;
         }
-
     }
-
 
     // --------При нажатии кнопки далее во ввода логина и пароля-------- //
     @FXML
@@ -306,7 +302,6 @@ public class IntroductionWindowController extends Application implements Initial
         }
     }
 
-
     // ---------------------Если нужна капча---------------------------- //
     private void onCaptchaNeeded(String captchaURL) {
         showCaptchaAnimation();
@@ -322,7 +317,7 @@ public class IntroductionWindowController extends Application implements Initial
     // --------Показать изображение капчи-------- //
     private void showCaptchaImage(String captchaURL) {
         try {
-            File captchaImageFile = FileSystem.downloadCaptchaToFile(captchaURL);
+            File captchaImageFile = FileSystem.INSTANCE.downloadCaptchaToFile(captchaURL);
             captchaImage.setImage(new Image(captchaImageFile.toURI().toString(), true));
         } catch (Exception ex) {
             ex.printStackTrace();

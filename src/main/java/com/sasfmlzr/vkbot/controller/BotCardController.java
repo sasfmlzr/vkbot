@@ -78,9 +78,9 @@ public class BotCardController extends AnchorPane implements Initializable {
             DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
         }
         StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
-        StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
-        setAvatarBot(this, StaticModel.userBot);
-        StaticModel.userBot.run();
+        StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(true);
+        setAvatarBot(this, StaticModel.INSTANCE.getUserBot());
+        StaticModel.INSTANCE.getUserBot().run();
     }
 
     public void recursionGroup() throws SQLException, ClassNotFoundException {
@@ -90,9 +90,9 @@ public class BotCardController extends AnchorPane implements Initializable {
             DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
         }
         StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
-        StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
-        setAvatarBot(this, StaticModel.groupBot);
-        StaticModel.groupBot.run();
+        StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(true);
+        setAvatarBot(this, StaticModel.INSTANCE.getGroupBot());
+        StaticModel.INSTANCE.getGroupBot().run();
     }
 
 
@@ -111,12 +111,12 @@ public class BotCardController extends AnchorPane implements Initializable {
         toggleButtonActive(buttonPowerBot);
         if (!buttonPowerBot.isFocused()) {
             System.out.print("Bot working" + "\n");
-            StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(true);
+            StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(true);
             recursion();
             //recursionGroup();
         } else {
             System.out.print("Bot not working" + "\n");
-            StaticModel.userBot.botApiClient().getStateBot().setPushPowerBot(false);
+            StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(false);
         }
     }
 
@@ -143,13 +143,11 @@ public class BotCardController extends AnchorPane implements Initializable {
     private void toggleButtonActive(Button button) {
         if (!Objects.equals(button.getId(), "button-active")) {
             button.setId("button-active");
-            button.setEffect(Effects.imageButtonActive);
+            button.setEffect(Effects.INSTANCE.getImageButtonActive());
             root.requestFocus();
         } else {
             button.setId("button");
             button.setEffect(null);
         }
     }
-
-
 }

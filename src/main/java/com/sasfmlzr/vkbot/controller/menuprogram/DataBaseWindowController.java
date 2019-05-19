@@ -44,7 +44,7 @@ public class DataBaseWindowController implements Initializable {
 
     public void initWindow() throws SQLException {
 
-        if (StaticModel.userBot.botApiClient().getStateBot().getBotWork()) {
+        if (StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().getBotWork()) {
             textTable.setText("БД:" + "\n");
        /*     try {
                 ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
@@ -153,7 +153,7 @@ public class DataBaseWindowController implements Initializable {
         if ((!Objects.equals(zapros.getText(), "")) && (!Objects.equals(otvet.getText(), ""))) {
             int idBot;
             if (Client.actor == null) {
-                idBot = StaticModel.userBot.getActor().getId();
+                idBot = StaticModel.INSTANCE.getUserBot().getActor().getId();
             } else
                 idBot = Client.actor.getId();
             DatabaseEntity.INSTANCE.getDatabase().getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");

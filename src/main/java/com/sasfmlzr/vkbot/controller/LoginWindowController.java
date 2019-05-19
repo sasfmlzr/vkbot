@@ -127,10 +127,10 @@ public class LoginWindowController implements Initializable {
         grid.heightProperty().addListener((observable, oldValue, newValue) -> window.setHeight(newValue.doubleValue() + 35.0));
 
         window.setOnCloseRequest(we -> {
-            client.onCaptchaNeeded.clear();
-            client.onInvalidData.clear();
-            client.onSuccess.clear();
-            client.onSuspectLogin.clear();
+            client.getOnCaptchaNeeded().clear();
+            client.getOnInvalidData().clear();
+            client.getOnSuccess().clear();
+            client.getOnSuspectLogin().clear();
 
             sendCaptcha.clear();
             sendData.clear();
@@ -145,10 +145,10 @@ public class LoginWindowController implements Initializable {
 
     private void initClient() {
         client = new Client();
-        client.onCaptchaNeeded.connect(this::onCaptchaNeeded);
-        client.onInvalidData.connect(this::onInvalidData);
-        client.onSuspectLogin.connect(this::onSuspectLogin);
-        client.onSuccess.connect(this::onSuccess);
+        client.getOnCaptchaNeeded().connect(this::onCaptchaNeeded);
+        client.getOnInvalidData().connect(this::onInvalidData);
+        client.getOnSuspectLogin().connect(this::onSuspectLogin);
+        client.getOnSuccess().connect(this::onSuccess);
 
         sendCaptcha.connect(client::receiveCaptcha);
         sendData.connect(client::receiveData);
@@ -271,7 +271,7 @@ public class LoginWindowController implements Initializable {
 
     private void showCaptchaImage(String captchaURL) {
         try {
-            File captchaImageFile = FileSystem.downloadCaptchaToFile(captchaURL);
+            File captchaImageFile = FileSystem.INSTANCE.downloadCaptchaToFile(captchaURL);
             captchaImage.setImage(new Image(captchaImageFile.toURI().toString(), true));
         } catch (Exception ex) {
             ex.printStackTrace();
