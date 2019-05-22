@@ -3,9 +3,8 @@ package com.sasfmlzr.apivk.bot
 import com.sasfmlzr.apivk.thread.ThreadGroupBot
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.GroupActor
-import com.vk.api.sdk.queries.users.UserField
+import com.vk.api.sdk.objects.users.Fields
 import javafx.embed.swing.SwingFXUtils
-import java.net.URL
 import javax.imageio.ImageIO
 
 class GroupBot(vkApiClient: VkApiClient, var actor: GroupActor) : AbstractBot() {
@@ -15,12 +14,13 @@ class GroupBot(vkApiClient: VkApiClient, var actor: GroupActor) : AbstractBot() 
         vk = vkApiClient
         threadGroupBot = ThreadGroupBot(botApiClient(), actor)
         try {
-            val listCounters = vk!!.users().get(actor).fields(UserField.PHOTO_200).execute()
+            val listCounters = vk!!.users().get(actor)
+                    .fields(Fields.PHOTO_200).execute()
             if (!listCounters.isEmpty()) {
                 val botSelfInfo = listCounters[0]
                 userID = botSelfInfo.id
                 botName = botSelfInfo.firstName + " " + botSelfInfo.lastName
-                val daffyDuckImage = ImageIO.read(URL(botSelfInfo.photo200))
+                val daffyDuckImage = ImageIO.read(botSelfInfo.photo200)
                 botImage = SwingFXUtils.toFXImage(daffyDuckImage, null)
             } else {
                 botName = "Бот САИТ"

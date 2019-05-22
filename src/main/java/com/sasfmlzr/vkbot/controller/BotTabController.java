@@ -7,7 +7,7 @@ import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.account.UserSettings;
-import com.vk.api.sdk.objects.messages.Dialog;
+import com.vk.api.sdk.objects.messages.ConversationWithMessage;
 import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
 import javafx.fxml.FXML;
@@ -23,8 +23,8 @@ import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,9 +89,71 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     //-----------------ручная отправка сообщения-----------------------------------//
     public void pushButton() throws ClientException, ApiException {
-        if (!Objects.equals(textMessage.getText(), ""))
-            StaticModel.INSTANCE.getUserBot().botApiClient().messages().vkSendMessageUser(
-                    StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
+        //     if (!Objects.equals(textMessage.getText(), ""))
+        //        StaticModel.INSTANCE.getUserBot().botApiClient().messages().vkSendMessageUser(
+        //                StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
+
+
+        UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
+
+
+
+    /*    StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
+                .count(40)
+                .userId(useridmessage)
+                .execute().getItems();*/
+
+        int summDialogs;
+
+        List<ConversationWithMessage> conversationWithMessages = runDialogs(0, actor);
+
+
+        for (int i = 0; i <= conversationWithMessages.size() - 1; i++) {
+            ConversationWithMessage dialog = conversationWithMessages.get(i);
+
+            int id;
+
+            dialog.getConversation().getUnreadCount();
+
+     /*       if(dialog.getMessage().getChatId()==null) {
+                id = dialog.getMessage().getUserId();
+            } else {
+                id = dialog.getMessage().getChatId();
+            }*/
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            List<Message> messages = runMessages(0, 0, actor);
+
+            System.out.println();
+
+
+            //     StaticModel.INSTANCE.getUserBot().getVk().messages().
+        }
+    }
+
+    public List<ConversationWithMessage> runDialogs(int offset, UserActor actor) throws ClientException, ApiException {
+        return StaticModel.INSTANCE.getUserBot().getVk().messages().getConversations(actor)           // записываем в лист результат работы запроса
+                .count(200)
+                .execute().getItems();
+    }
+
+    public List<Message> runMessages(int peerId, int offset, UserActor actor) {
+        List<Message> messages = new ArrayList<>();
+        try {
+            messages = StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
+                    .peerId(peerId)
+                    .offset(offset)
+                    .count(200)
+                    .execute().getItems();
+        } catch (ApiException | ClientException e) {
+            e.printStackTrace();
+        }
+        return messages;
+
     }
 
     //-----------------обновление сообщений----------------------------------------//
@@ -119,8 +181,8 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         int countMessage;                                        // счетчик диалогов
         for (countMessage = 0; countMessage <= messageList.size() - 1; countMessage = countMessage + 1) {
-            textMessage[countMessage] = ((Message) messageList.get(countMessage)).getBody();     // массив сообщений
-            if (((Message) messageList.get(countMessage)).getUserId().equals(((Message) messageList.get(countMessage)).getFromId())) {
+            textMessage[countMessage] = ((Message) messageList.get(countMessage)).getText();     // массив сообщений
+            if (((Message) messageList.get(countMessage)).getPeerId().equals(((Message) messageList.get(countMessage)).getFromId())) {
                 textMessages.appendText(vkdialog.getSelectionModel().getSelectedItem() + ": " + textMessage[countMessage] + "\n");
             } else {
                 textMessages.appendText(firstNameAccount + " " + lastNameNameAccount + ": " + textMessage[countMessage] + "\n");
@@ -143,7 +205,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         UserActor actor = new UserActor(Client.Companion.getIdBot(), token);
 ////////////////////////////////
         // создаем объект user id
-        List<Dialog> dialogList = StaticModel.INSTANCE.getUserBot().getVk().messages().getDialogs(actor)            // записываем в лист результат работы запроса
+        List<ConversationWithMessage> dialogList = StaticModel.INSTANCE.getUserBot().getVk().messages().getConversations(actor)            // записываем в лист результат работы запроса
                 .count(30)
                 .execute().getItems();
         int countDialog;                                        // счетчик диалогов
@@ -151,7 +213,7 @@ public class BotTabController extends AnchorPane implements Initializable {
         StringBuilder summUserID = new StringBuilder();                                     // список userID через запятую
         for (countDialog = 0; countDialog <= dialogList.size() - 1; countDialog = countDialog + 1) {
             //получаем диалог countSendMessageUser
-            int userID = dialogList.get(countDialog).getMessage().getUserId();        // получаем userID диалога
+            int userID = dialogList.get(countDialog).getLastMessage().getPeerId();        // получаем userID диалога
             userIDmassive[countDialog] = userID;
             summUserID.append(userIDmassive[countDialog]).append(",");
 ////////////////////////////////получение userID диалога

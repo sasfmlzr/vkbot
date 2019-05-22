@@ -9,6 +9,7 @@ import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
+import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
 
 class Commands(client: BotApiClient) : Messages(client) {
@@ -19,7 +20,7 @@ class Commands(client: BotApiClient) : Messages(client) {
             textMessageString: String,
             messages: String,
             actor: UserActor,
-            messagesList: List<com.vk.api.sdk.objects.messages.Dialog>,
+            messagesList: List<ConversationWithMessage>,
             bot: BotApiClient
     ): String? {
         var message = messages

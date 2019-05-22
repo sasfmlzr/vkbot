@@ -5,22 +5,21 @@ import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
-import com.vk.api.sdk.objects.messages.Dialog
-
+import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
 
 class Commands internal constructor(client: com.sasfmlzr.apivk.client.BotApiClient) : AbstractAction(client) {
 
     @Throws(SQLException::class, ApiException::class, ClientException::class)
     fun commandsBot(
-        textMessageString: String,
-        messages: String,
-        actor: UserActor,
-        messagesList: List<Dialog>,
-        bot: BotApiClient
+            textMessageString: String,
+            messages: String,
+            actor: UserActor,
+            messagesList: List<ConversationWithMessage>,
+            bot: BotApiClient
     ): String? {
         return com.sasfmlzr.apivk.functions.bot.Commands(client)
-            .commandsBot(textMessageString, messages, actor, messagesList, bot)
+                .commandsBot(textMessageString, messages, actor, messagesList, bot)
     }
 
     fun adminCommandsBot(textMessageString: String, messages: String): String {

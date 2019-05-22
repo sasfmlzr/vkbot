@@ -1,12 +1,13 @@
 package com.sasfmlzr.apivk.thread
 
-import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.database.DatabaseEntity
+import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.GroupActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
-import com.vk.api.sdk.objects.messages.Dialog
+import com.vk.api.sdk.objects.enums.MessagesFilter
+import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.util.*
 
 class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupActor) : ThreadBot(), Runnable {
@@ -64,8 +65,8 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
 
 
             message =
-                DatabaseEntity.database.botRandomData[client.other().randomId(DatabaseEntity.database.botRandomData.size)]
-                    .response          //сообщение берется из рандомной базы коляна
+                    DatabaseEntity.database.botRandomData[client.other().randomId(DatabaseEntity.database.botRandomData.size)]
+                            .response          //сообщение берется из рандомной базы коляна
             /*
            if (textMessageString.equals("")){
                System.out.print("textMessageString = " +textMessageString+ "\n");
@@ -77,7 +78,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
 
                 if (messagesList.isNotEmpty()) {                                             // если нет непрочитанных, сообщений, то не выполнять
                     val textMessageString =
-                        messagesList[0].message.body.toLowerCase()       // прием сообщения в переменную              TEST
+                            messagesList[0].lastMessage.text.toLowerCase()       // прием сообщения в переменную              TEST
 
 
                     client.stateBot.reduction = false
@@ -85,9 +86,9 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
                     if (!client.stateBot.reduction) {
                         message = messageFromBigDataBase(textMessageString, message)
                         client.messages().vkSendMessage(
-                            actor,
-                            message,
-                            messagesList
+                                actor,
+                                message,
+                                messagesList
                         )       // отправка сообщения и пометка его прочитанным
                     } else {
                         Thread.sleep(500)
@@ -107,23 +108,23 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
 
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
     @Throws(ClientException::class, ApiException::class)
-    private fun createListMessageVK(): List<Dialog> {
+    private fun createListMessageVK(): List<ConversationWithMessage> {
         val timezaprosstart = System.currentTimeMillis()         // начало запроса непрочитанного запроса
 
         //client.getVkApiClient().messages().send(actor).userId(30562433).randomId(234).message("fdffgf").execute();
-        val messages = client.vkApiClient!!.messages().getDialogs(actor)                 // Листы сообщений
-            .unread(true)
-            .execute().items
+        val messages = client.vkApiClient!!.messages().getConversations(actor)                 // Листы сообщений
+                .filter(MessagesFilter.UNANSWERED)
+                .execute().items
         val timezaprosfinish = System.currentTimeMillis()
         StatisticsVariable.timeZaprosFinishItogo =
-            timezaprosfinish - timezaprosstart      // время, затраченное на операцию
+                timezaprosfinish - timezaprosstart      // время, затраченное на операцию
         return messages
     }
 
     //-----------------поиск сообщения в основной БД----------------------------------------------//
     private fun messageFromDataBase(
-        textMessageString: String,
-        message: String
+            textMessageString: String,
+            message: String
     ): String {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         var messages = message
         val listMessages = ArrayList<String>()
@@ -135,18 +136,18 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
                 if (DatabaseEntity.database.botData[countDB].request.toLowerCase() == textMessageString.toLowerCase()) {  // сравниваем нижний регистр
                     listMessages.add(DatabaseEntity.database.botData[countDB].response)
                     client.stateBot.findMessage =
-                        true                                                       // совпадение с сообщением найдено
+                            true                                                       // совпадение с сообщением найдено
                 }
                 countDB += 1
             }
             if (client.stateBot.findMessage)
             // если совпадение с сообщением найдено, то
                 messages =
-                    listMessages[client.other().randomId(listMessages.size)]    // выбираем рандомно из найденного сообщение
+                        listMessages[client.other().randomId(listMessages.size)]    // выбираем рандомно из найденного сообщение
             val timeFinishBD = System.currentTimeMillis()
             StatisticsVariable.timeConsumedMillisBD = timeFinishBD - timeStartBD
             StatisticsVariable.countUsedBD =
-                StatisticsVariable.countUsedBD + 1                                              // количество использований бд коляна увеличилось на 1
+                    StatisticsVariable.countUsedBD + 1                                              // количество использований бд коляна увеличилось на 1
             //        System.out.print("время операции по бд коляна= "+ timeConsumedMillisBD + "\n");
         }
         return messages
@@ -154,8 +155,8 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
 
     //-----------------поиск сообщения в большой БД-----------------------------------------------//
     private fun messageFromBigDataBase(
-        textMessageString: String,
-        message: String
+            textMessageString: String,
+            message: String
     ): String {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         var messages = message
         val listMessages = ArrayList<String>()
@@ -167,7 +168,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
                     // сравниваем сообщение и значение в БД
                     listMessages.add(DatabaseEntity.database.bigMessagesData[countDB].response)
                     client.stateBot.findMessage =
-                        true                                                   // совпадение с сообщением найдено
+                            true                                                   // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
                 countDB += 1
@@ -176,7 +177,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
             // если совпадение с сообщением найдено, то
             {
                 messages =
-                    listMessages[client.other().randomId(listMessages.size)]          // выбираем рандомно из найденного сообщение
+                        listMessages[client.other().randomId(listMessages.size)]          // выбираем рандомно из найденного сообщение
             }
         }
         return messages

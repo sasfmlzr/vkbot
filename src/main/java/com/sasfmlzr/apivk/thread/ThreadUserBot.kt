@@ -1,18 +1,19 @@
 package com.sasfmlzr.apivk.thread
 
+import com.database.DatabaseEntity
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.`object`.UserRights
-import com.database.DatabaseEntity
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
-import com.vk.api.sdk.objects.messages.Dialog
+import com.vk.api.sdk.objects.enums.MessagesFilter
+import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
 import java.util.*
 
 class ThreadUserBot(private val client: BotApiClient, private val actor: UserActor) : ThreadBot(),
-    Runnable        //(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
+        Runnable        //(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
 
     private var stoped = false
@@ -74,7 +75,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             var message: String?         // сообщение бота
             var obrachenie = "Колян, "                      //обращение к боту
             message = DatabaseEntity.database.botRandomData[client.other().randomId(DatabaseEntity.database.botRandomData.size)]
-                .response          //сообщение берется из рандомной базы коляна
+                    .response          //сообщение берется из рандомной базы коляна
             /*
            if (textMessageString.equals("")){
                System.out.print("textMessageString = " +textMessageString+ "\n");
@@ -83,37 +84,37 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             val messagesList = createListMessageVK()                   // делается запрос непрочитанных сообщений
             obrachenie = "Колян, "
             StatisticsVariable.timeZaprosFinishSumm =
-                StatisticsVariable.timeZaprosFinishSumm + StatisticsVariable.timeZaprosFinishItogo            // для среднего пинга
+                    StatisticsVariable.timeZaprosFinishSumm + StatisticsVariable.timeZaprosFinishItogo            // для среднего пинга
 
             val userRight: UserRights
 
             if (messagesList.size != 0) {
-                val userID = messagesList[0].message.userId!!               // запись userID пользователя
+                val userID = messagesList[0].lastMessage.peerId!!               // запись userID пользователя
                 DatabaseEntity.database.databaseRequest.addInfoUser(
-                    userID,
-                    actor,
-                    client.vkApiClient
+                        userID,
+                        actor,
+                        client.vkApiClient
                 )       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
                 DatabaseEntity.database.databaseRequest
-                    .addInfoUserRights(userID, actor)    // добавить права пользователю, если нет
+                        .addInfoUserRights(userID, actor)    // добавить права пользователю, если нет
                 val userRightString =
-                    DatabaseEntity.database.databaseRequest
-                        .findUserRights(userID, actor)  // запись права текущего пользователя в ячейку
+                        DatabaseEntity.database.databaseRequest
+                                .findUserRights(userID, actor)  // запись права текущего пользователя в ячейку
                 userRight = UserRights(userRightString)  // наследование прав пользователем
                 //    System.out.print(userRight.getNameRight() + " может админить? -" + userRight.getAdminCommands() + "\n" +
                 //           userRight.getNameRight() + " может писать боту? -" + userRight.getAllowWriteToBot() + "\n");
 
 
-                var textMessageString = messagesList[0].message.body.toLowerCase()       // прием сообщения в переменную
+                var textMessageString = messagesList[0].lastMessage.text.toLowerCase()       // прием сообщения в переменную
                 if (userRight.adminCommands!!) {
                     if (!client.stateBot.botStopped) {     // если совпадение с сообщением не найдено, то
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
 
                             textMessageString = textMessageString.replace(obrachenie.toLowerCase().toRegex(), "")
                             textMessageString =
-                                textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
+                                    textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
                             message = client.messages().commands()
-                                .adminCommandsBot(textMessageString, message!!)         //проверка на команды бота
+                                    .adminCommandsBot(textMessageString, message!!)         //проверка на команды бота
                             if (message != message) {
                                 client.messages().vkSendMessage(actor, message, messagesList)
                                 messagesList.clear()
@@ -127,7 +128,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
                 if (messagesList.size != 0) {                                             // если нет непрочитанных, сообщений, то не выполнять
                     var textMessageString =
-                        messagesList[0].message.body.toLowerCase()       // прием сообщения в переменную              TEST
+                            messagesList[0].lastMessage.text.toLowerCase()       // прием сообщения в переменную              TEST
 
                     //    statmt.execute("SELECT 'login','userID','UserRights' FROM 'UserRights' WHERE login="+actor.getId()+" AND userID="+userID);
                     client.stateBot.reduction = false
@@ -135,23 +136,23 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                         if (textMessageString.contains(obrachenie.toLowerCase())) {
                             textMessageString = textMessageString.replace(obrachenie.toLowerCase().toRegex(), "")
                             message = client.messages().commands().commandsBot(
-                                textMessageString,
-                                message!!,
-                                actor,
-                                messagesList,
-                                client
+                                    textMessageString,
+                                    message!!,
+                                    actor,
+                                    messagesList,
+                                    client
                             )         //проверка на команды бота
                             textMessageString =
-                                textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
+                                    textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
                         }
                     }
                     if (!client.stateBot.reduction) {
                         message = messageFromDataBase(textMessageString, message)       // бд коляна
                         message = messageFromBigDataBase(textMessageString, message!!)    // большая бд
                         client.messages().vkSendMessage(
-                            actor,
-                            message,
-                            messagesList
+                                actor,
+                                message,
+                                messagesList
                         )       // отправка сообщения и пометка его прочитанным
                     } else {
                         Thread.sleep(500)
@@ -163,7 +164,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                     val timeConsumedMilliss = timeFinishFunction - timeStartFunction
                     //            System.out.print("время countSendMessageUser= " + timeConsumedMilliss + "\n");
                     StatisticsVariable.timeItogoMsMinusVK =
-                        timeConsumedMilliss - StatisticsVariable.timeZaprosFinishItogo
+                            timeConsumedMilliss - StatisticsVariable.timeZaprosFinishItogo
                     //            System.out.print("время прохода минус запросвк= " + timeItogoMsMinusVK + "\n");
                 }
                 if (client.stateBot.priostanovka) {
@@ -187,21 +188,22 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
     //-----------------отправка и отслеживание запроса в вк на непрочитанные сообщения-------------------------------//
     @Throws(ClientException::class, ApiException::class)
-    private fun createListMessageVK(): MutableList<Dialog> {
+    private fun createListMessageVK(): MutableList<ConversationWithMessage> {
         val timezaprosstart = System.currentTimeMillis()         // начало запроса непрочитанного запроса
-        val messages = client.vkApiClient!!.messages().getDialogs(actor)                 // Листы сообщений
-            .unread(true)
-            .execute().items
+        val messages = client.vkApiClient.messages().getConversations(actor)                 // Листы сообщений
+                .filter(MessagesFilter.UNREAD)
+                .count(30)
+                .execute().items
         val timezaprosfinish = System.currentTimeMillis()
         StatisticsVariable.timeZaprosFinishItogo =
-            timezaprosfinish - timezaprosstart      // время, затраченное на операцию
+                timezaprosfinish - timezaprosstart      // время, затраченное на операцию
         return messages
     }
 
     //-----------------поиск сообщения в основной БД----------------------------------------------//
     private fun messageFromDataBase(
-        textMessageString: String,
-        message: String?
+            textMessageString: String,
+            message: String?
     ): String? {           //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         var messages: String? = message
         val listMessages = ArrayList<String>()
@@ -211,23 +213,23 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             var countDB = 0
             while (countDB <= (DatabaseEntity.database.botData.size - 1)) {
                 if (DatabaseEntity.database.botData.get(countDB).request.toLowerCase().equals(
-                        textMessageString.toLowerCase()
-                    )
+                                textMessageString.toLowerCase()
+                        )
                 ) {  // сравниваем нижний регистр
                     listMessages.add(DatabaseEntity.database.botData.get(countDB).response)
                     client.stateBot.findMessage =
-                        true                                                           // совпадение с сообщением найдено
+                            true                                                           // совпадение с сообщением найдено
                 }
                 countDB += 1
             }
             if (client.stateBot.findMessage)
             // если совпадение с сообщением найдено, то
                 messages =
-                    listMessages[client.other().randomId(listMessages.size)]    // выбираем рандомно из найденного сообщение
+                        listMessages[client.other().randomId(listMessages.size)]    // выбираем рандомно из найденного сообщение
             val timeFinishBD = System.currentTimeMillis()
             StatisticsVariable.timeConsumedMillisBD = timeFinishBD - timeStartBD
             StatisticsVariable.countUsedBD =
-                StatisticsVariable.countUsedBD + 1                                              // количество использований бд коляна увеличилось на 1
+                    StatisticsVariable.countUsedBD + 1                                              // количество использований бд коляна увеличилось на 1
             //        System.out.print("время операции по бд коляна= "+ timeConsumedMillisBD + "\n");
         }
         return messages
@@ -235,8 +237,8 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
     //-----------------поиск сообщения в большой БД-----------------------------------------------//
     private fun messageFromBigDataBase(
-        textMessageString: String,
-        message: String
+            textMessageString: String,
+            message: String
     ): String {       //РАБОТА С ОСНОВНОЙ ТАБЛИЦЕЙ КОЛЯНА
         var messages = message
         val listMessages = ArrayList<String>()
@@ -263,13 +265,13 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             var countDB = 0
             while (countDB <= DatabaseEntity.database.bigMessagesData.size - 1) {
                 if (DatabaseEntity.database.bigMessagesData.get(countDB).request.toLowerCase().equals(
-                        textMessageString
-                    )
+                                textMessageString
+                        )
                 ) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
                     listMessages.add(DatabaseEntity.database.bigMessagesData.get(countDB).response)
                     client.stateBot.findMessage =
-                        true                                                 // совпадение с сообщением найдено
+                            true                                                 // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
                 countDB = countDB + 1
@@ -278,12 +280,12 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             // если совпадение с сообщением найдено, то
             {
                 messages =
-                    listMessages[client.other().randomId(listMessages.size)]          // выбираем рандомно из найденного сообщение
+                        listMessages[client.other().randomId(listMessages.size)]          // выбираем рандомно из найденного сообщение
             }
             val timeFinishBigBD = System.currentTimeMillis()
             StatisticsVariable.timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
             StatisticsVariable.countUsedBigBD =
-                StatisticsVariable.countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
+                    StatisticsVariable.countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
             //StatisticsWindowController.seriesBigBD.getData().add(new XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD));                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         return messages
