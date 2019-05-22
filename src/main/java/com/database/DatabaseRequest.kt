@@ -137,6 +137,18 @@ class DatabaseRequest(private val statement: Statement) : Database() {
         //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
+
+    @Throws(SQLException::class)
+    fun addRandomMessage(text: String) {
+        println(text)
+
+        statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('$text'); ")
+        // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
+        println("Успешно занесено в БД")
+        //InitDB()
+        //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
+    }   // добавить новый элемент в таблицу
+
     // парсер добавления в таблицу через вк
     @Throws(SQLException::class)
     fun addToDB(word: String, actorId: Int): String {

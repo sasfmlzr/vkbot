@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
+import com.database.DatabaseEntity;
 import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -23,9 +24,11 @@ import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -88,7 +91,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     }
 
     //-----------------ручная отправка сообщения-----------------------------------//
-    public void pushButton() throws ClientException, ApiException {
+    public void pushButton() throws ClientException, ApiException, InterruptedException, SQLException, ClassNotFoundException {
         //     if (!Objects.equals(textMessage.getText(), ""))
         //        StaticModel.INSTANCE.getUserBot().botApiClient().messages().vkSendMessageUser(
         //                StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
@@ -103,35 +106,75 @@ public class BotTabController extends AnchorPane implements Initializable {
                 .userId(useridmessage)
                 .execute().getItems();*/
 
+        List<String> listKolyanMessage = new ArrayList<String>();
+
+////////////////////////////////////////////////////////
         int summDialogs;
+        int countDialogs;
 
         List<ConversationWithMessage> conversationWithMessages = runDialogs(0, actor);
 
-
+/////////////////////////////////////////
         for (int i = 0; i <= conversationWithMessages.size() - 1; i++) {
             ConversationWithMessage dialog = conversationWithMessages.get(i);
 
-            int id;
+            int peerId = dialog.getConversation().getPeer().getId();
 
-            dialog.getConversation().getUnreadCount();
 
-     /*       if(dialog.getMessage().getChatId()==null) {
-                id = dialog.getMessage().getUserId();
-            } else {
-                id = dialog.getMessage().getChatId();
-            }*/
+            Thread.sleep(1000);
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+/////////////////////
+            List<Message> messages = runMessages(peerId, 0, actor);
+            int countMessages = 200;
+            int sizeMessages;
+            do {
+                List<Message> tempMessages = runMessages(peerId, countMessages, actor);
+                messages.addAll(tempMessages);
+                sizeMessages = tempMessages.size();
+                countMessages = countMessages + 200;
+                Thread.sleep(400);
+            } while (sizeMessages != 0);
+//////////////////////
+
+            //   LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault());
+
+            Comparator<Message> comparator = new Comparator<Message>() {
+                @Override
+                public int compare(Message o1, Message o2) {
+                    if (o1.getDate() == null || o2.getDate() == null)
+                        return 0;
+                    LocalDateTime timeo1 = LocalDateTime.ofInstant(Instant.ofEpochSecond(o1.getDate()), ZoneId.systemDefault());
+                    LocalDateTime timeo2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(o2.getDate()), ZoneId.systemDefault());
+                    return timeo1.compareTo(timeo2);
+                }
+            };
+            Collections.sort(messages, comparator);
+
+            for (int j = 0; j <= messages.size() - 1; j++) {
+                int fromID = messages.get(j).getFromId();
+
+                if (fromID == 92330508) { // если это колян
+                    String textMessage = messages.get(j).getText();
+                    LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(messages.get(j).getDate()),
+                            ZoneId.systemDefault());
+
+                    listKolyanMessage.add(textMessage);
+
+                }
             }
-            List<Message> messages = runMessages(0, 0, actor);
 
             System.out.println();
-
-
             //     StaticModel.INSTANCE.getUserBot().getVk().messages().
+        }
+
+        DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
+        DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
+
+        for (int k = 0; k <= listKolyanMessage.size() - 1; k++) {
+            if (!listKolyanMessage.get(k).equals("")) {
+                DatabaseEntity.INSTANCE.getDatabase().getDatabaseRequest().addRandomMessage(listKolyanMessage.get(k));
+            }
         }
     }
 
