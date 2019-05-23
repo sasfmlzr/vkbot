@@ -129,7 +129,6 @@ class DatabaseRequest(private val statement: Statement) : Database() {
         println(request)
         println(response)
 
-
         statement.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  ('$request', '$response', $actorId); ")
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
@@ -142,7 +141,12 @@ class DatabaseRequest(private val statement: Statement) : Database() {
     fun addRandomMessage(text: String) {
         println(text)
 
-        statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('$text'); ")
+        try {
+
+            statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('$text'); ")
+        } catch (e: Exception) {
+            println("wtf")
+        }
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
         //InitDB()

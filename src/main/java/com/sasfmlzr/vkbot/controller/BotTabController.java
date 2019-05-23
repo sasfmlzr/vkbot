@@ -97,9 +97,9 @@ public class BotTabController extends AnchorPane implements Initializable {
         //                StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));
 
 
-        UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
+        // UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
 
-
+        UserActor actor = new UserActor(30562433, "");
 
     /*    StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
                 .count(40)
@@ -109,20 +109,28 @@ public class BotTabController extends AnchorPane implements Initializable {
         List<String> listKolyanMessage = new ArrayList<String>();
 
 ////////////////////////////////////////////////////////
-        int summDialogs;
-        int countDialogs;
+        System.out.println("Start parsing dialog");
+
 
         List<ConversationWithMessage> conversationWithMessages = runDialogs(0, actor);
-
+        int sizeDialogs;
+        int countDialogs = 200;
+        do {
+            List<ConversationWithMessage> tempDialogs = runDialogs(countDialogs, actor);
+            conversationWithMessages.addAll(tempDialogs);
+            sizeDialogs = tempDialogs.size();
+            countDialogs = countDialogs + 200;
+            System.out.println("Processing parsing dialog");
+        } while (sizeDialogs != 0);
+        System.out.println("Parsing dialog completed" + conversationWithMessages.size());
 /////////////////////////////////////////
+        System.out.println("Start parsing messages");
         for (int i = 0; i <= conversationWithMessages.size() - 1; i++) {
             ConversationWithMessage dialog = conversationWithMessages.get(i);
 
             int peerId = dialog.getConversation().getPeer().getId();
 
-
-            Thread.sleep(1000);
-
+            Thread.sleep(500);
 
 /////////////////////
             List<Message> messages = runMessages(peerId, 0, actor);
@@ -133,10 +141,11 @@ public class BotTabController extends AnchorPane implements Initializable {
                 messages.addAll(tempMessages);
                 sizeMessages = tempMessages.size();
                 countMessages = countMessages + 200;
+                System.out.println("Processing parsing messages" + messages.size());
                 Thread.sleep(400);
             } while (sizeMessages != 0);
 //////////////////////
-
+            System.out.println("Finish parsing messages");
             //   LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault());
 
             Comparator<Message> comparator = new Comparator<Message>() {
@@ -150,20 +159,22 @@ public class BotTabController extends AnchorPane implements Initializable {
                 }
             };
             Collections.sort(messages, comparator);
+            System.out.println("Sorted finished");
 
             for (int j = 0; j <= messages.size() - 1; j++) {
                 int fromID = messages.get(j).getFromId();
 
-                if (fromID == 92330508) { // если это колян
+                //92330508 если это колян
+                //96026192 если это ростик
+                if (fromID == 78521993) { // если это колян
                     String textMessage = messages.get(j).getText();
                     LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(messages.get(j).getDate()),
                             ZoneId.systemDefault());
 
                     listKolyanMessage.add(textMessage);
-
                 }
             }
-
+            System.out.println("Fing kolyan messages finished");
             System.out.println();
             //     StaticModel.INSTANCE.getUserBot().getVk().messages().
         }
@@ -179,7 +190,8 @@ public class BotTabController extends AnchorPane implements Initializable {
     }
 
     public List<ConversationWithMessage> runDialogs(int offset, UserActor actor) throws ClientException, ApiException {
-        return StaticModel.INSTANCE.getUserBot().getVk().messages().getConversations(actor)           // записываем в лист результат работы запроса
+        return StaticModel.INSTANCE.getUserBot().getVk().messages().getConversations(actor)
+                .offset(offset)// записываем в лист результат работы запроса
                 .count(200)
                 .execute().getItems();
     }
