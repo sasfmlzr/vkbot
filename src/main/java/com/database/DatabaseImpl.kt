@@ -1,5 +1,6 @@
 package com.database
 
+import com.newapi.Database
 import com.sasfmlzr.apivk.State.databaseLoaded
 import com.sasfmlzr.apivk.`object`.BotDatabase_IdRequest
 import com.sasfmlzr.apivk.`object`.BotDatabase_IdRequestResponse
@@ -9,9 +10,9 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import java.sql.*
 
-open class Database {
+open class DatabaseImpl : Database {
     var conn: Connection? = null          //SQL connection
-     var statmt: Statement? = null
+    var statmt: Statement? = null
 
     var botData = FXCollections.observableArrayList<BotDatabase_IdRequestResponse>()
     var botRandomData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
@@ -22,8 +23,8 @@ open class Database {
     var bigMessagesData = FXCollections.observableArrayList<BotDatabase_RequestResponse>()
     var userRightsData = FXCollections.observableArrayList<UserIdRightsBD>()
 
-    val databaseRequest: DatabaseRequest by lazy {
-        DatabaseRequest(statmt!!)
+    val databaseRequest: DatabaseRequestImpl by lazy {
+        DatabaseRequestImpl(statmt!!)
     }
 
     // --------CONNECTION TO DATABASE--------
@@ -31,10 +32,10 @@ open class Database {
     fun connectDatabase() {
         conn = null
         Class.forName("org.sqlite.JDBC")
-        conn = DriverManager.getConnection("jdbc:sqlite:Database.db")
+        conn = DriverManager.getConnection("jdbc:sqlite:DatabaseImpl.db")
 
         statmt = conn!!.createStatement()
-        println("Database connection!")
+        println("DatabaseImpl connection!")
     }
 
     // --------CLOSE DATABASE--------

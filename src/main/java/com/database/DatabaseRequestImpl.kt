@@ -1,5 +1,6 @@
 package com.database
 
+import com.newapi.DatabaseRequest
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -9,7 +10,7 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-class DatabaseRequest(private val statement: Statement) : Database() {
+class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), DatabaseRequest {
 
     // --------тут красивые запросы--------
 

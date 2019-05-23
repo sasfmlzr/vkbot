@@ -2,6 +2,6 @@ package com.database
 
 object DatabaseEntity {
 
-    val database = Database()
+    val database = DatabaseImpl()
 
 }
