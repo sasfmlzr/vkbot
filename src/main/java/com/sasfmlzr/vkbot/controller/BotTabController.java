@@ -2,6 +2,7 @@ package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
 import com.database.DatabaseEntity;
+import com.newapi.utils.ParseMessageToDB;
 import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -99,116 +100,15 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         // UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
 
-        UserActor actor = new UserActor(30562433, "");
-
-    /*    StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
-                .count(40)
-                .userId(useridmessage)
-                .execute().getItems();*/
-
-        List<String> listKolyanMessage = new ArrayList<String>();
-
-////////////////////////////////////////////////////////
-        System.out.println("Start parsing dialog");
-
-
-        List<ConversationWithMessage> conversationWithMessages = runDialogs(0, actor);
-        int sizeDialogs;
-        int countDialogs = 200;
-        do {
-            List<ConversationWithMessage> tempDialogs = runDialogs(countDialogs, actor);
-            conversationWithMessages.addAll(tempDialogs);
-            sizeDialogs = tempDialogs.size();
-            countDialogs = countDialogs + 200;
-            System.out.println("Processing parsing dialog");
-        } while (sizeDialogs != 0);
-        System.out.println("Parsing dialog completed" + conversationWithMessages.size());
-/////////////////////////////////////////
-        System.out.println("Start parsing messages");
-        for (int i = 0; i <= conversationWithMessages.size() - 1; i++) {
-            ConversationWithMessage dialog = conversationWithMessages.get(i);
-
-            int peerId = dialog.getConversation().getPeer().getId();
-
-            Thread.sleep(500);
-
-/////////////////////
-            List<Message> messages = runMessages(peerId, 0, actor);
-            int countMessages = 200;
-            int sizeMessages;
-            do {
-                List<Message> tempMessages = runMessages(peerId, countMessages, actor);
-                messages.addAll(tempMessages);
-                sizeMessages = tempMessages.size();
-                countMessages = countMessages + 200;
-                System.out.println("Processing parsing messages" + messages.size());
-                Thread.sleep(400);
-            } while (sizeMessages != 0);
-//////////////////////
-            System.out.println("Finish parsing messages");
-            //   LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(date), ZoneId.systemDefault());
-
-            Comparator<Message> comparator = new Comparator<Message>() {
-                @Override
-                public int compare(Message o1, Message o2) {
-                    if (o1.getDate() == null || o2.getDate() == null)
-                        return 0;
-                    LocalDateTime timeo1 = LocalDateTime.ofInstant(Instant.ofEpochSecond(o1.getDate()), ZoneId.systemDefault());
-                    LocalDateTime timeo2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(o2.getDate()), ZoneId.systemDefault());
-                    return timeo1.compareTo(timeo2);
-                }
-            };
-            Collections.sort(messages, comparator);
-            System.out.println("Sorted finished");
-
-            for (int j = 0; j <= messages.size() - 1; j++) {
-                int fromID = messages.get(j).getFromId();
-
-                //92330508 если это колян
-                //96026192 если это ростик
-                if (fromID == 78521993) { // если это колян
-                    String textMessage = messages.get(j).getText();
-                    LocalDateTime timeMessage = LocalDateTime.ofInstant(Instant.ofEpochSecond(messages.get(j).getDate()),
-                            ZoneId.systemDefault());
-
-                    listKolyanMessage.add(textMessage);
-                }
-            }
-            System.out.println("Fing kolyan messages finished");
-            System.out.println();
-            //     StaticModel.INSTANCE.getUserBot().getVk().messages().
-        }
-
         DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
         DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
 
-        for (int k = 0; k <= listKolyanMessage.size() - 1; k++) {
-            if (!listKolyanMessage.get(k).equals("")) {
-                DatabaseEntity.INSTANCE.getDatabase().getDatabaseRequest().addRandomMessage(listKolyanMessage.get(k));
-            }
-        }
-    }
 
-    public List<ConversationWithMessage> runDialogs(int offset, UserActor actor) throws ClientException, ApiException {
-        return StaticModel.INSTANCE.getUserBot().getVk().messages().getConversations(actor)
-                .offset(offset)// записываем в лист результат работы запроса
-                .count(200)
-                .execute().getItems();
-    }
+        UserActor actor = new UserActor(30562433, "");
 
-    public List<Message> runMessages(int peerId, int offset, UserActor actor) {
-        List<Message> messages = new ArrayList<>();
-        try {
-            messages = StaticModel.INSTANCE.getUserBot().getVk().messages().getHistory(actor)
-                    .peerId(peerId)
-                    .offset(offset)
-                    .count(200)
-                    .execute().getItems();
-        } catch (ApiException | ClientException e) {
-            e.printStackTrace();
-        }
-        return messages;
+        ParseMessageToDB parseMessageToDB = new ParseMessageToDB(DatabaseEntity.INSTANCE.getDatabase().getDatabaseRequest());
 
+        parseMessageToDB.parseMessageToDB(actor, 30562433);
     }
 
     //-----------------обновление сообщений----------------------------------------//

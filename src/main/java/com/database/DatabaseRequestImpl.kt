@@ -1,6 +1,6 @@
 package com.database
 
-import com.newapi.DatabaseRequest
+import com.newapi.interfaces.DatabaseRequest
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -139,7 +139,7 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
 
 
     @Throws(SQLException::class)
-    fun addRandomMessage(text: String) {
+    override fun addRandomMessage(text: String) {
         println(text)
 
         try {

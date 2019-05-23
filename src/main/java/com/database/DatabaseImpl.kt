@@ -1,6 +1,6 @@
 package com.database
 
-import com.newapi.Database
+import com.newapi.interfaces.Database
 import com.sasfmlzr.apivk.State.databaseLoaded
 import com.sasfmlzr.apivk.`object`.BotDatabase_IdRequest
 import com.sasfmlzr.apivk.`object`.BotDatabase_IdRequestResponse
