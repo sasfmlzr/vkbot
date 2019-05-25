@@ -5,12 +5,11 @@ import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
+import java.sql.*
 
-import java.sql.ResultSet
-import java.sql.SQLException
-import java.sql.Statement
 
-class DatabaseRequestImpl(private val statement: Statement) : DatabaseRequest {
+class DatabaseRequestImpl(private val statement: Statement,
+                          private val connection: Connection) : DatabaseRequest {
 
     // --------тут красивые запросы--------
 
@@ -130,7 +129,12 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseRequest {
         println(request)
         println(response)
 
-        statement.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  ('$request', '$response', $actorId); ")
+        val requestSQL = ("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  (?, ?, ?); ")
+        val statement = connection.prepareStatement(requestSQL)
+        statement.setString(1, request)
+        statement.setString(2, response)
+        statement.setInt(3, actorId)
+        statement.executeUpdate()
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
         DatabaseEntity.database.InitDB()

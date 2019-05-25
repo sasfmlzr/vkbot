@@ -24,7 +24,7 @@ open class DatabaseImpl : Database {
     var userRightsData = FXCollections.observableArrayList<UserIdRightsBD>()
 
     val databaseRequest: DatabaseRequestImpl by lazy {
-        DatabaseRequestImpl(statmt!!)
+        DatabaseRequestImpl(statmt!!, conn!!)
     }
 
     // --------CONNECTION TO DATABASE--------
