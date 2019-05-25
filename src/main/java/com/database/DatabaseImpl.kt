@@ -32,7 +32,7 @@ open class DatabaseImpl : Database {
     fun connectDatabase() {
         conn = null
         Class.forName("org.sqlite.JDBC")
-        conn = DriverManager.getConnection("jdbc:sqlite:DatabaseImpl.db")
+        conn = DriverManager.getConnection("jdbc:sqlite:Database.db")
 
         statmt = conn!!.createStatement()
         println("DatabaseImpl connection!")

@@ -10,7 +10,7 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), DatabaseRequest {
+class DatabaseRequestImpl(private val statement: Statement) : DatabaseRequest {
 
     // --------тут красивые запросы--------
 
@@ -18,12 +18,12 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
     @Throws(ClientException::class, ApiException::class, SQLException::class)
     fun addInfoUser(userID: Int, actor: UserActor, vk: VkApiClient) {
         val getInfoUserList =
-            vk.users().get(actor).userIds(userID.toString()).execute()       //получает инфу о пользователях
+                vk.users().get(actor).userIds(userID.toString()).execute()       //получает инфу о пользователях
         statement.execute(
-            "INSERT  INTO 'UserVkInformation' ('userID', 'firstName', 'lastName') " +
-                    "SELECT DISTINCT " + userID + ",'" + getInfoUserList[0].firstName + "','" +
-                    getInfoUserList[0].lastName + "' FROM 'UserVkInformation'" +
-                    "WHERE NOT EXISTS (SELECT 'userID' FROM 'UserVkInformation' WHERE userID=" + userID + ");"
+                "INSERT  INTO 'UserVkInformation' ('userID', 'firstName', 'lastName') " +
+                        "SELECT DISTINCT " + userID + ",'" + getInfoUserList[0].firstName + "','" +
+                        getInfoUserList[0].lastName + "' FROM 'UserVkInformation'" +
+                        "WHERE NOT EXISTS (SELECT 'userID' FROM 'UserVkInformation' WHERE userID=" + userID + ");"
         )        // проверка есть ли такая в бд. если нет, то добавить инфу.
     }
 
@@ -31,10 +31,10 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
     @Throws(SQLException::class)
     fun addInfoUserRights(userID: Int, actor: UserActor) {
         statement.execute(
-            "INSERT  INTO 'UserRights' ('login', 'userID', 'nameRight') " +
-                    "SELECT DISTINCT " + actor.id + "," + userID + ",'Пользователь' FROM 'UserRights'" +
-                    "WHERE NOT EXISTS (SELECT 'login','userID' FROM 'UserRights' " +
-                    "WHERE login=" + actor.id + " AND userID=" + userID + ");"
+                "INSERT  INTO 'UserRights' ('login', 'userID', 'nameRight') " +
+                        "SELECT DISTINCT " + actor.id + "," + userID + ",'Пользователь' FROM 'UserRights'" +
+                        "WHERE NOT EXISTS (SELECT 'login','userID' FROM 'UserRights' " +
+                        "WHERE login=" + actor.id + " AND userID=" + userID + ");"
         )      // проверка если прав у пользователя нет, то добавить права пользователя
     }
 
@@ -43,7 +43,7 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
     fun findUserRights(userID: Int, actor: UserActor): String {
         val resSet: ResultSet
         resSet =
-            statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=" + actor.id + " AND userID=" + userID)
+                statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=" + actor.id + " AND userID=" + userID)
         var nameRight = ""
         while (resSet.next()) {
             nameRight = resSet.getString("nameRight")
@@ -71,22 +71,22 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
         statement.execute("CREATE TABLE if not exists 'UserVkInformation' ('userID' INTEGER NOT NULL PRIMARY KEY ON CONFLICT FAIL, " + "'firstName' TEXT, 'lastName' TEXT, 'countMessages' INTEGER DEFAULT (0), 'countError' INTEGER DEFAULT (0));")
         // UserRights
         statement.execute(
-            "CREATE TABLE if not exists 'UserRights' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "'login' TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL, " +
-                    "'userID' TEXT    REFERENCES 'UserVkInformation' ('userID') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL, " +
-                    "'nameRight' TEXT    REFERENCES 'NameRights' ('nameRight') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL);"
+                "CREATE TABLE if not exists 'UserRights' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "'login' TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL, " +
+                        "'userID' TEXT    REFERENCES 'UserVkInformation' ('userID') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL, " +
+                        "'nameRight' TEXT    REFERENCES 'NameRights' ('nameRight') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL);"
         )
         // StatisticsBot
         statement.execute(
-            "CREATE TABLE if not exists 'StatisticsBot' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    "'Login'      TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL," +
-                    "'Error' TEXT, 'countError' INTEGER, 'date' DATE);"
+                "CREATE TABLE if not exists 'StatisticsBot' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "'Login'      TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL," +
+                        "'Error' TEXT, 'countError' INTEGER, 'date' DATE);"
         )
         // BotMessages
         statement.execute(
-            "CREATE TABLE if not exists 'BotMessages' ('id' INTEGER NOT NULL UNIQUE PRIMARY KEY ASC AUTOINCREMENT, " +
-                    "'requesttextbot' CHAR NOT NULL, 'responsetextbot' CHAR  NOT NULL,  " +
-                    "'Login' TEXT REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL);"
+                "CREATE TABLE if not exists 'BotMessages' ('id' INTEGER NOT NULL UNIQUE PRIMARY KEY ASC AUTOINCREMENT, " +
+                        "'requesttextbot' CHAR NOT NULL, 'responsetextbot' CHAR  NOT NULL,  " +
+                        "'Login' TEXT REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL);"
         )
 
         println("Таблица создана или уже существует.")
@@ -106,9 +106,9 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
 
         // NorkinForewer
         statement.execute(
-            "CREATE TABLE if not exists 'NorkinForewer' ('id' INTEGER UNIQUE PRIMARY KEY ASC AUTOINCREMENT NOT NULL, " +
-                    "'requesttextbot' CHAR    NOT NULL, 'responsetextbot' CHAR    NOT NULL, " +
-                    "'Login' TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL DEFAULT (294987132));"
+                "CREATE TABLE if not exists 'NorkinForewer' ('id' INTEGER UNIQUE PRIMARY KEY ASC AUTOINCREMENT NOT NULL, " +
+                        "'requesttextbot' CHAR    NOT NULL, 'responsetextbot' CHAR    NOT NULL, " +
+                        "'Login' TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL DEFAULT (294987132));"
         )
 
         // StatusMessages
@@ -133,7 +133,7 @@ class DatabaseRequestImpl(private val statement: Statement) : DatabaseImpl(), Da
         statement.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login')  VALUES  ('$request', '$response', $actorId); ")
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
-        InitDB()
+        DatabaseEntity.database.InitDB()
         //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
