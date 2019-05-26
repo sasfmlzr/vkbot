@@ -164,7 +164,7 @@ class DatabaseRequestImpl(private val statement: Statement,
 
         var firstWord = ""
         var secondWord = ""
-        val chars = CharArray(50)
+        val chars = CharArray(550)
         var first = false
         var second = false
         var boolfirst = true
