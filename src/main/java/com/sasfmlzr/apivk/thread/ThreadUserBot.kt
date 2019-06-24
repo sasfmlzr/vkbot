@@ -93,7 +93,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                 DatabaseEntity.database.databaseRequest.addInfoUser(
                         userID,
                         actor,
-                        client.vkApiClient
+                        client.vk
                 )       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
                 DatabaseEntity.database.databaseRequest
                         .addInfoUserRights(userID, actor)    // добавить права пользователю, если нет
@@ -190,7 +190,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
     @Throws(ClientException::class, ApiException::class)
     private fun createListMessageVK(): MutableList<ConversationWithMessage> {
         val timezaprosstart = System.currentTimeMillis()         // начало запроса непрочитанного запроса
-        val messages = client.vkApiClient.messages().getConversations(actor)                 // Листы сообщений
+        val messages = client.vk.messages().getConversations(actor)                 // Листы сообщений
                 .filter(MessagesFilter.UNREAD)
                 .count(30)
                 .execute().items

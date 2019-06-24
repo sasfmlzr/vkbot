@@ -112,7 +112,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
         val timezaprosstart = System.currentTimeMillis()         // начало запроса непрочитанного запроса
 
         //client.getVkApiClient().messages().send(actor).userId(30562433).randomId(234).message("fdffgf").execute();
-        val messages = client.vkApiClient!!.messages().getConversations(actor)                 // Листы сообщений
+        val messages = client.vk.messages().getConversations(actor)                 // Листы сообщений
                 .filter(MessagesFilter.UNANSWERED)
                 .execute().items
         val timezaprosfinish = System.currentTimeMillis()

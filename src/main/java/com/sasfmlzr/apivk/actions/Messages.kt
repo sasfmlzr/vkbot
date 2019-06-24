@@ -12,38 +12,38 @@ open class Messages(client: BotApiClient) : AbstractAction(client) {
 
     @Throws(ClientException::class, ApiException::class)
     fun vkSendMessage(actor: UserActor, message: String, messagesList: List<ConversationWithMessage>) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vkSendMessage(actor, message, messagesList, super.client.vkApiClient)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vkSendMessage(actor, message, messagesList, super.client.vk)
     }
 
     @Throws(ClientException::class, ApiException::class)
     fun vksendImageMessages(actor: UserActor, messagesList: List<ConversationWithMessage>) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vksendImageMessages(actor, messagesList, super.client.vkApiClient)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vksendImageMessages(actor, messagesList, super.client.vk)
     }
 
     @Throws(ClientException::class, ApiException::class)
     fun vkSendMessageUser(actor: UserActor, message: String, userID: Int) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vkSendMessageUser(actor, message, userID, super.client.vkApiClient!!)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vkSendMessageUser(actor, message, userID, super.client.vk)
     }
 
     @Throws(ClientException::class, ApiException::class)
     fun vkSendMessage(actor: GroupActor, message: String, messagesList: List<ConversationWithMessage>) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vkSendMessage(actor, message, messagesList, super.client.vkApiClient)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vkSendMessage(actor, message, messagesList, super.client.vk)
     }
 
     @Throws(ClientException::class, ApiException::class)
     fun vksendImageMessages(actor: GroupActor, messagesList: List<ConversationWithMessage>) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vksendImageMessages(actor, messagesList, super.client.vkApiClient)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vksendImageMessages(actor, messagesList, super.client.vk)
     }
 
     @Throws(ClientException::class, ApiException::class)
     fun vkSendMessageUser(actor: GroupActor, message: String, userID: Int) {
-        com.sasfmlzr.apivk.functions.message.Messages(client.vkApiClient)
-                .vkSendMessageUser(actor, message, userID, super.client.vkApiClient!!)
+        com.sasfmlzr.apivk.functions.message.Messages(client.vk, actor)
+                .vkSendMessageUser(actor, message, userID, super.client.vk)
     }
 
     fun commands(): Commands {

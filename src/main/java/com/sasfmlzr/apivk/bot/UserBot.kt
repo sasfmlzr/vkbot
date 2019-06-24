@@ -7,14 +7,12 @@ import com.vk.api.sdk.objects.users.Fields
 import javafx.embed.swing.SwingFXUtils
 import javax.imageio.ImageIO
 
-class UserBot(vkApiClient: VkApiClient, var actor: UserActor) : AbstractBot() {
-    private val threadUserBot: ThreadUserBot
+class UserBot(vk: VkApiClient, actor: UserActor) : AbstractBot(vk, actor) {
+    private val threadUserBot: ThreadUserBot = ThreadUserBot(botApiClient(), actor)
 
     init {
-        vk = vkApiClient
-        threadUserBot = ThreadUserBot(botApiClient(), actor)
         try {
-            val botSelfInfo = vk!!.users().get(actor).fields(Fields.PHOTO_200).execute()[0]
+            val botSelfInfo = vk.users().get(actor).fields(Fields.PHOTO_200).execute()[0]
             userID = botSelfInfo.id
             botName = botSelfInfo.firstName + " " + botSelfInfo.lastName
             val daffyDuckImage = ImageIO.read(botSelfInfo.photo200)

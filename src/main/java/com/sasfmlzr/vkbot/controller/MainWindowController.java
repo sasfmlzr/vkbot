@@ -270,8 +270,4 @@ public class MainWindowController extends AnchorPane implements Initializable {
         Platform.exit();
         System.exit(0);
     }
-
-
 }
-
-

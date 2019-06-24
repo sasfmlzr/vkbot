@@ -15,14 +15,13 @@ public class BotTaskWindowController implements Initializable {
     final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml";
 
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("BotTaskWindowController opened");
     }
 
     void initWindow() {
     }
 
-
     public void zapros() throws Exception {
-
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
         String mam = Client.Companion.getToken();

@@ -4,6 +4,7 @@ import com.sasfmlzr.apivk.`object`.StatisticsVariable.countSendMessage
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeItogoSendMessage
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.VkApiClient
+import com.vk.api.sdk.client.actors.Actor
 import com.vk.api.sdk.client.actors.GroupActor
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -13,7 +14,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class Messages(vk: VkApiClient) : BotApiClient(vk) {
+class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
 
     //-----------------отправить сообщения без разницы кому, отметка о том, что сообщение прочитано и отслеживание времени, затраченного на отправку------------------------//
     @Throws(ClientException::class, ApiException::class)

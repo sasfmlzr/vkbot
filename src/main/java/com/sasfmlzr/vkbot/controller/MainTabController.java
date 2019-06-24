@@ -36,6 +36,4 @@ public class MainTabController extends AnchorPane implements Initializable {
 			e.printStackTrace();
 		}*/
     }
-
-
 }

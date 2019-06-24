@@ -51,21 +51,18 @@ public class BotCardController extends AnchorPane implements Initializable {
     @FXML
     private Label nameBot;
 
-    public void initWindow() {
-    }
-
-    public void setavatar(Image image) {
+    private void setavatar(Image image) {
         avatar.setImage(image);
     }
 
-    public void settext(String text) {
+    private void settext(String text) {
         nameBot.setText(text);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void recursion() throws SQLException, ClassNotFoundException {
+    private void recursion() throws SQLException, ClassNotFoundException {
         StatisticsVariable.INSTANCE.setCountSendMessageUser(0);
         StatisticsVariable.INSTANCE.setCountSendMessage(0);
         StatisticsVariable.INSTANCE.setTimeZaprosFinishSumm(0);
@@ -119,7 +116,6 @@ public class BotCardController extends AnchorPane implements Initializable {
             StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(false);
         }
     }
-
 
     @FXML
     private void onLoad() {

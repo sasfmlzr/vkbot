@@ -25,7 +25,6 @@
       <Button layoutX="482.0" layoutY="489.0" mnemonicParsing="false" onAction="#requestMessage" prefHeight="30.0" prefWidth="219.0" stylesheets="@dark.css" text="Обновить сообщения" />
       <Button layoutX="182.0" layoutY="296.0" mnemonicParsing="false" stylesheets="@dark.css" text="Переопределить токен" visible="false" AnchorPane.bottomAnchor="119.0" />
       <ImageView fx:id="imageTest" fitHeight="150.0" fitWidth="200.0" layoutX="436.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-      <Button layoutX="309.0" layoutY="358.0" mnemonicParsing="false" onAction="#test" stylesheets="@dark.css" text="Button" />
       <FlowPane fx:id="botCardPane" layoutX="720.0" layoutY="14.0" prefHeight="251.0" prefWidth="306.0" />
    </children>
 </fx:root>

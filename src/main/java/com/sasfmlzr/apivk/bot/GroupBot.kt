@@ -7,16 +7,14 @@ import com.vk.api.sdk.objects.users.Fields
 import javafx.embed.swing.SwingFXUtils
 import javax.imageio.ImageIO
 
-class GroupBot(vkApiClient: VkApiClient, var actor: GroupActor) : AbstractBot() {
-    private val threadGroupBot: ThreadGroupBot
+class GroupBot(vk: VkApiClient, actor: GroupActor) : AbstractBot(vk, actor) {
+    private val threadGroupBot: ThreadGroupBot = ThreadGroupBot(botApiClient(), actor)
 
     init {
-        vk = vkApiClient
-        threadGroupBot = ThreadGroupBot(botApiClient(), actor)
         try {
-            val listCounters = vk!!.users().get(actor)
+            val listCounters = vk.users().get(actor)
                     .fields(Fields.PHOTO_200).execute()
-            if (!listCounters.isEmpty()) {
+            if (listCounters.isNotEmpty()) {
                 val botSelfInfo = listCounters[0]
                 userID = botSelfInfo.id
                 botName = botSelfInfo.firstName + " " + botSelfInfo.lastName
