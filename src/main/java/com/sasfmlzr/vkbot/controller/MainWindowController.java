@@ -135,10 +135,10 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuLogOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), LogWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), LogWindowController.Companion.getResourcePath());
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + LogWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + LogWindowController.Companion.getFxmlPath()), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
@@ -181,9 +181,9 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuPropertiesOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), PropertiesProgramWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), PropertiesProgramWindowController.Companion.getResourcePath());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + PropertiesProgramWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + PropertiesProgramWindowController.Companion.getFxmlPath()), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();

@@ -82,10 +82,6 @@ public class IntroductionWindowController extends Application implements Initial
             Platform.exit();
             System.exit(0);
         });
-        test();
-    }
-
-    private void test() {
     }
 
     public void initialize(URL location, ResourceBundle resources) {

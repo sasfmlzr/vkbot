@@ -63,10 +63,10 @@ public class VkBot extends Application {
         //      java.util.prefs.Preferences prefs = new IniPreferences(ini);
         System.out.println("Настройки успешно инициализировались");
         assert ini != null;
-        PropertiesProgramWindowController.token1 = ini.get("TokenBots", "Token1");
-        PropertiesProgramWindowController.userId1 = ini.get("TokenBots", "UserId1");
-        PropertiesProgramWindowController.mode1 = ini.get("ModeWorking", "Mode1");
-        PropertiesProgramWindowController.mode2 = ini.get("ModeWorking", "Mode2");
+        PropertiesProgramWindowController.Companion.setToken1(ini.get("TokenBots", "Token1"));
+        PropertiesProgramWindowController.Companion.setUserId1(ini.get("TokenBots", "UserId1"));
+        PropertiesProgramWindowController.Companion.setMode1(ini.get("ModeWorking", "Mode1"));
+        PropertiesProgramWindowController.Companion.setMode2(ini.get("ModeWorking", "Mode2"));
 
 
     }
