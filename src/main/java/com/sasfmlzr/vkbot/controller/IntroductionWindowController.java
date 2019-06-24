@@ -6,15 +6,11 @@ import com.api.util.sig4j.signal.Signal0;
 import com.api.util.sig4j.signal.Signal1;
 import com.api.util.sig4j.signal.Signal2;
 import com.sasfmlzr.vkbot.VkBot;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +34,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class IntroductionWindowController extends Application implements Initializable {
+
+    private LoginWindowPresenter loginWindowPresenter = new LoginWindowPresenter();
 
     private final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.IntroductionWindow.messages";
     private final static String fxmlPath = "/com/sasfmlzr/vkbot/views/IntroductionWindow.fxml";
@@ -101,9 +99,7 @@ public class IntroductionWindowController extends Application implements Initial
 
         initClient();
         initClientThread();
-        initTaskStage();        // вызов формы при успехе
-
-
+        taskStage = loginWindowPresenter.createTaskStage();       // вызов формы при успехе
     }
 
     private static int stageIntroduction = 0;
@@ -118,9 +114,6 @@ public class IntroductionWindowController extends Application implements Initial
     }
 
     private State state = State.NONE;
-    private final Signal1<String> sendCaptcha = new Signal1<>();
-    private final Signal2<String, String> sendData = new Signal2<>();
-    private final Signal0 sendPhoneConfirmed = new Signal0();
     private Stage taskStage;
     private Runnable clientRunnable;
     private Thread clientThread;
@@ -135,9 +128,9 @@ public class IntroductionWindowController extends Application implements Initial
         client.getOnSuspectLogin().connect(this::onSuspectLogin);
         client.getOnSuccess().connect(this::onSuccess);
 
-        sendCaptcha.connect(client::receiveCaptcha);
-        sendData.connect(client::receiveData);
-        sendPhoneConfirmed.connect(client::receivePhoneConfirmed);
+        loginWindowPresenter.getSendCaptcha().connect(client::receiveCaptcha);
+        loginWindowPresenter.getSendData().connect(client::receiveData);
+        loginWindowPresenter.getSendPhoneConfirmed().connect(client::receivePhoneConfirmed);
     }
 
     private void initClientThread() {
@@ -166,31 +159,6 @@ public class IntroductionWindowController extends Application implements Initial
         };
         clientThread = new Thread(clientRunnable);
     }
-
-
-    private void initTaskStage() {
-        try {
-            ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), BotTaskWindowController.resourcePath);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(BotTaskWindowController.fxmlPath), bundle);
-            AnchorPane pane = loader.load();
-
-            taskStage = new Stage();
-
-            Scene scene = new Scene(pane);
-            scene.setRoot(pane);
-
-            taskStage.setScene(scene);
-            taskStage.setResizable(false);
-
-            BotTaskWindowController ctrl = loader.getController();
-            ctrl.initWindow();
-
-            taskStage.setTitle("Set api.bot task");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
 
     private void reloadThread() {
         clientThread.interrupt();
@@ -264,17 +232,16 @@ public class IntroductionWindowController extends Application implements Initial
                     loadingImage.setVisible(true);
 
                     state = State.LOGGING_IN;
-
-
                 }
                 break;
             }
-            case LOGGING_IN: {
+            case LOGGING_IN:
+            case CONFIRM_PHONE: {
                 break;
             }
             case NEED_CAPTCHA: {
                 if (!Objects.equals(captchaKey.getText(), "")) {
-                    sendCaptcha.emit(captchaKey.getText());
+                    loginWindowPresenter.getSendCaptcha().emit(captchaKey.getText());
                     loadingImage.setVisible(true);
                     state = State.LOGGING_IN;
                 }
@@ -282,13 +249,10 @@ public class IntroductionWindowController extends Application implements Initial
             }
             case INVALID_DATA: {
                 if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), "")) {
-                    sendData.emit(login.getText(), password.getText());
+                    loginWindowPresenter.getSendData().emit(login.getText(), password.getText());
                     loadingImage.setVisible(true);
                     hideWarningAnimation();
                 }
-                break;
-            }
-            case CONFIRM_PHONE: {
                 break;
             }
             case SUCCESS: {
@@ -335,55 +299,23 @@ public class IntroductionWindowController extends Application implements Initial
         state = State.INVALID_DATA;
     }
 
+    // --------Для успешного подтверждения телефона-------- //
+    private LoginWindowPresenter.OnReceiveBrowserResult onReceiveBrowserResult = isReceive -> phoneConfirmationResult = isReceive;
+
     // --------Требуется подтвердить номер телефона-------- //
     private void onSuspectLogin(String URL) {
         try {
             statusText.setText("Требуется подтверждение номера телефона.");
-            showBrowserDialog(URL);
+            loginWindowPresenter.showBrowserDialog(root.getScene().getWindow(), URL, onReceiveBrowserResult);
 
             if (phoneConfirmationResult) {
-                sendPhoneConfirmed.emit();
+                loginWindowPresenter.getSendPhoneConfirmed().emit();
             } else {
                 Platform.runLater(() -> root.getScene().getWindow().hide());
             }
         } catch (Exception ignored) {
 
         }
-    }
-
-    // --------Показать форму после диалога-------- //
-    private void showBrowserDialog(String URL) throws IOException {
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), BrowserDialogWindowController.resourcePath);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(BrowserDialogWindowController.fxmlPath), bundle);
-        AnchorPane pane;
-
-        pane = loader.load();
-
-        Stage browserStage = new Stage();
-
-        Scene scene = new Scene(pane);
-        scene.setRoot(pane);
-
-        browserStage.setScene(scene);
-        browserStage.setResizable(false);
-
-        browserStage.initModality(Modality.WINDOW_MODAL);
-        browserStage.initOwner(root.getScene().getWindow());
-
-        BrowserDialogWindowController ctrl = loader.getController();
-        ctrl.initWindow();
-        ctrl.setURL(URL);
-
-        ctrl.sendBrowserResult.connect(this::receiveBrowserResult);
-
-        browserStage.setTitle(bundle.getString("BrowserDialogWindow.title.text"));
-
-        Platform.runLater(browserStage::show);
-    }
-
-    // --------Для успешного подтверждения телефона-------- //
-    private void receiveBrowserResult(Boolean success) {
-        phoneConfirmationResult = success;
     }
 
     // --------Если успешно подстверждено-------- //
@@ -404,110 +336,21 @@ public class IntroductionWindowController extends Application implements Initial
 
     // --------Анимация-------- //
     private void showWarningAnimation() {
-        showOrHide(true, 0, 45, statusPane);
+        loginWindowPresenter.showOrHide(grid, true, 0, 45, statusPane);
     }
 
     // --------Анимация-------- //
     private void showCaptchaAnimation() {
-        showOrHide(true, 3, 111, captchaImage, captchaKey);
+        loginWindowPresenter.showOrHide(grid, true, 3, 111, captchaImage, captchaKey);
     }
 
     // --------Анимация-------- //
     private void hideWarningAnimation() {
-        showOrHide(false, 0, 45, statusPane);
+        loginWindowPresenter.showOrHide(grid, false, 0, 45, statusPane);
     }
 
     // --------Анимация-------- //
     private void hideCaptchaAnimation() {
-        showOrHide(false, 3, 111, captchaImage, captchaKey);
+        loginWindowPresenter.showOrHide(grid, false, 3, 111, captchaImage, captchaKey);
     }
-
-    // --------Анимация-------- //
-    private void showOrHide(boolean show, int gridIndex, int maxHeight, Node... nodes) {
-        KeyFrame start;
-        KeyFrame end;
-
-        boolean expanded = nodes[0].visibleProperty().get();
-
-        if (expanded && !show) {
-            start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
-            end = new KeyFrame(Duration.millis(200), new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
-
-            for (Node n : nodes) {
-                n.setVisible(false);
-                n.setManaged(false);
-            }
-        } else if (!expanded && show) {
-            start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
-            end = new KeyFrame(Duration.millis(200), new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
-        } else {
-            start = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), 0));
-            end = new KeyFrame(Duration.ZERO, new KeyValue(grid.getRowConstraints().get(gridIndex).prefHeightProperty(), maxHeight));
-        }
-
-        Timeline timeline = new Timeline(start, end);
-
-        timeline.setOnFinished(event -> {
-            if (!expanded && show)
-                for (Node n : nodes) {
-                    n.setVisible(true);
-                    n.setManaged(true);
-                }
-        });
-        timeline.play();
-    }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

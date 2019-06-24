@@ -222,10 +222,6 @@ class Client : Serializable {
 
         val headerLocation = response!!.getFirstHeader("location").value
         token = headerLocation.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
-
-        //	System.out.print(me.ID()+ "/n");
-
-
     }
 
     @Throws(Exception::class)

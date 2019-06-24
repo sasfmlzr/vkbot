@@ -22,11 +22,6 @@ public abstract class Signal {
         DISPATCHER.start();
     }
 
-    /**
-     * Indicates whether a signal is enabled/disabled.
-     * @see #enable()
-     * @see #disable()
-     */
     private final AtomicBoolean enabled = new AtomicBoolean(true);
 
     /**
@@ -49,23 +44,6 @@ public abstract class Signal {
      */
     private final Queue<DispatcherAssociation> dispatched =
             new ConcurrentLinkedDeque<>();
-
-    /**
-     * Enables the signal.
-     * @see #disable()
-     */
-    public void enable() {
-        enabled.set(true);
-    }
-
-    /**
-     * Disables the signal. A disabled signal will not actuate its connected
-     * slots.
-     * @see #enable()
-     */
-    public void disable() {
-        enabled.set(false);
-    }
 
     /**
      * Removes all connected slots. Clearing a signal is not an atomic

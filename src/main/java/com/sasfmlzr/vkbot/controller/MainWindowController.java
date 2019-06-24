@@ -42,19 +42,26 @@ public class MainWindowController extends AnchorPane implements Initializable {
     private final String fxmlPath = "/com/sasfmlzr/vkbot/views/MainWindow.fxml";
 
     public MainWindowController() {
+        initClass(true);
+    }
 
+    private void initClass(Boolean isRussianLanguage){
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         loader.setRoot(this);
         loader.setController(this);
-        resources = VkBot.loadLocale(new Locale("ru", "RU"), resourcePath);
+        if (isRussianLanguage){
+            resources = VkBot.loadLocale(new Locale("ru", "RU"), resourcePath);
+        } else  {
+            resources = VkBot.loadLocale(new Locale("en", "US"), resourcePath);
+        }
         loader.setResources(resources);
         try {
             loader.load();
+            System.out.println();
         } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -115,21 +122,15 @@ public class MainWindowController extends AnchorPane implements Initializable {
     private class LangChangeHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent evt) {
             if (evt.getSource().equals(menuLangEn)) {
-                resources = VkBot.loadLocale(new Locale("en", "US"), resourcePath);
+                reload(false);
             } else if (evt.getSource().equals(menuLangRu)) {
-                resources = VkBot.loadLocale(new Locale("ru", "RU"), resourcePath);
-            }
-            try {
-                reload();
-            } catch (IOException e) {
-                e.printStackTrace();
+                reload(true);
             }
         }
     }
 
-    private void reload() throws IOException {
-        Scene scene = root.getScene();
-        scene.setRoot(FXMLLoader.load(getClass().getResource(fxmlPath), resources));
+    private void reload(Boolean isRussianLanguage) {
+        initClass(isRussianLanguage);
     }
 
     @FXML
@@ -158,10 +159,10 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuAboutOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), AboutProgramWindowController.Companion.getResourcePath());
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), AboutProgramWindowController.resourcePath);
 
         //FXMLLoader loader = new FXMLLoader(getClass().getResource(AboutProgramWindowController.fxmlPath), bundle);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + AboutProgramWindowController.Companion.getFxmlPath()), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + AboutProgramWindowController.fxmlPath), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();

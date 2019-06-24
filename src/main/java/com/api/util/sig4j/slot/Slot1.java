@@ -13,12 +13,4 @@ import java.util.Objects;
 public interface Slot1<T> extends Slot {
 
     void accept(final T t);
-
-    default Slot1<T> andThen(final Slot1<? super T> after) {
-        Objects.requireNonNull(after);
-        return (t) -> {
-            accept(t);
-            after.accept(t);
-        };
-    }
 }

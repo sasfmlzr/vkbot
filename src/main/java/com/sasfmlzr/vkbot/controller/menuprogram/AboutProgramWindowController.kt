@@ -10,8 +10,8 @@ import java.util.*
 
 class AboutProgramWindowController : Initializable {
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.AboutProgramWindow.messages"
-        val fxmlPath = "AboutProgramWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.AboutProgramWindow.messages"
+        const val fxmlPath = "AboutProgramWindow.fxml"
     }
 
     @FXML
