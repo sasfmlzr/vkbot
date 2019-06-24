@@ -1,7 +1,5 @@
 package com.sasfmlzr.apivk.client
 
-import java.sql.ResultSet
-
 class StateBot {
 
     var countSleep = 0              // Thread sleeping

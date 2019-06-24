@@ -10,7 +10,12 @@ abstract class AbstractBot constructor(var vk: VkApiClient, var actor: Actor) {
     var botName: String? = null
     var botImage: Image? = null
 
+    lateinit var bot: BotApiClient
+
     fun botApiClient(): BotApiClient {
-        return BotApiClient(vk, actor)
+        if (!::bot.isInitialized) {
+            bot = BotApiClient(vk, actor)
+        }
+        return bot
     }
 }

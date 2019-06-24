@@ -1,22 +1,20 @@
-package com.sasfmlzr.vkbot.controller;
+package com.sasfmlzr.vkbot.controller
 
-import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
+import javafx.fxml.Initializable
+import javafx.scene.layout.AnchorPane
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.net.URL
+import java.util.ResourceBundle
 
-public class MainTabController extends AnchorPane implements Initializable {
-    //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
-    final static String fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml";
+class MainTabController : AnchorPane(), Initializable {
 
     //@FXML private AnchorPane root;
     //@FXML private FlowPane flowPane;
 
-    public void initialize(URL location, ResourceBundle resources) {
+    override fun initialize(location: URL, resources: ResourceBundle) {
 
         //	ResourceBundle bundle = VkBot.loadLocale (Locale.getDefault(), BotCardController.resourcePath);
-		/*
+        /*
 		flowPane.prefWidthProperty().bind(root.widthProperty());
 		flowPane.prefHeightProperty().bind(root.heightProperty());
 
@@ -30,10 +28,15 @@ public class MainTabController extends AnchorPane implements Initializable {
 			flowPane.getChildren().add((Node) FXMLLoader.load(this.getClass().getResource(BotCardController.fxmlPath), bundle));
 			flowPane.getChildren().add((Node) FXMLLoader.load(this.getClass().getResource(BotCardController.fxmlPath), bundle));
 			flowPane.getChildren().add((Node) FXMLLoader.load(this.getClass().getResource(BotCardController.fxmlPath), bundle));
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}*/
+    }
+
+    companion object {
+        //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
+        val fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml"
     }
 }

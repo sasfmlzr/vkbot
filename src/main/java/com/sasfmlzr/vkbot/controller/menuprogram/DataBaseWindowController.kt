@@ -1,52 +1,50 @@
-package com.sasfmlzr.vkbot.controller.menuprogram;
+package com.sasfmlzr.vkbot.controller.menuprogram
 
 
-import com.api.client.Client;
-import com.database.DatabaseEntity;
-import com.sasfmlzr.apivk.object.BotDatabase_IdRequestResponse;
-import com.sasfmlzr.vkbot.StaticModel;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import com.api.client.Client
+import com.database.DatabaseEntity
+import com.sasfmlzr.apivk.`object`.BotDatabase_IdRequestResponse
+import com.sasfmlzr.vkbot.StaticModel
+import javafx.fxml.FXML
+import javafx.fxml.Initializable
+import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.net.URL
+import java.sql.SQLException
+import java.util.Locale
+import java.util.Objects
+import java.util.ResourceBundle
 
-public class DataBaseWindowController implements Initializable {
+class DataBaseWindowController : Initializable {
 
     @FXML
-    private TableView<BotDatabase_IdRequestResponse> tableTextBot;
+    private val tableTextBot: TableView<BotDatabase_IdRequestResponse>? = null
     @FXML
-    private TableColumn<BotDatabase_IdRequestResponse, String> idColumn;
+    private val idColumn: TableColumn<BotDatabase_IdRequestResponse, String>? = null
     @FXML
-    private TableColumn<BotDatabase_IdRequestResponse, String> sendTextMessage;
+    private val sendTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>? = null
     @FXML
-    private TableColumn<BotDatabase_IdRequestResponse, String> requestTextMessage;
+    private val requestTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>? = null
     @FXML
-    private TextField zapros;
+    private val zapros: TextField? = null
     @FXML
-    private TextField otvet;
+    private val otvet: TextField? = null
     @FXML
-    private Button close;
+    private val close: Button? = null
     @FXML
-    private Label textTable;
-    public final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages";
-    public final static String fxmlPath = "DataBaseWindow.fxml";
+    private val textTable: Label? = null
 
 
-    public void initialize(URL location, ResourceBundle resources) {
-    }
+    override fun initialize(location: URL, resources: ResourceBundle) {}
 
-    public void initWindow() throws SQLException {
+    @Throws(SQLException::class)
+    fun initWindow() {
 
-        if (StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().getBotWork()) {
-            textTable.setText("БД:" + "\n");
-       /*     try {
+        if (StaticModel.userBot.botApiClient().stateBot.botWork) {
+            textTable!!.text = "БД:" + "\n"
+            /*     try {
                 ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
                 Effects.init();
 
@@ -71,27 +69,22 @@ public class DataBaseWindowController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
-            refreshTable();
+            refreshTable()
         } else {
-            textTable.setText("Сначала запусти бота" + "\n");
+            textTable!!.text = "Сначала запусти бота" + "\n"
         }
     }
 
 
-    public void start(Stage primaryStage) {
+    fun start(primaryStage: Stage) {
 
-    }
-
-
-    private static ResourceBundle loadLocale(Locale locale, String resourcePath) {
-        Locale.setDefault(locale);
-        return ResourceBundle.getBundle(resourcePath, Locale.getDefault());
     }
 
 
     // при нажатии на обновить таблицу
-    public void refreshTable() throws SQLException {
-/*
+    @Throws(SQLException::class)
+    fun refreshTable() {
+        /*
         System.out.println("UserID = " + "\n");
         for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
         }
@@ -114,19 +107,19 @@ public class DataBaseWindowController implements Initializable {
         System.out.println("Таблица выведена");
 
         */
-      /*  for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
+        /*  for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
         }*/
         // tableTextBot.getItems().clear();
 
         //  connectdatabase;
 
         //   InitDB();
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        sendTextMessage.setCellValueFactory(new PropertyValueFactory<>("response"));
-        requestTextMessage.setCellValueFactory(new PropertyValueFactory<>("request"));
+        idColumn!!.cellValueFactory = PropertyValueFactory("id")
+        sendTextMessage!!.cellValueFactory = PropertyValueFactory("response")
+        requestTextMessage!!.cellValueFactory = PropertyValueFactory("request")
 
-        tableTextBot.setItems(DatabaseEntity.INSTANCE.getDatabase().getBotData());
-        DatabaseEntity.INSTANCE.getDatabase().InitDB();
+        tableTextBot!!.items = DatabaseEntity.database.botData
+        DatabaseEntity.database.InitDB()
 
 
     }
@@ -135,7 +128,7 @@ public class DataBaseWindowController implements Initializable {
      * починить баг дублирования элементов
      */
 
-    public void closeView() {
+    fun closeView() {
 
         //CloseDB();
 
@@ -143,36 +136,41 @@ public class DataBaseWindowController implements Initializable {
         //DataBaseWindowController.setOnCloseRequest(new EventHandler())
 
 
-        Stage stage = (Stage) close.getScene().getWindow();
-        stage.close();
+        val stage = close!!.scene.window as Stage
+        stage.close()
 
     }
 
 
-    public void addElement() throws SQLException {
-        if ((!Objects.equals(zapros.getText(), "")) && (!Objects.equals(otvet.getText(), ""))) {
-            int idBot;
+    @Throws(SQLException::class)
+    fun addElement() {
+        if (zapros!!.text != "" && otvet!!.text != "") {
+            val idBot: Int
             if (Client.actor == null) {
-                idBot = StaticModel.INSTANCE.getUserBot().getActor().getId();
+                idBot = StaticModel.userBot.actor.id!!
             } else
-                idBot = Client.actor.getId();
-            DatabaseEntity.INSTANCE.getDatabase().getStatmt().execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.getText() + "', '" + otvet.getText() + "',  '" + idBot + "');");
-            System.out.println("Таблица заполнена");
-            refreshTable();
+                idBot = Client.actor.id!!
+            DatabaseEntity.database.statmt!!.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.text + "', '" + otvet.text + "',  '" + idBot + "');")
+            println("Таблица заполнена")
+            refreshTable()
         } else {
-            System.out.println("Заполните ячейки");
+            println("Заполните ячейки")
         }
     }   // добавить новый элемент в таблицу
 
+    companion object {
+        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages"
+        val fxmlPath = "DataBaseWindow.fxml"
 
 
+        private fun loadLocale(locale: Locale, resourcePath: String): ResourceBundle {
+            Locale.setDefault(locale)
+            return ResourceBundle.getBundle(resourcePath, Locale.getDefault())
+        }
+    }
+}
 
-
-
-    /*
-
-
-
+/*
     // --------Заполнение таблицы--------
     public static void WriteDB() throws SQLException {
         statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Petya', 125453); ");
@@ -197,4 +195,3 @@ public class DataBaseWindowController implements Initializable {
     }
 
     */
-}

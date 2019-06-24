@@ -66,9 +66,9 @@ public class BotCardController extends AnchorPane implements Initializable {
         StatisticsVariable.INSTANCE.setCountSendMessageUser(0);
         StatisticsVariable.INSTANCE.setCountSendMessage(0);
         StatisticsVariable.INSTANCE.setTimeZaprosFinishSumm(0);
-        StatisticsWindowController.seriesZaprosVk.getData().clear();          //обнуление статистики запросов
-        StatisticsWindowController.seriesItogVk.getData().clear();          //обнуление статистики запросов
-        StatisticsWindowController.seriesThread.getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
+        StatisticsWindowController.Companion.getSeriesZaprosVk().getData().clear();          //обнуление статистики запросов
+        StatisticsWindowController.Companion.getSeriesItogVk().getData().clear();          //обнуление статистики запросов
+        StatisticsWindowController.Companion.getSeriesThread().getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
         if (!State.INSTANCE.getDatabaseLoaded()) {
             DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд

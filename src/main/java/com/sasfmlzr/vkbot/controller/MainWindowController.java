@@ -79,7 +79,7 @@ public class MainWindowController extends AnchorPane implements Initializable {
     private void addMainTab() {
         try {
             AnchorPane pane = new AnchorPane();
-            pane.getChildren().add(FXMLLoader.load(this.getClass().getResource(MainTabController.fxmlPath), resources));
+            pane.getChildren().add(FXMLLoader.load(this.getClass().getResource(MainTabController.Companion.getFxmlPath()), resources));
 
             tabPane.getTabs().get(0).setContent(pane);
             tabPane.getTabs().get(0).setOnClosed(new TabCloseHandler());
@@ -204,9 +204,9 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuStatisticsBot() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), StatisticsWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), StatisticsWindowController.Companion.getResourcePath());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + StatisticsWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + StatisticsWindowController.Companion.getFxmlPath()), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
@@ -226,9 +226,9 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuDatabaseBot() throws IOException, SQLException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), DataBaseWindowController.Companion.getResourcePath());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + DataBaseWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + DataBaseWindowController.Companion.getFxmlPath()), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
