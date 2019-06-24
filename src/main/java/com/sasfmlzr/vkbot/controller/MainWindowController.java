@@ -158,10 +158,10 @@ public class MainWindowController extends AnchorPane implements Initializable {
     @FXML
     private void onMenuAboutOpen() throws IOException {
 
-        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), AboutProgramWindowController.resourcePath);
+        ResourceBundle bundle = VkBot.loadLocale(Locale.getDefault(), AboutProgramWindowController.Companion.getResourcePath());
 
         //FXMLLoader loader = new FXMLLoader(getClass().getResource(AboutProgramWindowController.fxmlPath), bundle);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + AboutProgramWindowController.fxmlPath), bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(menuProgramPath + AboutProgramWindowController.Companion.getFxmlPath()), bundle);
         AnchorPane root = loader.load();
 
         Stage logStage = new Stage();
