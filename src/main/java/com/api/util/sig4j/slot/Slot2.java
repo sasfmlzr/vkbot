@@ -2,8 +2,6 @@ package com.api.util.sig4j.slot;
 
 import com.api.util.sig4j.Slot;
 
-import java.util.Objects;
-
 /**
  * A slot with 2 generic arguments.
  *

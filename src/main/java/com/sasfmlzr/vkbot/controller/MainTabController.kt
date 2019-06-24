@@ -2,9 +2,8 @@ package com.sasfmlzr.vkbot.controller
 
 import javafx.fxml.Initializable
 import javafx.scene.layout.AnchorPane
-
 import java.net.URL
-import java.util.ResourceBundle
+import java.util.*
 
 class MainTabController : AnchorPane(), Initializable {
 

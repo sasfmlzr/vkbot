@@ -2,9 +2,6 @@ package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
 import com.api.util.FileSystem;
-import com.api.util.sig4j.signal.Signal0;
-import com.api.util.sig4j.signal.Signal1;
-import com.api.util.sig4j.signal.Signal2;
 import com.sasfmlzr.vkbot.VkBot;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,9 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;

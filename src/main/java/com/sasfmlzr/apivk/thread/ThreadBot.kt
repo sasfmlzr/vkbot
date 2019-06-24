@@ -1,9 +1,9 @@
 package com.sasfmlzr.apivk.thread
 
-import com.sasfmlzr.apivk.client.BotApiClient
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
+import com.sasfmlzr.apivk.client.BotApiClient
 
- abstract class ThreadBot {
+abstract class ThreadBot {
     //-----------------задержка потока-----------------------------------------------//         //test
     @Throws(InterruptedException::class)
     fun delayThread(messagesList: List<*>, client: BotApiClient) {

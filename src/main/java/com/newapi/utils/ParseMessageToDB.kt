@@ -91,7 +91,7 @@ class ParseMessageToDB constructor(private val databaseRequest: DatabaseRequest)
     private fun getMessages(peerId: Int, offset: Int, actor: UserActor): List<Message> {
         var messages: List<Message> = ArrayList()
         try {
-            messages = StaticModel.userBot.vk!!.messages().getHistory(actor)
+            messages = StaticModel.userBot.vk.messages().getHistory(actor)
                     .peerId(peerId)
                     .offset(offset)
                     .count(200)
@@ -106,7 +106,7 @@ class ParseMessageToDB constructor(private val databaseRequest: DatabaseRequest)
 
     private fun runDialogs(offset: Int, actor: UserActor): List<ConversationWithMessage> {
         try {
-            return StaticModel.userBot.vk!!.messages().getConversations(actor)
+            return StaticModel.userBot.vk.messages().getConversations(actor)
                     .offset(offset)// записываем в лист результат работы запроса
                     .count(200)
                     .execute().items

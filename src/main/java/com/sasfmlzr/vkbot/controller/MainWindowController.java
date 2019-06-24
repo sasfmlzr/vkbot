@@ -45,13 +45,13 @@ public class MainWindowController extends AnchorPane implements Initializable {
         initClass(true);
     }
 
-    private void initClass(Boolean isRussianLanguage){
+    private void initClass(Boolean isRussianLanguage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         loader.setRoot(this);
         loader.setController(this);
-        if (isRussianLanguage){
+        if (isRussianLanguage) {
             resources = VkBot.loadLocale(new Locale("ru", "RU"), resourcePath);
-        } else  {
+        } else {
             resources = VkBot.loadLocale(new Locale("en", "US"), resourcePath);
         }
         loader.setResources(resources);

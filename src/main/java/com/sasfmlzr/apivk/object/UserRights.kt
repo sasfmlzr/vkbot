@@ -1,7 +1,5 @@
 package com.sasfmlzr.apivk.`object`
 
-import java.util.Objects
-
 class UserRights(val nameRight: String) {
 
     var allowWriteToBot: Boolean? = false

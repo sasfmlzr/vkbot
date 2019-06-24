@@ -1,14 +1,12 @@
 package com.sasfmlzr.vkbot.controller
 
 import com.api.client.Client
-import com.vk.api.sdk.client.TransportClient
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.httpclient.HttpTransportClient
 import javafx.fxml.Initializable
-
 import java.net.URL
-import java.util.ResourceBundle
+import java.util.*
 
 class BotTaskWindowController : Initializable {
 

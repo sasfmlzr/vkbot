@@ -12,7 +12,7 @@ import javafx.stage.WindowEvent
 import java.net.URL
 import java.util.*
 
-class BrowserDialogWindowController() : Initializable {
+class BrowserDialogWindowController : Initializable {
     internal val sendBrowserResult = Signal1<Boolean>()
 
     @FXML

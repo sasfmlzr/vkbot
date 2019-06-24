@@ -3,7 +3,6 @@ package com.sasfmlzr.vkbot.controller;
 import com.api.client.Client;
 import com.database.DatabaseEntity;
 import com.newapi.utils.ParseMessageToDB;
-import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.sasfmlzr.vkbot.BotTabPresenter;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -27,10 +26,8 @@ import javafx.scene.layout.FlowPane;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -189,7 +186,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     @FXML
     public void logFill() {
-            textLog.setText(botTabPresenter.fillLog());
+        textLog.setText(botTabPresenter.fillLog());
     }
 }
 

@@ -63,7 +63,7 @@ class StatisticsWindowController : Initializable {
 			}*/
             textLog.appendText("Статистика бота" + "\n")
             seriesZaprosVk.setName("Запрос в вк")
-            seriesZaprosVk.setName("Запрос с отправкой")
+            seriesZaprosVk.name = "Запрос с отправкой"
 
 
             //	timeZaprosVk;
@@ -239,7 +239,7 @@ class StatisticsWindowController : Initializable {
         var seriesThread = XYChart.Series<Int, Int>()
         var seriesBigBD = XYChart.Series<Int, Int>()
     }
-    
+
 }
 
 

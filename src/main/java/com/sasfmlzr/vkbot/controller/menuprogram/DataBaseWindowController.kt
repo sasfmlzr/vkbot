@@ -10,12 +10,9 @@ import javafx.fxml.Initializable
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
-
 import java.net.URL
 import java.sql.SQLException
-import java.util.Locale
-import java.util.Objects
-import java.util.ResourceBundle
+import java.util.*
 
 class DataBaseWindowController : Initializable {
 

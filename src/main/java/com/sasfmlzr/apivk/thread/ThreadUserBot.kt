@@ -122,7 +122,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                             textMessageString =
                                     textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
                             message = client.messages().commands()
-                                    .adminCommandsBot(textMessageString, message!!)         //проверка на команды бота
+                                    .adminCommandsBot(textMessageString, message)         //проверка на команды бота
                             if (message != message) {
                                 client.messages().vkSendMessage(actor, message, messagesList)
                                 messagesList.clear()
@@ -145,7 +145,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                             textMessageString = textMessageString.replace(obrachenie.toLowerCase().toRegex(), "")
                             message = client.messages().commands().commandsBot(
                                     textMessageString,
-                                    message!!,
+                                    message,
                                     actor,
                                     messagesList,
                                     client
@@ -186,9 +186,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             }
 
             /////////////////////////статистика
-            StatisticsWindowController.seriesZaprosVk.getData().add(XYChart.Data(countSendMessageUser, timeZaprosFinishItogo))          //ведение статистики запросов
-            StatisticsWindowController.seriesItogVk.getData().add(XYChart.Data(countSendMessageUser, timeItogoMsMinusVK))          //ведение статистики запросов
-            StatisticsWindowController.seriesThread.getData().add(XYChart.Data(countSendMessageUser, timeDelayThread))                        //ведение статистики задержки потока////здесь иногда ловится исключение
+            StatisticsWindowController.seriesZaprosVk.data.add(XYChart.Data(countSendMessageUser, timeZaprosFinishItogo))          //ведение статистики запросов
+            StatisticsWindowController.seriesItogVk.data.add(XYChart.Data(countSendMessageUser, timeItogoMsMinusVK))          //ведение статистики запросов
+            StatisticsWindowController.seriesThread.data.add(XYChart.Data(countSendMessageUser, timeDelayThread))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         DatabaseEntity.database.CloseDB()         //закрытие бд
         client.stateBot.botWork = false
@@ -294,7 +294,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             StatisticsVariable.timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
             StatisticsVariable.countUsedBigBD =
                     StatisticsVariable.countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
-            StatisticsWindowController.seriesBigBD.getData().add(XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD.toInt()));                        //ведение статистики задержки потока////здесь иногда ловится исключение
+            StatisticsWindowController.seriesBigBD.data.add(XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD.toInt()))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         return messages
     }

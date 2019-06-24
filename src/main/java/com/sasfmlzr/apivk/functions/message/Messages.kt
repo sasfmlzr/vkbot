@@ -141,8 +141,8 @@ class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
             val uploadPhotoMessage = vk.upload().photoMessage(getMessagesUploadServer.uploadUrl.toString(), files[setImage]).execute()
             val saveMessagesPhoto = vk.photos().saveMessagesPhoto(actor, uploadPhotoMessage.photo).server(uploadPhotoMessage.server!!).hash(uploadPhotoMessage.hash).execute()
 
-                val peerID = messagesList[0].lastMessage.peerId!!
-                vk.messages().send(actor).chatId(peerID).attachment("photo" + saveMessagesPhoto[0].ownerId + "_" + saveMessagesPhoto[0].id).randomId(super.other().randomId(8000)).message("Держи бро").execute()
+            val peerID = messagesList[0].lastMessage.peerId!!
+            vk.messages().send(actor).chatId(peerID).attachment("photo" + saveMessagesPhoto[0].ownerId + "_" + saveMessagesPhoto[0].id).randomId(super.other().randomId(8000)).message("Держи бро").execute()
 
             vk.messages().markAsRead(actor).peerId(peerID).execute()         //пометка сообщения прочитанным
         }

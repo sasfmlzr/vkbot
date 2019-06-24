@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 /**
  * This class is necessary to actuate slots connected with
  * {@link Signal#connect(SlotDispatcher, Slot)}, namely dispatched slots.
- *
+ * <p>
  * A dispatched slot is actuated in a separate 'dispatcher' thread, e.g. the
  * GUI thread, the database thread and so on. The idea is to periodically call
  * {@link #waitFor()} and {@link #dispatch()} in a thread of your choice which
@@ -97,7 +97,8 @@ public class SlotDispatcher implements Runnable {
      * {@link #getDispatchingFailed()}. If there is no slot to actuate
      * {@link #dispatch()} omits this callback.
      */
-    private void beforeActuation() {}
+    private void beforeActuation() {
+    }
 
     /**
      * This method is a callback which gets executed by {@link #dispatch()}
@@ -107,7 +108,8 @@ public class SlotDispatcher implements Runnable {
      * {@link #getDispatchingFailed()}. If there is no slot to actuate
      * {@link #dispatch()} omits this callback.
      */
-    private void afterActuation() {}
+    private void afterActuation() {
+    }
 
     /**
      * Returns the signal which gets emitted if actuating a slot failed.

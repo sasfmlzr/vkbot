@@ -1,9 +1,7 @@
 package com.api.util.sig4j.signal;
 
-import com.api.util.sig4j.ConnectionType;
 import com.api.util.sig4j.Signal;
 import com.api.util.sig4j.Slot;
-import com.api.util.sig4j.SlotDispatcher;
 import com.api.util.sig4j.slot.Slot1;
 
 /**
@@ -30,6 +28,6 @@ public class Signal1<T> extends Signal {
     @Override
     @SuppressWarnings("unchecked")
     protected void actuate(final Slot slot, final Object[] args) {
-        ((Slot1<T>) slot).accept((T)args[0]);
+        ((Slot1<T>) slot).accept((T) args[0]);
     }
 }

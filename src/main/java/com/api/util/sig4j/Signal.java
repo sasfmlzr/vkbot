@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The base class of all signals.
- *
+ * <p>
  * Note:
- *  Connecting and emitting slots concurrently is thread safe without blocking.
+ * Connecting and emitting slots concurrently is thread safe without blocking.
  */
 public abstract class Signal {
     /**
@@ -97,7 +97,7 @@ public abstract class Signal {
                 break;
             default:
                 throw new RuntimeException(
-                    "unknown connection type: " + type.toString());
+                        "unknown connection type: " + type.toString());
         }
     }
 
@@ -108,7 +108,7 @@ public abstract class Signal {
      * @param dispatcher The {@link SlotDispatcher} to use.
      * @param slot       The slot to connect.
      * @throws IllegalArgumentException If {@code dispatcher} or
-     *                      {@code slot} is null.
+     *                                  {@code slot} is null.
      */
     protected void connect(final SlotDispatcher dispatcher, final Slot slot) {
         if (dispatcher == null) {
@@ -153,17 +153,16 @@ public abstract class Signal {
 
     /**
      * A callback function used to actuate a single slot.
-     *
+     * <p>
      * The implementer of this function does not need to create any threads
      * but cast down the given slot and actuate it with the given arguments.
-     *
+     * <p>
      * This function should not have any side effects to this class.
      *
      * @param slot The slot to actuate.
      * @param args The arguments of the actuated slot.
      */
     protected abstract void actuate(final Slot slot, final Object[] args);
-
 
 
     /**

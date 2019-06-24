@@ -4,7 +4,7 @@ import com.sasfmlzr.apivk.`object`.StatisticsVariable
 
 class BotTabPresenter {
 
-    fun fillLog() : String{
+    fun fillLog(): String {
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
             var statisticMsg = "Время, затраченное на последнюю операцию запроса непрочитанных сообщений " + StatisticsVariable.timeZaprosFinishItogo + "мс\n" +
                     "Время, затраченное на последние остальные операции " + StatisticsVariable.timeItogoMsMinusVK + "мс\n" +

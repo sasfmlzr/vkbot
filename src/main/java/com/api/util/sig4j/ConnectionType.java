@@ -2,7 +2,7 @@ package com.api.util.sig4j;
 
 /**
  * The enum of supported connection types.
- *
+ * <p>
  * To actuate a slot by a dispatcher ({@link SlotDispatcher}) use
  * {@link Signal#connect(SlotDispatcher, Slot)}.
  *

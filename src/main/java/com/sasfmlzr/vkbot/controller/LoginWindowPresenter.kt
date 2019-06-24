@@ -3,7 +3,6 @@ package com.sasfmlzr.vkbot.controller
 import com.api.util.sig4j.signal.Signal0
 import com.api.util.sig4j.signal.Signal1
 import com.api.util.sig4j.signal.Signal2
-import com.api.util.sig4j.slot.Slot1
 import com.sasfmlzr.vkbot.VkBot
 import javafx.animation.KeyFrame
 import javafx.animation.KeyValue
@@ -21,7 +20,6 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Duration
 import java.io.IOException
-import java.lang.RuntimeException
 import java.util.*
 
 class LoginWindowPresenter {
@@ -98,11 +96,11 @@ class LoginWindowPresenter {
         Platform.runLater { browserStage.show() }
     }
 
-    interface OnReceiveBrowserResult{
+    interface OnReceiveBrowserResult {
         fun onReceiveBrowserResult(isReceive: Boolean)
     }
 
-    fun createTaskStage() : Stage {
+    fun createTaskStage(): Stage {
         try {
             val bundle = VkBot.loadLocale(Locale.getDefault(), BotTaskWindowController.resourcePath)
             val loader = FXMLLoader(javaClass.getResource(BotTaskWindowController.fxmlPath), bundle)

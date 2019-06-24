@@ -1,4 +1,3 @@
 package com.newapi.interfaces
 
-interface Database {
-}
+interface Database
