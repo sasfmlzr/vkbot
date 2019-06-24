@@ -2,13 +2,21 @@ package com.sasfmlzr.apivk.thread
 
 import com.database.DatabaseEntity
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.countSendMessageUser
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.countUsedBigBD
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeConsumedMillisBigBD
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeDelayThread
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeItogoMsMinusVK
+import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeZaprosFinishItogo
 import com.sasfmlzr.apivk.`object`.UserRights
 import com.sasfmlzr.apivk.client.BotApiClient
+import com.sasfmlzr.vkbot.controller.menuprogram.StatisticsWindowController
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.objects.enums.MessagesFilter
 import com.vk.api.sdk.objects.messages.ConversationWithMessage
+import javafx.scene.chart.XYChart
 import java.sql.SQLException
 import java.util.*
 
@@ -178,9 +186,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             }
 
             /////////////////////////статистика
-            //StatisticsWindowController.seriesZaprosVk.getData().add(new XYChart.Data(countSendMessageUser, timeZaprosFinishItogo));          //ведение статистики запросов
-            //StatisticsWindowController.seriesItogVk.getData().add(new XYChart.Data(countSendMessageUser, timeItogoMsMinusVK));          //ведение статистики запросов
-            //StatisticsWindowController.seriesThread.getData().add(new XYChart.Data(countSendMessageUser, timeDelayThread));                        //ведение статистики задержки потока////здесь иногда ловится исключение
+            StatisticsWindowController.seriesZaprosVk.getData().add(XYChart.Data(countSendMessageUser, timeZaprosFinishItogo))          //ведение статистики запросов
+            StatisticsWindowController.seriesItogVk.getData().add(XYChart.Data(countSendMessageUser, timeItogoMsMinusVK))          //ведение статистики запросов
+            StatisticsWindowController.seriesThread.getData().add(XYChart.Data(countSendMessageUser, timeDelayThread))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         DatabaseEntity.database.CloseDB()         //закрытие бд
         client.stateBot.botWork = false
@@ -286,7 +294,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             StatisticsVariable.timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
             StatisticsVariable.countUsedBigBD =
                     StatisticsVariable.countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
-            //StatisticsWindowController.seriesBigBD.getData().add(new XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD));                        //ведение статистики задержки потока////здесь иногда ловится исключение
+            StatisticsWindowController.seriesBigBD.getData().add(XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD.toInt()));                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         return messages
     }

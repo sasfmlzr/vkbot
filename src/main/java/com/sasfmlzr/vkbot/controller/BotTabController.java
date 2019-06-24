@@ -57,7 +57,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     private static ImageView imageTest;
 
-    private com.sasfmlzr.vkbot.BotTabPresenter botTabPresenter;
+    private com.sasfmlzr.vkbot.BotTabPresenter botTabPresenter = new BotTabPresenter();
 
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
     private static int[] userIDmassive = new int[30];                           // массив userID

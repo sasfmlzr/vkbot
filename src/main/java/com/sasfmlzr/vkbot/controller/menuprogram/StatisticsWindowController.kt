@@ -18,7 +18,7 @@ class StatisticsWindowController : Initializable {
     @FXML
     private lateinit var textLog: TextArea
     @FXML
-    lateinit var timeZaprosVk: StackedAreaChart<Int, Int>
+    lateinit var timeZaprosVk: StackedAreaChart<Int, Long>
     @FXML
     lateinit var timeZaprosVkX: NumberAxis
     @FXML
@@ -234,8 +234,8 @@ class StatisticsWindowController : Initializable {
         val fxmlPath = "StatisticsWindow.fxml"
 
 
-        var seriesItogVk = XYChart.Series<Int, Int>()
-        var seriesZaprosVk = XYChart.Series<Int, Int>()
+        var seriesItogVk = XYChart.Series<Int, Long>()
+        var seriesZaprosVk = XYChart.Series<Int, Long>()
         var seriesThread = XYChart.Series<Int, Int>()
         var seriesBigBD = XYChart.Series<Int, Int>()
     }
