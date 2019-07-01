@@ -2,8 +2,6 @@ package com.api.client
 
 import com.api.client.ClientUtils.getAttributeOfElement
 import com.api.client.ClientUtils.hasAttributeValue
-import com.api.util.sig4j.signal.Signal0
-import com.api.util.sig4j.signal.Signal1
 import com.vk.api.sdk.client.actors.UserActor
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.CookieSpecs
@@ -22,14 +20,9 @@ import javax.swing.text.html.HTMLEditorKit
 class Client : Serializable {
     @Transient
     private var httpClient: CloseableHttpClient? = null
-    @Transient
-    val onCaptchaNeeded = Signal1<String>()
-    @Transient
-    val onInvalidData = Signal0()
-    @Transient
-    val onSuspectLogin = Signal1<String>()
-    @Transient
-    val onSuccess = Signal0()
+
+    lateinit var onConnectedListener: OnConnectedListener
+
     private val ID = "5988198"
     private val scope = "friends,photos,audio,video,docs,status,wall,messages,offline"
     private val redirectUri = "https://oauth.vk.com/blank.html"
@@ -43,22 +36,19 @@ class Client : Serializable {
     private var captchaSid = ""
     private var captchaKey = ""
     private var captchaURL = ""
-    private var phoneConfirmed = false
     @Transient
     private var response: CloseableHttpResponse? = null
     private var stringResponse: String? = null
 
-    fun receiveCaptcha(captcha: String) {
-        this.captchaKey = captcha
-    }
+    val onReceiveDataListener =  object: OnReceiveDataListener{
+        override fun onReceiveCaptcha(captcha: String) {
+            this@Client.captchaKey = captcha
+        }
 
-    fun receiveData(email: String, pass: String) {
-        this.login = email
-        this.pass = pass
-    }
-
-    fun receivePhoneConfirmed() {
-        this.phoneConfirmed = true
+        override fun onReceiveData(email: String, pass: String) {
+            this@Client.login = email
+            this@Client.pass = pass
+        }
     }
 
     init {
@@ -75,6 +65,7 @@ class Client : Serializable {
 
     @Throws(Exception::class)
     fun connect(email: String, pass: String) {
+
         this.login = email
         this.pass = pass
         authorize()
@@ -90,7 +81,7 @@ class Client : Serializable {
         println("Авторизация успешна")
         actor = UserActor(idBot, mam)
 
-        onSuccess.emit()
+        onConnectedListener.onSuccess()
     }
 
     @Throws(Exception::class)
@@ -154,7 +145,7 @@ class Client : Serializable {
         val file = File("file.jpg")
 
         captchaKey = ""
-        onCaptchaNeeded.emit(captchaURL)
+        onConnectedListener.onCaptchaNeeded(captchaURL)
 
         while (captchaKey == "") {
             Thread.sleep(1)
@@ -195,7 +186,7 @@ class Client : Serializable {
 
         login = ""
         pass = ""
-        onInvalidData.emit()
+        onConnectedListener.onInvalidData()
 
         while (login == "" || pass == "") {
             Thread.sleep(1)

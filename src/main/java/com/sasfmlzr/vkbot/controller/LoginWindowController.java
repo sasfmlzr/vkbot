@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
+import com.api.client.OnConnectedListener;
 import com.api.util.FileSystem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,10 +74,52 @@ public class LoginWindowController implements Initializable {
 
     private Client client;
 
-    private Boolean phoneConfirmationResult = false;
-
     private State state = State.NONE;
 
+    private OnConnectedListener onConnectedListener = new OnConnectedListener(){
+        @Override
+        public void onSuccess() {
+            state = State.SUCCESS;
+
+            hideCaptchaAnimation();
+            hideWarningAnimation();
+
+            loadingImage.setVisible(false);
+
+
+            Platform.runLater(() -> {
+                taskStage.show();
+                root.getScene().getWindow().hide();
+            });
+        }
+
+        @Override
+        public void onInvalidData() {
+            statusText.setText("Неправильный логин или пароль.");
+            passText.clear();
+            captchaKey.clear();
+            captchaImage.setImage(null);
+
+            loadingImage.setVisible(false);
+
+            hideCaptchaAnimation();
+            showWarningAnimation();
+
+            state = State.INVALID_DATA;
+        }
+
+        @Override
+        public void onCaptchaNeeded(@NotNull String captchaURL) {
+            showCaptchaAnimation();
+            hideWarningAnimation();
+
+            loadingImage.setVisible(false);
+
+            captchaKey.clear();
+            showCaptchaImage(captchaURL);
+            state = State.NEED_CAPTCHA;
+        }
+    };
 
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
@@ -114,15 +158,6 @@ public class LoginWindowController implements Initializable {
         grid.heightProperty().addListener((observable, oldValue, newValue) -> window.setHeight(newValue.doubleValue() + 35.0));
 
         window.setOnCloseRequest(we -> {
-            client.getOnCaptchaNeeded().clear();
-            client.getOnInvalidData().clear();
-            client.getOnSuccess().clear();
-            client.getOnSuspectLogin().clear();
-
-            loginWindowPresenter.getSendCaptcha().clear();
-            loginWindowPresenter.getSendData().clear();
-            loginWindowPresenter.getSendPhoneConfirmed().clear();
-
             clientThread.interrupt();
 
             window.hide();
@@ -132,14 +167,7 @@ public class LoginWindowController implements Initializable {
 
     private void initClient() {
         client = new Client();
-        client.getOnCaptchaNeeded().connect(this::onCaptchaNeeded);
-        client.getOnInvalidData().connect(this::onInvalidData);
-        client.getOnSuspectLogin().connect(this::onSuspectLogin);
-        client.getOnSuccess().connect(this::onSuccess);
-
-        loginWindowPresenter.getSendCaptcha().connect(client::receiveCaptcha);
-        loginWindowPresenter.getSendData().connect(client::receiveData);
-        loginWindowPresenter.getSendPhoneConfirmed().connect(client::receivePhoneConfirmed);
+        client.onConnectedListener = onConnectedListener;
     }
 
     private void initClientThread() {
@@ -200,7 +228,7 @@ public class LoginWindowController implements Initializable {
             }
             case NEED_CAPTCHA: {
                 if (!Objects.equals(captchaKey.getText(), "")) {
-                    loginWindowPresenter.getSendCaptcha().emit(captchaKey.getText());
+                    client.getOnReceiveDataListener().onReceiveCaptcha(captchaKey.getText());
                     loadingImage.setVisible(true);
                     state = State.LOGGING_IN;
                 }
@@ -208,24 +236,13 @@ public class LoginWindowController implements Initializable {
             }
             case INVALID_DATA: {
                 if (!Objects.equals(loginText.getText(), "") && !Objects.equals(passText.getText(), "")) {
-                    loginWindowPresenter.getSendData().emit(loginText.getText(), passText.getText());
+                    client.getOnReceiveDataListener().onReceiveData(loginText.getText(), passText.getText());
                     loadingImage.setVisible(true);
                     hideWarningAnimation();
                 }
                 break;
             }
         }
-    }
-
-    private void onCaptchaNeeded(String captchaURL) {
-        showCaptchaAnimation();
-        hideWarningAnimation();
-
-        loadingImage.setVisible(false);
-
-        captchaKey.clear();
-        showCaptchaImage(captchaURL);
-        state = State.NEED_CAPTCHA;
     }
 
     private void showCaptchaImage(String captchaURL) {
@@ -236,54 +253,6 @@ public class LoginWindowController implements Initializable {
             ex.printStackTrace();
         }
     }
-
-    private void onInvalidData() {
-        statusText.setText("Неправильный логин или пароль.");
-        passText.clear();
-        captchaKey.clear();
-        captchaImage.setImage(null);
-
-        loadingImage.setVisible(false);
-
-        hideCaptchaAnimation();
-        showWarningAnimation();
-
-        state = State.INVALID_DATA;
-    }
-
-    // --------Для успешного подтверждения телефона-------- //
-    private LoginWindowPresenter.OnReceiveBrowserResult onReceiveBrowserResult = isReceive -> phoneConfirmationResult = isReceive;
-
-    private void onSuspectLogin(String URL) {
-        try {
-            statusText.setText(resources.getString("LoginWindow.error.confirmPhone"));
-            loginWindowPresenter.showBrowserDialog(root.getScene().getWindow(), URL, onReceiveBrowserResult);
-
-            if (phoneConfirmationResult) {
-                loginWindowPresenter.getSendPhoneConfirmed().emit();
-            } else {
-                Platform.runLater(() -> root.getScene().getWindow().hide());
-            }
-        } catch (Exception ignored) {
-
-        }
-    }
-
-    private void onSuccess() {
-        state = State.SUCCESS;
-
-        hideCaptchaAnimation();
-        hideWarningAnimation();
-
-        loadingImage.setVisible(false);
-
-
-        Platform.runLater(() -> {
-            taskStage.show();
-            root.getScene().getWindow().hide();
-        });
-    }
-
 
     private void showWarningAnimation() {
         loginWindowPresenter.showOrHide(grid, true, 0, 45, statusPane);

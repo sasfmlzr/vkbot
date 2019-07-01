@@ -1,6 +1,5 @@
 package com.sasfmlzr.vkbot.controller
 
-import com.api.util.sig4j.signal.Signal1
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -13,7 +12,6 @@ import java.net.URL
 import java.util.*
 
 class BrowserDialogWindowController : Initializable {
-    internal val sendBrowserResult = Signal1<Boolean>()
 
     @FXML
     private val root: AnchorPane? = null
@@ -44,13 +42,11 @@ class BrowserDialogWindowController : Initializable {
 
     @FXML
     private fun onCancel() {
-        sendBrowserResult.emit(false)
         close()
     }
 
     private fun close() {
         root!!.scene.window.hide()
-        sendBrowserResult.clear()
     }
 
     companion object {

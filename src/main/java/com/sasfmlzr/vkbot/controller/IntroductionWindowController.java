@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
+import com.api.client.OnConnectedListener;
 import com.api.util.FileSystem;
 import com.sasfmlzr.vkbot.VkBot;
 import javafx.application.Application;
@@ -20,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,49 @@ public class IntroductionWindowController extends Application implements Initial
     private ImageView loadingImage;
     @FXML
     private Pane statusPane;
+
+    private OnConnectedListener onConnectedListener = new OnConnectedListener() {
+        @Override
+        public void onSuccess() {
+            state = State.SUCCESS;
+
+            hideCaptchaAnimation();
+            hideWarningAnimation();
+
+            loadingImage.setVisible(false);
+
+
+            Platform.runLater(() -> taskStage.show());
+        }
+
+        @Override
+        public void onInvalidData() {
+            statusText.setText("Неправильный логин или пароль. Попробуйте еще раз.");
+            password.clear();
+            captchaKey.clear();
+            captchaImage.setImage(null);
+
+            loadingImage.setVisible(false);
+
+            hideCaptchaAnimation();
+            showWarningAnimation();
+
+            state = State.INVALID_DATA;
+        }
+
+        @Override
+        public void onCaptchaNeeded(@NotNull String captchaURL) {
+            showCaptchaAnimation();
+            hideWarningAnimation();
+
+            loadingImage.setVisible(false);
+
+            captchaKey.clear();
+            showCaptchaImage(captchaURL);
+            state = State.NEED_CAPTCHA;
+        }
+    };
+
 
 
     @Override
@@ -113,19 +158,10 @@ public class IntroductionWindowController extends Application implements Initial
     private Runnable clientRunnable;
     private Thread clientThread;
     private Client client;
-    private Boolean phoneConfirmationResult = false;
 
     private void initClient() {
         client = new Client();
-
-        client.getOnCaptchaNeeded().connect(this::onCaptchaNeeded);
-        client.getOnInvalidData().connect(this::onInvalidData);
-        client.getOnSuspectLogin().connect(this::onSuspectLogin);
-        client.getOnSuccess().connect(this::onSuccess);
-
-        loginWindowPresenter.getSendCaptcha().connect(client::receiveCaptcha);
-        loginWindowPresenter.getSendData().connect(client::receiveData);
-        loginWindowPresenter.getSendPhoneConfirmed().connect(client::receivePhoneConfirmed);
+        client.onConnectedListener = onConnectedListener;
     }
 
     private void initClientThread() {
@@ -213,6 +249,16 @@ public class IntroductionWindowController extends Application implements Initial
         }
     }
 
+    // --------Показать изображение капчи-------- //
+    private void showCaptchaImage(String captchaURL) {
+        try {
+            File captchaImageFile = FileSystem.INSTANCE.downloadCaptchaToFile(captchaURL);
+            captchaImage.setImage(new Image(captchaImageFile.toURI().toString(), true));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     // --------При нажатии кнопки далее во ввода логина и пароля-------- //
     @FXML
     private void onLogin() {
@@ -236,7 +282,7 @@ public class IntroductionWindowController extends Application implements Initial
             }
             case NEED_CAPTCHA: {
                 if (!Objects.equals(captchaKey.getText(), "")) {
-                    loginWindowPresenter.getSendCaptcha().emit(captchaKey.getText());
+                    client.getOnReceiveDataListener().onReceiveCaptcha(captchaKey.getText());
                     loadingImage.setVisible(true);
                     state = State.LOGGING_IN;
                 }
@@ -244,7 +290,7 @@ public class IntroductionWindowController extends Application implements Initial
             }
             case INVALID_DATA: {
                 if (!Objects.equals(login.getText(), "") && !Objects.equals(password.getText(), "")) {
-                    loginWindowPresenter.getSendData().emit(login.getText(), password.getText());
+                    client.getOnReceiveDataListener().onReceiveData(login.getText(), password.getText());
                     loadingImage.setVisible(true);
                     hideWarningAnimation();
                 }
@@ -255,78 +301,6 @@ public class IntroductionWindowController extends Application implements Initial
                 break;
             }
         }
-    }
-
-    // ---------------------Если нужна капча---------------------------- //
-    private void onCaptchaNeeded(String captchaURL) {
-        showCaptchaAnimation();
-        hideWarningAnimation();
-
-        loadingImage.setVisible(false);
-
-        captchaKey.clear();
-        showCaptchaImage(captchaURL);
-        state = State.NEED_CAPTCHA;
-    }
-
-    // --------Показать изображение капчи-------- //
-    private void showCaptchaImage(String captchaURL) {
-        try {
-            File captchaImageFile = FileSystem.INSTANCE.downloadCaptchaToFile(captchaURL);
-            captchaImage.setImage(new Image(captchaImageFile.toURI().toString(), true));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    // --------Если был введен некорректный пароль или логин-------- //
-    private void onInvalidData() {
-        statusText.setText("Неправильный логин или пароль. Попробуйте еще раз.");
-        password.clear();
-        captchaKey.clear();
-        captchaImage.setImage(null);
-
-        loadingImage.setVisible(false);
-
-        hideCaptchaAnimation();
-        showWarningAnimation();
-
-        state = State.INVALID_DATA;
-    }
-
-    // --------Для успешного подтверждения телефона-------- //
-    private LoginWindowPresenter.OnReceiveBrowserResult onReceiveBrowserResult = isReceive -> phoneConfirmationResult = isReceive;
-
-    // --------Требуется подтвердить номер телефона-------- //
-    private void onSuspectLogin(String URL) {
-        try {
-            statusText.setText("Требуется подтверждение номера телефона.");
-            loginWindowPresenter.showBrowserDialog(root.getScene().getWindow(), URL, onReceiveBrowserResult);
-
-            if (phoneConfirmationResult) {
-                loginWindowPresenter.getSendPhoneConfirmed().emit();
-            } else {
-                Platform.runLater(() -> root.getScene().getWindow().hide());
-            }
-        } catch (Exception ignored) {
-
-        }
-    }
-
-    // --------Если успешно подстверждено-------- //
-    private void onSuccess() {
-        state = State.SUCCESS;
-
-        hideCaptchaAnimation();
-        hideWarningAnimation();
-
-        loadingImage.setVisible(false);
-
-
-        Platform.runLater(() -> {
-            taskStage.show();
-//            root.getScene().getWindow().hide();
-        });
     }
 
     // --------Анимация-------- //
