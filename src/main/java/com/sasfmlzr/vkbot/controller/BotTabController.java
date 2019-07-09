@@ -42,7 +42,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     private FlowPane botCardPane;
     @FXML
-    private ListView vkdialog;
+    private ListView<String> vkdialog;
     @FXML
     private TextField textMessage;
     @FXML
@@ -54,25 +54,15 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     private Button botLog;
     @FXML
-    private static ImageView imageTest;
+    private ImageView imageTest;
 
     private BotTabPresenter botTabPresenter = new BotTabPresenter();
 
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
     private static int[] userIDmassive = new int[30];                           // массив userID
 
-    private static List<BotCardController> childList;
-
     BotTabController() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-
-        File file = new File("");
-        try {
-            file = new File(loader.getLocation().toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
         loader.setRoot(this);
         loader.setController(this);
         try {
@@ -84,11 +74,7 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     //-----------------инициалихация-----------------------------------------------//
     public void initialize(URL location, ResourceBundle resources) {
-        // childList = new ArrayList<>();
-        // childList.add(new BotCardController());
-        //botCardPane.getChildren().addAll( childList);
         botCardPane.getChildren().addAll(new BotCardController());
-
     }
 
     //-----------------при нажатии на диалог---------------------------------------//   // test
