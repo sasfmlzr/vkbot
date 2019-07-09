@@ -23,7 +23,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -54,7 +56,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     private static ImageView imageTest;
 
-    private com.sasfmlzr.vkbot.BotTabPresenter botTabPresenter = new BotTabPresenter();
+    private BotTabPresenter botTabPresenter = new BotTabPresenter();
 
     private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
     private static int[] userIDmassive = new int[30];                           // массив userID
@@ -63,6 +65,14 @@ public class BotTabController extends AnchorPane implements Initializable {
 
     BotTabController() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+        File file = new File("");
+        try {
+            file = new File(loader.getLocation().toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         loader.setRoot(this);
         loader.setController(this);
         try {

@@ -17,22 +17,21 @@ import java.util.*
 class DataBaseWindowController : Initializable {
 
     @FXML
-    private val tableTextBot: TableView<BotDatabase_IdRequestResponse>? = null
+    private lateinit var tableTextBot: TableView<BotDatabase_IdRequestResponse>
     @FXML
-    private val idColumn: TableColumn<BotDatabase_IdRequestResponse, String>? = null
+    private lateinit var idColumn: TableColumn<BotDatabase_IdRequestResponse, String>
     @FXML
-    private val sendTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>? = null
+    private lateinit var sendTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>
     @FXML
-    private val requestTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>? = null
+    private lateinit var requestTextMessage: TableColumn<BotDatabase_IdRequestResponse, String>
     @FXML
-    private val zapros: TextField? = null
+    private lateinit var zapros: TextField
     @FXML
-    private val otvet: TextField? = null
+    private lateinit var otvet: TextField
     @FXML
-    private val close: Button? = null
+    private lateinit var close: Button
     @FXML
-    private val textTable: Label? = null
-
+    private lateinit var textTable: Label
 
     override fun initialize(location: URL, resources: ResourceBundle) {}
 
@@ -40,7 +39,7 @@ class DataBaseWindowController : Initializable {
     fun initWindow() {
 
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
-            textTable!!.text = "БД:" + "\n"
+            textTable.text = "БД:" + "\n"
             /*     try {
                 ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
                 Effects.init();
@@ -68,7 +67,7 @@ class DataBaseWindowController : Initializable {
             }*/
             refreshTable()
         } else {
-            textTable!!.text = "Сначала запусти бота" + "\n"
+            textTable.text = "Сначала запусти бота" + "\n"
         }
     }
 
@@ -111,11 +110,11 @@ class DataBaseWindowController : Initializable {
         //  connectdatabase;
 
         //   InitDB();
-        idColumn!!.cellValueFactory = PropertyValueFactory("id")
-        sendTextMessage!!.cellValueFactory = PropertyValueFactory("response")
-        requestTextMessage!!.cellValueFactory = PropertyValueFactory("request")
+        idColumn.cellValueFactory = PropertyValueFactory("id")
+        sendTextMessage.cellValueFactory = PropertyValueFactory("response")
+        requestTextMessage.cellValueFactory = PropertyValueFactory("request")
 
-        tableTextBot!!.items = DatabaseEntity.database.botData
+        tableTextBot.items = DatabaseEntity.database.botData
         DatabaseEntity.database.InitDB()
 
 
@@ -133,7 +132,7 @@ class DataBaseWindowController : Initializable {
         //DataBaseWindowController.setOnCloseRequest(new EventHandler())
 
 
-        val stage = close!!.scene.window as Stage
+        val stage = close.scene.window as Stage
         stage.close()
 
     }
@@ -141,7 +140,7 @@ class DataBaseWindowController : Initializable {
 
     @Throws(SQLException::class)
     fun addElement() {
-        if (zapros!!.text != "" && otvet!!.text != "") {
+        if (zapros.text != "" && otvet.text != "") {
             val idBot: Int
             if (Client.actor == null) {
                 idBot = StaticModel.userBot.actor.id!!

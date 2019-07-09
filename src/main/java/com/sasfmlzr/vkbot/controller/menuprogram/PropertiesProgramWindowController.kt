@@ -10,14 +10,14 @@ import java.util.*
 
 class PropertiesProgramWindowController : Initializable {
     @FXML
-    private val textLog: TextArea? = null
+    private lateinit var textLog: TextArea
 
     override fun initialize(location: URL, resources: ResourceBundle) {}
 
     fun initWindow() {
         val bReader = BufferedReader(FileReader("src/resources/locale/PropertiesProgramWindow/Properties.ini"))
         val text = bReader.readText()
-        textLog!!.text = text
+        textLog.text = text
     }
 
     companion object {

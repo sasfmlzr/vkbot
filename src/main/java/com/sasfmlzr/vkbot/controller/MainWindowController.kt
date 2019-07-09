@@ -16,12 +16,10 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.layout.AnchorPane
 import javafx.stage.Stage
-
 import java.io.IOException
 import java.net.URL
 import java.sql.SQLException
-import java.util.Locale
-import java.util.ResourceBundle
+import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.system.exitProcess
@@ -86,9 +84,7 @@ class MainWindowController : AnchorPane(), Initializable {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
-
 
     private inner class TabCloseHandler : EventHandler<Event> {
         override fun handle(arg0: Event) {
