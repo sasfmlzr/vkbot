@@ -1,6 +1,5 @@
-package com.database
+package com.newapi.apivk.architecture.db
 
-import com.newapi.interfaces.DatabaseRequest
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
@@ -10,56 +9,22 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
+class DatabaseRequest private constructor(private val statement: Statement,
+                                          private val connection: Connection) {
 
-class DatabaseRequestImpl(private val statement: Statement,
-                          private val connection: Connection) : DatabaseRequest {
+    companion object {
+        @Volatile
+        private var instance: DatabaseRequest? = null
 
-    // --------тут красивые запросы--------
-
-    //занесение данных в бд инфе о пользователях. userID, имя, фамилия
-    @Throws(ClientException::class, ApiException::class, SQLException::class)
-    fun addInfoUser(userID: Int, actor: UserActor, vk: VkApiClient) {
-        val getInfoUserList =
-                vk.users().get(actor).userIds(userID.toString()).execute()       //получает инфу о пользователях
-        statement.execute(
-                "INSERT  INTO 'UserVkInformation' ('userID', 'firstName', 'lastName') " +
-                        "SELECT DISTINCT " + userID + ",'" + getInfoUserList[0].firstName + "','" +
-                        getInfoUserList[0].lastName + "' FROM 'UserVkInformation'" +
-                        "WHERE NOT EXISTS (SELECT 'userID' FROM 'UserVkInformation' WHERE userID=" + userID + ");"
-        )        // проверка есть ли такая в бд. если нет, то добавить инфу.
-    }
-
-    //занесение данных в бд прав новых пользователей логин, userID, право - пользователь
-    @Throws(SQLException::class)
-    fun addInfoUserRights(userID: Int, actor: UserActor) {
-        statement.execute(
-                "INSERT  INTO 'UserRights' ('login', 'userID', 'nameRight') " +
-                        "SELECT DISTINCT " + actor.id + "," + userID + ",'Пользователь' FROM 'UserRights'" +
-                        "WHERE NOT EXISTS (SELECT 'login','userID' FROM 'UserRights' " +
-                        "WHERE login=" + actor.id + " AND userID=" + userID + ");"
-        )      // проверка если прав у пользователя нет, то добавить права пользователя
-    }
-
-    // инициализация одной таблицы  REQUEST RESPONSE
-    @Throws(SQLException::class)
-    fun findUserRights(userID: Int, actor: UserActor): String {
-        val resSet: ResultSet
-        resSet =
-                statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=" + actor.id + " AND userID=" + userID)
-        var nameRight = ""
-        while (resSet.next()) {
-            nameRight = resSet.getString("nameRight")
+        fun getInstance(databaseConnection: DatabaseConnection): DatabaseRequest {
+            return instance ?: synchronized(this) {
+                instance ?: DatabaseRequest(databaseConnection.statmt, databaseConnection.conn).also { instance = it }
+            }
         }
-        resSet.close()
-        return nameRight
     }
 
     // --------Создание первичных таблиц--------
-    @Throws(SQLException::class)
-    fun CreateDB() {
-
-        //statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
-
+    fun createDB() {
         // NameRights
         statement.execute("CREATE TABLE if not exists 'NameRights' ('nameRight' TEXT UNIQUE" + "NOT NULL PRIMARY KEY);")
         // RandomBazaBot
@@ -95,11 +60,7 @@ class DatabaseRequestImpl(private val statement: Statement,
     }
 
     // --------Создание вторичных таблиц--------
-    @Throws(SQLException::class)
-    fun CreateSecondaryDB() {
-
-        //statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
-
+    fun createSecondaryDB() {
         // AforismMessages
         statement.execute("CREATE TABLE if not exists 'AforismMessages' ('id' INTEGER PRIMARY KEY AUTOINCREMENT," + "'request' TEXT (500) NOT NULL);")
         // AnekdotMessages
@@ -122,9 +83,42 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     }
 
-    // --------Создание первичной записи в таблице--------
-    fun InsertIntoTablePrimary() {
-        //statmt.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
+    // инициализация одной таблицы  REQUEST RESPONSE
+    @Throws(SQLException::class)
+    fun findUserRights(userID: Int, actorId: Int): String {
+        val resSet: ResultSet
+        resSet =
+                statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=$actorId AND userID=$userID")
+        var nameRight = ""
+        while (resSet.next()) {
+            nameRight = resSet.getString("nameRight")
+        }
+        resSet.close()
+        return nameRight
+    }
+
+    //занесение данных в бд инфе о пользователях. userID, имя, фамилия
+    @Throws(ClientException::class, ApiException::class, SQLException::class)
+    fun addInfoUser(userID: Int, actor: UserActor, vk: VkApiClient) {
+        val getInfoUserList =
+                vk.users().get(actor).userIds(userID.toString()).execute()       //получает инфу о пользователях
+        statement.execute(
+                "INSERT  INTO 'UserVkInformation' ('userID', 'firstName', 'lastName') " +
+                        "SELECT DISTINCT " + userID + ",'" + getInfoUserList[0].firstName + "','" +
+                        getInfoUserList[0].lastName + "' FROM 'UserVkInformation'" +
+                        "WHERE NOT EXISTS (SELECT 'userID' FROM 'UserVkInformation' WHERE userID=" + userID + ");"
+        )        // проверка есть ли такая в бд. если нет, то добавить инфу.
+    }
+
+    //занесение данных в бд прав новых пользователей логин, userID, право - пользователь
+    @Throws(SQLException::class)
+    fun addInfoUserRights(userID: Int, actor: UserActor) {
+        statement.execute(
+                "INSERT  INTO 'UserRights' ('login', 'userID', 'nameRight') " +
+                        "SELECT DISTINCT " + actor.id + "," + userID + ",'Пользователь' FROM 'UserRights'" +
+                        "WHERE NOT EXISTS (SELECT 'login','userID' FROM 'UserRights' " +
+                        "WHERE login=" + actor.id + " AND userID=" + userID + ");"
+        )      // проверка если прав у пользователя нет, то добавить права пользователя
     }
 
     @Throws(SQLException::class)
@@ -140,17 +134,16 @@ class DatabaseRequestImpl(private val statement: Statement,
         statement.executeUpdate()
         // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
-        DatabaseEntity.database.InitDB()
+        DatabaseConnection.getInstance().init()
         //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
 
     @Throws(SQLException::class)
-    override fun addRandomMessage(text: String) {
+    fun addRandomMessage(text: String) {
         println(text)
 
         try {
-
             statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('$text'); ")
         } catch (e: Exception) {
             println("wtf")

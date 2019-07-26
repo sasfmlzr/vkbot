@@ -1,6 +1,7 @@
 package com.sasfmlzr.apivk.functions.bot
 
-import com.database.DatabaseEntity
+import com.newapi.apivk.architecture.db.DatabaseConnection
+import com.newapi.apivk.architecture.storage.DatabaseStorage
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.countSendMessageUser
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeProgramStart
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.timeZaprosFinishSumm
@@ -13,6 +14,9 @@ import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
 
 class Commands(client: BotApiClient) : Messages(client) {
+
+    private val databaseConnection = DatabaseConnection.getInstance()
+    private val databaseStorage = DatabaseStorage.getInstance()
 
     //-----------------команды бота-----------------------------------------------//
     @Throws(SQLException::class, ClientException::class, ApiException::class)
@@ -28,22 +32,22 @@ class Commands(client: BotApiClient) : Messages(client) {
         if (textMessageString == "го стих") {
             print("Пришло сообщение = $textMessageString\n")
             message =
-                    DatabaseEntity.database.stihMessagesData[bot.other().randomId(DatabaseEntity.database.stihMessagesData.size)].response
+                    databaseStorage.stihMessagesData[bot.other().randomId(databaseStorage.stihMessagesData.size)].response
         }
         if (textMessageString == "го афоризм") {
             print("Пришло сообщение = $textMessageString\n")
             message =
-                    DatabaseEntity.database.aforismMessagesData[bot.other().randomId(DatabaseEntity.database.aforismMessagesData.size)].response
+                    databaseStorage.aforismMessagesData[bot.other().randomId(databaseStorage.aforismMessagesData.size)].response
         }
         if (textMessageString == "го анекдот") {
             print("Пришло сообщение = $textMessageString\n")
             message =
-                    DatabaseEntity.database.anekdotMessagesData[bot.other().randomId(DatabaseEntity.database.anekdotMessagesData.size)].response
+                    databaseStorage.anekdotMessagesData[bot.other().randomId(databaseStorage.anekdotMessagesData.size)].response
         }
         if (textMessageString == "го статус") {
             print("Пришло сообщение = $textMessageString\n")
             message =
-                    DatabaseEntity.database.statusMessagesData[bot.other().randomId(DatabaseEntity.database.statusMessagesData.size)].response
+                    databaseStorage.statusMessagesData[bot.other().randomId(databaseStorage.statusMessagesData.size)].response
         }
         if (textMessageString == "го справку") {
             print("Пришло сообщение = $textMessageString\n")
@@ -66,7 +70,7 @@ class Commands(client: BotApiClient) : Messages(client) {
 
             print("Пришло сообщение = $textMessageString\n")
 
-            message = DatabaseEntity.database.databaseRequest
+            message = databaseConnection.databaseRequest
                     .addToDB(textMessageString, actor.id!!)
         }
 

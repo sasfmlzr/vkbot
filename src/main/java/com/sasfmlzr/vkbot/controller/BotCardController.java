@@ -1,8 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.util.Effects;
-import com.database.DatabaseEntity;
-import com.sasfmlzr.apivk.State;
+import com.newapi.apivk.architecture.db.DatabaseConnection;
 import com.sasfmlzr.apivk.bot.GroupBot;
 import com.sasfmlzr.apivk.bot.UserBot;
 import com.sasfmlzr.apivk.object.StatisticsVariable;
@@ -70,10 +69,8 @@ public class BotCardController extends AnchorPane implements Initializable {
         StatisticsWindowController.Companion.getSeriesItogVk().getData().clear();          //обнуление статистики запросов
         StatisticsWindowController.Companion.getSeriesThread().getData().clear();                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
-        if (!State.INSTANCE.getDatabaseLoaded()) {
-            DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
-            DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
-        }
+        DatabaseConnection.Companion.getInstance().connect();
+
         StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
         StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(true);
         setAvatarBot(this, StaticModel.INSTANCE.getUserBot());
@@ -82,10 +79,8 @@ public class BotCardController extends AnchorPane implements Initializable {
 
     public void recursionGroup() throws SQLException, ClassNotFoundException {
 
-        if (!State.INSTANCE.getDatabaseLoaded()) {
-            DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
-            DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
-        }
+        DatabaseConnection.Companion.getInstance().connect();
+
         StatisticsVariable.INSTANCE.setTimeProgramStart(System.currentTimeMillis());
         StaticModel.INSTANCE.getUserBot().botApiClient().getStateBot().setPushPowerBot(true);
         setAvatarBot(this, StaticModel.INSTANCE.getGroupBot());

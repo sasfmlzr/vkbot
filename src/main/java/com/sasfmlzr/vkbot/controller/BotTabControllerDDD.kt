@@ -1,7 +1,7 @@
 package com.sasfmlzr.vkbot.controller
 
 import com.api.client.Client
-import com.database.DatabaseEntity
+import com.newapi.apivk.architecture.db.DatabaseConnection
 import com.newapi.utils.ParseMessageToDB
 import com.sasfmlzr.vkbot.BotTabPresenter
 import com.sasfmlzr.vkbot.StaticModel
@@ -83,13 +83,11 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
 
         // UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
 
-        DatabaseEntity.database.connectDatabase()            //подключение бд
-        DatabaseEntity.database.InitDB()          //инициализация таблиц бд в объект
-
+        DatabaseConnection.getInstance().connect()
 
         val actor = UserActor(30562433, "")
 
-        val parseMessageToDB = ParseMessageToDB(DatabaseEntity.database.databaseRequest)
+        val parseMessageToDB = ParseMessageToDB(DatabaseConnection.getInstance().databaseRequest)
 
         parseMessageToDB.parseMessageToDB(actor, 30562433)
     }

@@ -1,6 +1,7 @@
 package com.sasfmlzr.apivk.thread
 
-import com.database.DatabaseEntity
+import com.newapi.apivk.architecture.db.DatabaseConnection
+import com.newapi.apivk.architecture.storage.DatabaseStorage
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.countSendMessageUser
 import com.sasfmlzr.apivk.`object`.StatisticsVariable.countUsedBigBD
@@ -25,6 +26,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 {
 
     private var stoped = false
+
+    private val databaseConnection = DatabaseConnection.getInstance()
+    private val databaseStorage = DatabaseStorage.getInstance()
 
     override fun run()         //Этот метод будет выполняться в побочном потоке
     {
@@ -82,7 +86,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             client.stateBot.priostanovka = false   // для приостановки бота
             var message: String?         // сообщение бота
             var obrachenie = "Колян, "                      //обращение к боту
-            message = DatabaseEntity.database.botRandomData[client.other().randomId(DatabaseEntity.database.botRandomData.size)]
+            message = databaseStorage.botRandomData[client.other().randomId(databaseStorage.botRandomData.size)]
                     .response          //сообщение берется из рандомной базы коляна
             /*
            if (textMessageString.equals("")){
@@ -98,16 +102,16 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
             if (messagesList.size != 0) {
                 val userID = messagesList[0].lastMessage.peerId!!               // запись userID пользователя
-                DatabaseEntity.database.databaseRequest.addInfoUser(
+                databaseConnection.databaseRequest.addInfoUser(
                         userID,
                         actor,
                         client.vk
                 )       // добавить инфу о пользователе, если нет  // здесь есть запрос к вк
-                DatabaseEntity.database.databaseRequest
+                databaseConnection.databaseRequest
                         .addInfoUserRights(userID, actor)    // добавить права пользователю, если нет
                 val userRightString =
-                        DatabaseEntity.database.databaseRequest
-                                .findUserRights(userID, actor)  // запись права текущего пользователя в ячейку
+                        databaseConnection.databaseRequest
+                                .findUserRights(userID, actor.id)  // запись права текущего пользователя в ячейку
                 userRight = UserRights(userRightString)  // наследование прав пользователем
                 //    System.out.print(userRight.getNameRight() + " может админить? -" + userRight.getAdminCommands() + "\n" +
                 //           userRight.getNameRight() + " может писать боту? -" + userRight.getAllowWriteToBot() + "\n");
@@ -190,7 +194,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             StatisticsWindowController.seriesItogVk.data.add(XYChart.Data(countSendMessageUser, timeItogoMsMinusVK))          //ведение статистики запросов
             StatisticsWindowController.seriesThread.data.add(XYChart.Data(countSendMessageUser, timeDelayThread))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
-        DatabaseEntity.database.CloseDB()         //закрытие бд
+
+        // WTF
+        DatabaseConnection.getInstance().disconnect()
         client.stateBot.botWork = false
     }
 
@@ -219,12 +225,12 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             val timeStartBD = System.currentTimeMillis()
             // путешествие по списку объектов из БД
             var countDB = 0
-            while (countDB <= (DatabaseEntity.database.botData.size - 1)) {
-                if (DatabaseEntity.database.botData.get(countDB).request.toLowerCase().equals(
+            while (countDB <= (databaseStorage.botData.size - 1)) {
+                if (databaseStorage.botData.get(countDB).request.toLowerCase().equals(
                                 textMessageString.toLowerCase()
                         )
                 ) {  // сравниваем нижний регистр
-                    listMessages.add(DatabaseEntity.database.botData.get(countDB).response)
+                    listMessages.add(databaseStorage.botData.get(countDB).response)
                     client.stateBot.findMessage =
                             true                                                           // совпадение с сообщением найдено
                 }
@@ -271,13 +277,13 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 */
 
             var countDB = 0
-            while (countDB <= DatabaseEntity.database.bigMessagesData.size - 1) {
-                if (DatabaseEntity.database.bigMessagesData.get(countDB).request.toLowerCase().equals(
+            while (countDB <= databaseStorage.bigMessagesData.size - 1) {
+                if (databaseStorage.bigMessagesData.get(countDB).request.toLowerCase().equals(
                                 textMessageString
                         )
                 ) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
-                    listMessages.add(DatabaseEntity.database.bigMessagesData.get(countDB).response)
+                    listMessages.add(databaseStorage.bigMessagesData.get(countDB).response)
                     client.stateBot.findMessage =
                             true                                                 // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение

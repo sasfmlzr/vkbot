@@ -1,7 +1,7 @@
 package com.sasfmlzr.vkbot.controller;
 
 import com.api.client.Client;
-import com.database.DatabaseEntity;
+import com.newapi.apivk.architecture.db.DatabaseConnection;
 import com.newapi.utils.ParseMessageToDB;
 import com.sasfmlzr.vkbot.BotTabPresenter;
 import com.sasfmlzr.vkbot.StaticModel;
@@ -23,9 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -91,13 +89,11 @@ public class BotTabController extends AnchorPane implements Initializable {
 
         // UserActor actor = StaticModel.INSTANCE.getUserBot().getActor();
 
-        DatabaseEntity.INSTANCE.getDatabase().connectDatabase();            //подключение бд
-        DatabaseEntity.INSTANCE.getDatabase().InitDB();          //инициализация таблиц бд в объект
-
+        DatabaseConnection.Companion.getInstance().connect();
 
         UserActor actor = new UserActor(30562433, "");
 
-        ParseMessageToDB parseMessageToDB = new ParseMessageToDB(DatabaseEntity.INSTANCE.getDatabase().getDatabaseRequest());
+        ParseMessageToDB parseMessageToDB = new ParseMessageToDB(DatabaseConnection.Companion.getInstance().databaseRequest);
 
         parseMessageToDB.parseMessageToDB(actor, 30562433);
     }

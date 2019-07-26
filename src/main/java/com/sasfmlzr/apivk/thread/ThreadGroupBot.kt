@@ -1,6 +1,7 @@
 package com.sasfmlzr.apivk.thread
 
-import com.database.DatabaseEntity
+import com.newapi.apivk.architecture.db.DatabaseConnection
+import com.newapi.apivk.architecture.storage.DatabaseStorage
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.client.BotApiClient
 import com.vk.api.sdk.client.actors.GroupActor
@@ -12,6 +13,8 @@ import java.util.*
 
 class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupActor) : ThreadBot(), Runnable {
     private var stoped = false
+
+    private val databaseStorage = DatabaseStorage.getInstance()
 
     override fun run() {
         while (!stoped) {
@@ -65,7 +68,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
 
 
             message =
-                    DatabaseEntity.database.botRandomData[client.other().randomId(DatabaseEntity.database.botRandomData.size)]
+                    databaseStorage.botRandomData[client.other().randomId(databaseStorage.botRandomData.size)]
                             .response          //сообщение берется из рандомной базы коляна
             /*
            if (textMessageString.equals("")){
@@ -102,7 +105,9 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
                 Thread.sleep(2000)
             }
         }
-        DatabaseEntity.database.CloseDB()         //закрытие бд
+
+        //WTF
+        DatabaseConnection.getInstance().disconnect()        //закрытие бд
         client.stateBot.botWork = false
     }
 
@@ -132,9 +137,9 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
             val timeStartBD = System.currentTimeMillis()
             // путешествие по списку объектов из БД
             var countDB = 0
-            while (countDB <= DatabaseEntity.database.botData.size - 1) {
-                if (DatabaseEntity.database.botData[countDB].request.toLowerCase() == textMessageString.toLowerCase()) {  // сравниваем нижний регистр
-                    listMessages.add(DatabaseEntity.database.botData[countDB].response)
+            while (countDB <= databaseStorage.botData.size - 1) {
+                if (databaseStorage.botData[countDB].request.toLowerCase() == textMessageString.toLowerCase()) {  // сравниваем нижний регистр
+                    listMessages.add(databaseStorage.botData[countDB].response)
                     client.stateBot.findMessage =
                             true                                                       // совпадение с сообщением найдено
                 }
@@ -163,10 +168,10 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
         if (!client.stateBot.findMessage) {      // если совпадение с сообщением не найдено, то
 
             var countDB = 0
-            while (countDB <= DatabaseEntity.database.bigMessagesData.size - 1) {
-                if (DatabaseEntity.database.bigMessagesData[countDB].request.toLowerCase() == textMessageString) {  // сравниваем нижний регистр
+            while (countDB <= databaseStorage.bigMessagesData.size - 1) {
+                if (databaseStorage.bigMessagesData[countDB].request.toLowerCase() == textMessageString) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
-                    listMessages.add(DatabaseEntity.database.bigMessagesData[countDB].response)
+                    listMessages.add(databaseStorage.bigMessagesData[countDB].response)
                     client.stateBot.findMessage =
                             true                                                   // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение

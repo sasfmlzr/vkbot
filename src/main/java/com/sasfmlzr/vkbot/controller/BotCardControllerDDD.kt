@@ -1,8 +1,7 @@
 package com.sasfmlzr.vkbot.controller
 
 import com.api.util.Effects
-import com.database.DatabaseEntity
-import com.sasfmlzr.apivk.State
+import com.newapi.apivk.architecture.db.DatabaseConnection
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
 import com.sasfmlzr.apivk.bot.GroupBot
 import com.sasfmlzr.apivk.bot.UserBot
@@ -62,10 +61,8 @@ class BotCardControllerDDD internal constructor() : AnchorPane(), Initializable 
         StatisticsWindowController.seriesItogVk.data.clear()          //обнуление статистики запросов
         StatisticsWindowController.seriesThread.data.clear()                        //обнуление статистики задержки потока////здесь иногда ловится исключение
 
-        if (!State.databaseLoaded) {
-            DatabaseEntity.database.connectDatabase()            //подключение бд
-            DatabaseEntity.database.InitDB()          //инициализация таблиц бд в объект
-        }
+        DatabaseConnection.getInstance().connect()
+
         StatisticsVariable.timeProgramStart = System.currentTimeMillis()
         StaticModel.userBot.botApiClient().stateBot.pushPowerBot = true
         setAvatarBot(this, StaticModel.userBot)
@@ -75,10 +72,8 @@ class BotCardControllerDDD internal constructor() : AnchorPane(), Initializable 
     @Throws(SQLException::class, ClassNotFoundException::class)
     fun recursionGroup() {
 
-        if (!State.databaseLoaded) {
-            DatabaseEntity.database.connectDatabase()            //подключение бд
-            DatabaseEntity.database.InitDB()          //инициализация таблиц бд в объект
-        }
+        DatabaseConnection.getInstance().connect()
+
         StatisticsVariable.timeProgramStart = System.currentTimeMillis()
         StaticModel.userBot.botApiClient().stateBot.pushPowerBot = true
         setAvatarBot(this, StaticModel.groupBot)

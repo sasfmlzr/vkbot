@@ -1,6 +1,6 @@
 package com.newapi.utils
 
-import com.newapi.interfaces.DatabaseRequest
+import com.newapi.apivk.architecture.db.DatabaseRequest
 import com.sasfmlzr.vkbot.StaticModel
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
