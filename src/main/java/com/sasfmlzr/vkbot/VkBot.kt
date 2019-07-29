@@ -8,17 +8,15 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.stage.Stage
 import org.ini4j.Ini
-
 import java.io.File
 import java.io.IOException
-import java.util.Locale
-import java.util.ResourceBundle
+import java.util.*
 import kotlin.system.exitProcess
 
 class VkBot : Application() {
 
     override fun start(primaryStage: Stage) {
-        var primaryStage = primaryStage
+
         // ResourceBundle bundle = loadLocale(Locale.getDefault(), MainWindowController.resourcePath);
 
         initializeIni()
@@ -30,14 +28,14 @@ class VkBot : Application() {
         //Scene scene = new Scene(root);
         //scene.setRoot(root);
 
-        primaryStage = Stage()
-        primaryStage.scene = scene
-        primaryStage.minWidth = 700.0
-        primaryStage.minHeight = 600.0
-        primaryStage.title = "Test VKBot"
-        primaryStage.show()
+        val currentPrimaryStage = Stage()
+        currentPrimaryStage.scene = scene
+        currentPrimaryStage.minWidth = 700.0
+        currentPrimaryStage.minHeight = 600.0
+        currentPrimaryStage.title = "Test VKBot"
+        currentPrimaryStage.show()
 
-        primaryStage.setOnCloseRequest {
+        currentPrimaryStage.setOnCloseRequest {
             Platform.exit()
             exitProcess(0)
         }
@@ -52,7 +50,7 @@ class VkBot : Application() {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            Application.launch(VkBot::class.java)
+            launch(VkBot::class.java)
         }
 
 
@@ -65,7 +63,6 @@ class VkBot : Application() {
                 e.printStackTrace()
             }
 
-            //      java.util.prefs.Preferences prefs = new IniPreferences(ini);
             println("Настройки успешно инициализировались")
             assert(ini != null)
             PropertiesProgramWindowController.token1 = ini!!.get("TokenBots", "Token1")

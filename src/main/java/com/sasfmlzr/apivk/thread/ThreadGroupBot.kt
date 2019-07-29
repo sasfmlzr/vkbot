@@ -21,15 +21,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
             var exception = false
             try {
                 sendMessageUser(actor)
-            } catch (e: ClientException) {
-                exception = true
-                e.printStackTrace()
-                println("Исключение в потоке бота")
-            } catch (e: InterruptedException) {
-                exception = true
-                e.printStackTrace()
-                println("Исключение в потоке бота")
-            } catch (e: ApiException) {
+            } catch (e: Exception) {
                 exception = true
                 e.printStackTrace()
                 println("Исключение в потоке бота")

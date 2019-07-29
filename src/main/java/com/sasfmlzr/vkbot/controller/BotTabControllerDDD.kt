@@ -115,8 +115,7 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
 
         val textMessage = arrayOfNulls<String>(messageList.size)
 
-        var countMessage: Int                                        // счетчик диалогов
-        countMessage = 0
+        var countMessage: Int = 0                                        // счетчик диалогов
         while (countMessage <= messageList.size - 1) {
             textMessage[countMessage] = (messageList[countMessage] as Message).text     // массив сообщений
             if ((messageList[countMessage] as Message).peerId == (messageList[countMessage] as Message).fromId) {
@@ -124,7 +123,7 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
             } else {
                 textMessages.appendText(firstNameAccount + " " + lastNameNameAccount + ": " + textMessage[countMessage] + "\n")
             }
-            countMessage = countMessage + 1
+            countMessage += 1
         }
 
         print("vkdialog  " + vkdialog.selectionModel.selectedIndex + "\n")
@@ -147,16 +146,15 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
         val dialogList = StaticModel.userBot.vk.messages().getConversations(actor)            // записываем в лист результат работы запроса
                 .count(30)
                 .execute().items
-        var countDialog: Int                                        // счетчик диалогов
+        var countDialog = 0                                        // счетчик диалогов
 
         val summUserID = StringBuilder()                                     // список userID через запятую
-        countDialog = 0
         while (countDialog <= dialogList.size - 1) {
             //получаем диалог countSendMessageUser
             val userID = dialogList[countDialog].lastMessage.peerId!!        // получаем userID диалога
             userIDmassive[countDialog] = userID
             summUserID.append(userIDmassive[countDialog]).append(",")
-            countDialog = countDialog + 1
+            countDialog += 1
             ////////////////////////////////получение userID диалога
         }
         ////////////////////////////получение имени и фамилии
@@ -173,7 +171,7 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
             //     System.out.println("lfName[countDialog] = " + lfName[countDialog]  + "\n");
             userIDmassive[countDialog] = infoUser[countDialog].id!!                   // id пользователя в массиве
             vkdialog.items.add(lfName[countDialog])                                                    // загрузка в лист
-            countDialog = countDialog + 1
+            countDialog += 1
         }
     }
     //-----------------запуск бота по кнопке включения бота------------------------//

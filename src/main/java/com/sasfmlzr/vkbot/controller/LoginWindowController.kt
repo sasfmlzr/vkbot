@@ -196,7 +196,7 @@ class LoginWindowController : Initializable {
     @FXML
     private fun onLogin() {
         when (state) {
-            LoginWindowController.State.NONE -> {
+            State.NONE -> {
                 if (loginText.text != "" && passText.text != "") {
                     hideCaptchaAnimation()
                     hideWarningAnimation()
@@ -207,16 +207,16 @@ class LoginWindowController : Initializable {
                     state = State.LOGGING_IN
                 }
             }
-            LoginWindowController.State.LOGGING_IN, LoginWindowController.State.CONFIRM_PHONE, LoginWindowController.State.SUCCESS -> {
+            State.LOGGING_IN, State.CONFIRM_PHONE, State.SUCCESS -> {
             }
-            LoginWindowController.State.NEED_CAPTCHA -> {
+            State.NEED_CAPTCHA -> {
                 if (captchaKey.text != "") {
                     client!!.onReceiveDataListener.onReceiveCaptcha(captchaKey.text)
                     loadingImage.isVisible = true
                     state = State.LOGGING_IN
                 }
             }
-            LoginWindowController.State.INVALID_DATA -> {
+            State.INVALID_DATA -> {
                 if (loginText.text != "" && passText.text != "") {
                     client!!.onReceiveDataListener.onReceiveData(loginText.text, passText.text)
                     loadingImage.isVisible = true

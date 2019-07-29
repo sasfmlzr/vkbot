@@ -27,7 +27,6 @@ class DatabaseConnection {
     }
 
     fun connect() {
-        //Class.forName("org.sqlite.JDBC")
         conn = DriverManager.getConnection("jdbc:sqlite:Database.db")
 
         statmt = conn.createStatement()
@@ -81,8 +80,7 @@ class DatabaseConnection {
     // initialize table ID REQUEST
     @Throws(SQLException::class)
     private fun initOneDB_Id_Request(tableDB: String, objectData: MutableList<BotDatabase_IdRequest>) {
-        val resSet: ResultSet
-        resSet = statmt.executeQuery("SELECT * FROM $tableDB")
+        val resSet: ResultSet = statmt.executeQuery("SELECT * FROM $tableDB")
         while (resSet.next()) {
             val requesttextbot = resSet.getString("request")
             val id = Integer.parseInt(resSet.getString("id"))
@@ -95,8 +93,7 @@ class DatabaseConnection {
     // initialize table   REQUEST RESPONSE
     @Throws(SQLException::class)
     private fun initOneDB_Request_Response(tableDB: String, objectData: MutableList<BotDatabase_RequestResponse>) {
-        val resSet: ResultSet
-        resSet = statmt.executeQuery("SELECT * FROM $tableDB")
+        val resSet: ResultSet = statmt.executeQuery("SELECT * FROM $tableDB")
         while (resSet.next()) {
             val requesttextbot = resSet.getString("requesttextbot")
             val responsetextbot = resSet.getString("responsetextbot")
@@ -111,8 +108,7 @@ class DatabaseConnection {
     @Throws(SQLException::class)
     private fun initOneDB_userRights(objectData: MutableList<UserIdRightsBD>) {
 
-        val resSet: ResultSet
-        resSet = statmt.executeQuery("SELECT * FROM UserRights")
+        val resSet: ResultSet = statmt.executeQuery("SELECT * FROM UserRights")
         while (resSet.next()) {
             val loginBot = resSet.getString("login")
             val userID = resSet.getInt("userID")

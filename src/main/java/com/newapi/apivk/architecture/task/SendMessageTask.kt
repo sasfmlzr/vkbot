@@ -11,13 +11,12 @@ class SendMessageTask : Task<UserActor, Unit> {
     lateinit var message: String
     private var peerId: Int = 0
 
-    override suspend fun execute(input: UserActor): Unit {
+    override suspend fun execute(input: UserActor) {
         vkApiClient.messages().send(input).message(message).peerId(peerId)
                 .randomId(Random.nextInt(0, 10000))
                 .execute()
     }
-
-
+    
     fun addParams(message: String, peerId: Int, vkApiClient: VkApiClient): SendMessageTask {
         this.message = message
         this.peerId = peerId

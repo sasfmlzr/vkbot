@@ -81,7 +81,7 @@ public class BotTabController extends AnchorPane implements Initializable {
     }
 
     //-----------------ручная отправка сообщения-----------------------------------//
-    public void pushButton() throws SQLException, ClassNotFoundException {
+    public void pushButton() {
         //     if (!Objects.equals(textMessage.getText(), ""))
         //        StaticModel.INSTANCE.getUserBot().botApiClient().messages().vkSendMessageUser(
         //                StaticModel.INSTANCE.getUserBot().getActor(), textMessage.getText(), Integer.parseInt(users_id.getText()));

@@ -1,6 +1,7 @@
 package com.sasfmlzr.vkbot
 
 import com.sasfmlzr.apivk.`object`.StatisticsVariable
+import kotlin.math.roundToLong
 
 class BotTabPresenter {
 
@@ -18,8 +19,8 @@ class BotTabPresenter {
                         "Количество отправленных сообщений равно " + StatisticsVariable.countSendMessage + "\n"
             val timeProgramFinish = System.currentTimeMillis()
             val timeProgramItog = timeProgramFinish - StatisticsVariable.timeProgramStart
-            statisticMsg = statisticMsg + "Время работы бота равно " + Math.round((timeProgramItog / 1000).toFloat()) + "c\n" +
-                    "Среднее время запроса до вк равно " + Math.round((100 * StatisticsVariable.timeZaprosFinishSumm / StatisticsVariable.countSendMessageUser).toFloat()) / 100 + "мс\n" +
+            statisticMsg = statisticMsg + "Время работы бота равно " + (timeProgramItog / 1000).toFloat().roundToLong() + "c\n" +
+                    "Среднее время запроса до вк равно " + (100 * StatisticsVariable.timeZaprosFinishSumm / StatisticsVariable.countSendMessageUser).toFloat().roundToLong() / 100 + "мс\n" +
                     "Количество совершенных циклов работы бота равно " + StatisticsVariable.countSendMessageUser + "\n"
             if (StatisticsVariable.countUsedBD != 0)
                 statisticMsg = statisticMsg + "Количество обращений к основной таблицы БД равно " + StatisticsVariable.countUsedBD + "\n"

@@ -18,7 +18,6 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -61,7 +60,7 @@ public class BotCardController extends AnchorPane implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    private void recursion() throws SQLException, ClassNotFoundException {
+    private void recursion() {
         StatisticsVariable.INSTANCE.setCountSendMessageUser(0);
         StatisticsVariable.INSTANCE.setCountSendMessage(0);
         StatisticsVariable.INSTANCE.setTimeZaprosFinishSumm(0);
@@ -77,7 +76,7 @@ public class BotCardController extends AnchorPane implements Initializable {
         StaticModel.INSTANCE.getUserBot().run();
     }
 
-    public void recursionGroup() throws SQLException, ClassNotFoundException {
+    public void recursionGroup() {
 
         DatabaseConnection.Companion.getInstance().connect();
 
@@ -99,7 +98,7 @@ public class BotCardController extends AnchorPane implements Initializable {
     }
 
     @FXML
-    public void onButtonPowerBot() throws SQLException, ClassNotFoundException {
+    public void onButtonPowerBot() {
         toggleButtonActive(buttonPowerBot);
         if (!buttonPowerBot.isFocused()) {
             System.out.print("Bot working" + "\n");

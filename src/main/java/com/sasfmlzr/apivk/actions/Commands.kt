@@ -8,7 +8,7 @@ import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
 
-class Commands internal constructor(client: com.sasfmlzr.apivk.client.BotApiClient) : AbstractAction(client) {
+class Commands internal constructor(client: BotApiClient) : AbstractAction(client) {
 
     @Throws(SQLException::class, ApiException::class, ClientException::class)
     fun commandsBot(

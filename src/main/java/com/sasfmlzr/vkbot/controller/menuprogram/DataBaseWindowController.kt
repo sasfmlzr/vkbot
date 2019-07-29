@@ -169,29 +169,3 @@ class DataBaseWindowController : Initializable {
         }
     }
 }
-
-/*
-    // --------Заполнение таблицы--------
-    public static void WriteDB() throws SQLException {
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Petya', 125453); ");
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Vasya', 321789); ");
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Masha', 456123); ");
-
-        System.out.println("Таблица заполнена");
-    }
-    /*
-    // -------- Вывод таблицы--------
-    public static void ReadDB() throws ClassNotFoundException, SQLException {
-        resSet = statmt.executeQuery("SELECT * FROM users");
-
-        while(resSet.next())
-        {
-            int id = resSet.getInt("id");
-            String  name = resSet.getString("name");
-            String  phone = resSet.getString("phone");
-        }
-
-        System.out.println("Таблица выведена");
-    }
-
-    */
