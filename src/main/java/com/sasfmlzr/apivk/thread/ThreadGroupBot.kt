@@ -58,15 +58,10 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
             client.stateBot.priostanovka = false   // для приостановки бота
             var message: String         // сообщение бота
 
-
             message =
                     databaseStorage.botRandomData[client.other().randomId(databaseStorage.botRandomData.size)]
                             .response          //сообщение берется из рандомной базы коляна
-            /*
-           if (textMessageString.equals("")){
-               System.out.print("textMessageString = " +textMessageString+ "\n");
-               message = "Я Бот Колян, я выпил Блэйзера и не могу отвечать на пустые сообщения(в которых только вложения)";
-           }*/
+
             val messagesList = createListMessageVK()                   // делается запрос непрочитанных сообщений
 
             if (!client.stateBot.botStopped) {

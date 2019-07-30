@@ -9,16 +9,23 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-class DatabaseRequest private constructor(private val statement: Statement,
-                                          private val connection: Connection) {
+class DatabaseRequest private constructor(private var statement: Statement,
+                                          private var connection: Connection) {
 
     companion object {
         @Volatile
         private var instance: DatabaseRequest? = null
 
-        fun getInstance(databaseConnection: DatabaseConnection): DatabaseRequest {
-            return instance ?: synchronized(this) {
-                instance ?: DatabaseRequest(databaseConnection.statmt, databaseConnection.conn).also { instance = it }
+        fun getInstance(conn: Connection,
+                        statmt: Statement): DatabaseRequest {
+            return if (instance?.statement != statmt && instance?.connection != conn) {
+                synchronized(this) {
+                    DatabaseRequest(statmt, conn).also { instance = it }
+                }
+            } else {
+                instance ?: synchronized(this) {
+                    instance ?: DatabaseRequest(statmt, conn).also { instance = it }
+                }
             }
         }
     }

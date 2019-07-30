@@ -33,6 +33,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
     override fun run()         //Этот метод будет выполняться в побочном потоке
     {
+        stoped = false
         while (!stoped) {
             var exception = false
             try {
@@ -72,7 +73,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             client.stateBot.botWork = true           // если метод запущен, то бот включен
             client.stateBot.priostanovka = false   // для приостановки бота
             var message: String?         // сообщение бота
-            var obrachenie = "Колян, "                      //обращение к боту
+
             message = databaseStorage.botRandomData[client.other().randomId(databaseStorage.botRandomData.size)]
                     .response          //сообщение берется из рандомной базы коляна
             /*
@@ -81,7 +82,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                message = "Я Бот Колян, я выпил Блэйзера и не могу отвечать на пустые сообщения(в которых только вложения)";
            }*/
             val messagesList = createListMessageVK()                   // делается запрос непрочитанных сообщений
-            obrachenie = "Колян, "
+            val botName = "Колян, "
             StatisticsVariable.timeZaprosFinishSumm =
                     StatisticsVariable.timeZaprosFinishSumm + timeZaprosFinishItogo            // для среднего пинга
 
@@ -104,9 +105,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                 var textMessageString = messagesList[0].lastMessage.text.toLowerCase()       // прием сообщения в переменную
                 if (userRight.adminCommands!!) {
                     if (!client.stateBot.botStopped) {     // если совпадение с сообщением не найдено, то
-                        if (textMessageString.contains(obrachenie.toLowerCase())) {
+                        if (textMessageString.contains(botName.toLowerCase())) {
 
-                            textMessageString = textMessageString.replace(obrachenie.toLowerCase().toRegex(), "")
+                            textMessageString = textMessageString.replace(botName.toLowerCase().toRegex(), "")
                             textMessageString =
                                     textMessageString.replace("[^ A-Za-zА-Яа-я0-9?]".toRegex(), "")       // замена знаков
                             message = client.messages().commands()
@@ -129,8 +130,8 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                     //    statmt.execute("SELECT 'login','userID','UserRights' FROM 'UserRights' WHERE login="+actor.getId()+" AND userID="+userID);
                     client.stateBot.reduction = false
                     if (!client.stateBot.findMessage) {     // если совпадение с сообщением не найдено, то
-                        if (textMessageString.contains(obrachenie.toLowerCase())) {
-                            textMessageString = textMessageString.replace(obrachenie.toLowerCase().toRegex(), "")
+                        if (textMessageString.contains(botName.toLowerCase())) {
+                            textMessageString = textMessageString.replace(botName.toLowerCase().toRegex(), "")
                             message = client.messages().commands().commandsBot(
                                     textMessageString,
                                     message,

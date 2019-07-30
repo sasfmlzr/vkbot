@@ -32,7 +32,7 @@ class DatabaseConnection {
         statmt = conn.createStatement()
 
         databaseStorage = DatabaseStorage.getInstance()
-        databaseRequest = DatabaseRequest.getInstance(this)
+        databaseRequest = DatabaseRequest.getInstance(conn, statmt)
         println("JDBC connected")
         init()
     }
