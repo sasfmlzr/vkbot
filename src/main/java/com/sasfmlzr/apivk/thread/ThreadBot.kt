@@ -7,7 +7,6 @@ abstract class ThreadBot {
     //-----------------задержка потока-----------------------------------------------//         //test
     @Throws(InterruptedException::class)
     fun delayThread(messagesList: List<*>, client: BotApiClient) {
-        //if (!client.stateBot.testSpeed)
         if (!client.stateBot.testSpeed) {
             if (messagesList.isNotEmpty()) {
                 client.stateBot.countSleep = 0

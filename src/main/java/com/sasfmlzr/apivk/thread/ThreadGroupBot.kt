@@ -12,12 +12,14 @@ import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.util.*
 
 class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupActor) : ThreadBot(), Runnable {
-    private var stoped = false
+
+    private var isStopped = false
 
     private val databaseStorage = DatabaseStorage.getInstance()
 
     override fun run() {
-        while (!stoped) {
+        isStopped = false
+        while (!isStopped) {
             var exception = false
             try {
                 sendMessageUser(actor)
@@ -43,7 +45,7 @@ class ThreadGroupBot(private val client: BotApiClient, private val actor: GroupA
     }
 
     private fun stopped() {
-        stoped = true
+        isStopped = true
     }
 
     //-----------------отправка сообщения, если есть непрочитанные-----------------//

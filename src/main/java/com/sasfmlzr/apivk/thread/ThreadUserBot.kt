@@ -26,15 +26,15 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
         Runnable        //(содержащее метод run())          отправление сообщения в рекурсии в отдельном потоке
 {
 
-    private var stoped = false
+    private var isStopped = false
 
     private val databaseConnection = DatabaseConnection.getInstance()
     private val databaseStorage = DatabaseStorage.getInstance()
 
     override fun run()         //Этот метод будет выполняться в побочном потоке
     {
-        stoped = false
-        while (!stoped) {
+        isStopped = false
+        while (!isStopped) {
             var exception = false
             try {
                 sendMessageUser(actor)
@@ -57,7 +57,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
     }
 
     private fun stopped() {
-        stoped = true
+        isStopped = true
     }
 
     //-----------------отправка сообщения, если есть непрочитанные-----------------//
