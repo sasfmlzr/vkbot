@@ -13,6 +13,11 @@ import java.util.*
 
 class BrowserDialogWindowController : Initializable {
 
+    companion object {
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages"
+        const val fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml"
+    }
+
     @FXML
     private lateinit var root: AnchorPane
     @FXML
@@ -36,10 +41,6 @@ class BrowserDialogWindowController : Initializable {
         }
     }
 
-    fun setURL(URL: String) {
-        this.engine.load(URL)
-    }
-
     @FXML
     private fun onCancel() {
         close()
@@ -47,10 +48,5 @@ class BrowserDialogWindowController : Initializable {
 
     private fun close() {
         root.scene.window.hide()
-    }
-
-    companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages"
-        val fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml"
     }
 }

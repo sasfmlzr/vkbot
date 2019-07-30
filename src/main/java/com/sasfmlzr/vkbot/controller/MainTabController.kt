@@ -7,6 +7,11 @@ import java.util.*
 
 class MainTabController : AnchorPane(), Initializable {
 
+    companion object {
+        //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
+        const val fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml"
+    }
+
     //@FXML private AnchorPane root;
     //@FXML private FlowPane flowPane;
 
@@ -32,10 +37,5 @@ class MainTabController : AnchorPane(), Initializable {
 		{
 			e.printStackTrace();
 		}*/
-    }
-
-    companion object {
-        //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
-        val fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml"
     }
 }

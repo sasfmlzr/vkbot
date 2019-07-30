@@ -22,6 +22,11 @@ import java.util.*
 
 class LoginWindowController : Initializable {
 
+    companion object {
+        internal const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LoginWindow.messages"
+        internal const val fxmlPath = "/com/sasfmlzr/vkbot/views/LoginWindow.fxml"
+    }
+
     private val loginWindowPresenter = LoginWindowPresenter()
 
     @FXML
@@ -250,11 +255,5 @@ class LoginWindowController : Initializable {
 
     private fun hideCaptchaAnimation() {
         loginWindowPresenter.showOrHide(grid, false, 3, 111, captchaImage, captchaKey)
-    }
-
-    companion object {
-
-        internal val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LoginWindow.messages"
-        internal val fxmlPath = "/com/sasfmlzr/vkbot/views/LoginWindow.fxml"
     }
 }

@@ -268,8 +268,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                 ) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
                     listMessages.add(databaseStorage.bigMessagesData.get(countDB).response)
-                    client.stateBot.findMessage =
-                            true                                                 // совпадение с сообщением найдено
+                    client.stateBot.findMessage = true  // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
                 countDB += 1

@@ -25,6 +25,12 @@ import java.util.logging.Logger
 import kotlin.system.exitProcess
 
 class MainWindowController : AnchorPane(), Initializable {
+
+    companion object {
+        private const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.mainwindow.messages"
+        private const val menuProgramPath = "/com/sasfmlzr/vkbot/views/menuProgram/"
+    }
+
     @FXML
     private lateinit var root: AnchorPane
     @FXML
@@ -270,11 +276,5 @@ class MainWindowController : AnchorPane(), Initializable {
     private fun onMenuFileClose() {
         Platform.exit()
         exitProcess(0)
-    }
-
-    companion object {
-
-        private const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.mainwindow.messages"
-        private const val menuProgramPath = "/com/sasfmlzr/vkbot/views/menuProgram/"
     }
 }

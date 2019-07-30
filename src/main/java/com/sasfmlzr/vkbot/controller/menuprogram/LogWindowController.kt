@@ -9,22 +9,20 @@ import java.net.URL
 import java.util.*
 
 class LogWindowController : Initializable {
+
+    companion object {
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LogWindow.messages"
+        const val fxmlPath = "LogWindow.fxml"
+    }
+
     @FXML
     private lateinit var textLog: TextArea
 
     override fun initialize(location: URL, resources: ResourceBundle) {}
 
     fun initWindow() {
-
-
         val bReader = BufferedReader(FileReader("src/resources/locale/LogWindow/Log.txt"))
         val text = bReader.readText()
         textLog.text = text
-        //////////////логи берутся из файла
-    }
-
-    companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LogWindow.messages"
-        val fxmlPath = "LogWindow.fxml"
     }
 }

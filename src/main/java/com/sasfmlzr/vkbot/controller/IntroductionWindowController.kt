@@ -28,6 +28,14 @@ import kotlin.system.exitProcess
 
 class IntroductionWindowController : Application(), Initializable {
 
+    companion object {
+
+        private const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.IntroductionWindow.messages"
+        private const val fxmlPath = "/com/sasfmlzr/vkbot/views/IntroductionWindow.fxml"
+
+        private var stageIntroduction = 0
+    }
+
     private val loginWindowPresenter = LoginWindowPresenter()
     @FXML
     private lateinit var root: AnchorPane
@@ -300,13 +308,5 @@ class IntroductionWindowController : Application(), Initializable {
     // --------Анимация-------- //
     private fun hideCaptchaAnimation() {
         loginWindowPresenter.showOrHide(grid, false, 3, 111, captchaImage, captchaKey)
-    }
-
-    companion object {
-
-        private const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.IntroductionWindow.messages"
-        private const val fxmlPath = "/com/sasfmlzr/vkbot/views/IntroductionWindow.fxml"
-
-        private var stageIntroduction = 0
     }
 }

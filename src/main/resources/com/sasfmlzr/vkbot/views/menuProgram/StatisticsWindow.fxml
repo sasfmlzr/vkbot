@@ -10,7 +10,6 @@
          <font>
             <Font size="14.0" />
          </font></TextArea>
-      <Button fx:id="button" layoutX="179.0" layoutY="365.0" mnemonicParsing="false" onAction="#blabla" text="Button" visible="false" />
       <StackedAreaChart fx:id="timeZaprosVk" layoutX="21.0" layoutY="28.0" prefHeight="170.0" prefWidth="387.0" title="Время запроса вк">
         <xAxis>
           <NumberAxis fx:id="timeZaprosVkX" lowerBound="1.0" side="BOTTOM" />

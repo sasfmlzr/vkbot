@@ -18,6 +18,16 @@ import java.util.*
 
 class DataBaseWindowController : Initializable {
 
+    companion object {
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages"
+        const val fxmlPath = "DataBaseWindow.fxml"
+
+        private fun loadLocale(locale: Locale, resourcePath: String): ResourceBundle {
+            Locale.setDefault(locale)
+            return ResourceBundle.getBundle(resourcePath, Locale.getDefault())
+        }
+    }
+
     @FXML
     private lateinit var tableTextBot: TableView<BotDatabase_IdRequestResponse>
     @FXML
@@ -42,84 +52,24 @@ class DataBaseWindowController : Initializable {
 
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
             textTable.text = "БД:" + "\n"
-            /*     try {
-                ResourceBundle bundle = loadLocale(Locale.getDefault(), DataBaseWindowController.resourcePath);
-                Effects.init();
 
-                AnchorPane root = FXMLLoader.load(getClass().getResource(DataBaseWindowController.fxmlPath), bundle);
-
-                Scene scene = new Scene(root);
-                scene.setRoot(root);
-                scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//////////////
-            //   primaryStage = new Stage();
-            //primaryStage.setScene(scene);
-            //primaryStage.setMinWidth(1100);
-            //primaryStage.setMinHeight(600);
-            //primaryStage.setTitle("Test VKBot");
-            //primaryStage.show();
-
-            primaryStage.setOnCloseRequest(event -> {
-                Platform.exit();
-                System.exit(0);
-            });//////////
-                test();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             refreshTable()
         } else {
             textTable.text = "Сначала запусти бота" + "\n"
         }
     }
 
-
-    fun start(primaryStage: Stage) {
-
-    }
-
-
     // при нажатии на обновить таблицу
     @Throws(SQLException::class)
     fun refreshTable() {
-        /*
-        System.out.println("UserID = " + "\n");
-        for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
-        }
-        Conn();
-    //    CreateDB();
-     //   WriteDB();
-     //   ReadDB();
-        InitDB();
-
-      //  tableTextBot.();
-        //idColumn.getColumns().set()
-
-     //   tableTextBot.getItems().clear();
-
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        sendTextMessage.setCellValueFactory(new PropertyValueFactory<>("login"));
-        requestTextMessage.setCellValueFactory(new PropertyValueFactory<>("request"));
-
-        tableTextBot.setItems(botData);     // заполняем таблицу данными
-        System.out.println("Таблица выведена");
-
-        */
-        /*  for ( int i = 0; i<tableTextBot.getItems().size(); i++) { tableTextBot.getItems().clear();
-        }*/
-        // tableTextBot.getItems().clear();
-
-        //  connectdatabase;
-
-        //   InitDB();
         idColumn.cellValueFactory = PropertyValueFactory("id")
         sendTextMessage.cellValueFactory = PropertyValueFactory("response")
         requestTextMessage.cellValueFactory = PropertyValueFactory("request")
 
+        DatabaseConnection.getInstance().connect()
+
         //WTF
         tableTextBot.items = FXCollections.observableList(DatabaseStorage.getInstance().botData)
-
-        DatabaseConnection.getInstance().init()
     }
 
     /**
@@ -127,16 +77,8 @@ class DataBaseWindowController : Initializable {
      */
 
     fun closeView() {
-
-        //CloseDB();
-
-        //primaryStage.close();
-        //DataBaseWindowController.setOnCloseRequest(new EventHandler())
-
-
         val stage = close.scene.window as Stage
         stage.close()
-
     }
 
 
@@ -157,15 +99,4 @@ class DataBaseWindowController : Initializable {
             println("Заполните ячейки")
         }
     }   // добавить новый элемент в таблицу
-
-    companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages"
-        val fxmlPath = "DataBaseWindow.fxml"
-
-
-        private fun loadLocale(locale: Locale, resourcePath: String): ResourceBundle {
-            Locale.setDefault(locale)
-            return ResourceBundle.getBundle(resourcePath, Locale.getDefault())
-        }
-    }
 }

@@ -9,6 +9,7 @@ import java.net.URL
 import java.util.*
 
 class AboutProgramWindowController : Initializable {
+    
     companion object {
         const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.AboutProgramWindow.messages"
         const val fxmlPath = "AboutProgramWindow.fxml"

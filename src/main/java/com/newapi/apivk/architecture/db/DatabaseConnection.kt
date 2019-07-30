@@ -45,7 +45,6 @@ class DatabaseConnection {
 
 
         fillData(statmt.executeQuery("SELECT * FROM BotMessages"))
-        fillData(statmt.executeQuery("SELECT * FROM NorkinForewer"))
 
         initOneDB_Id_Request("RandomMessages", databaseStorage.botRandomData)
         initOneDB_Id_Request("StihMessages", databaseStorage.stihMessagesData)

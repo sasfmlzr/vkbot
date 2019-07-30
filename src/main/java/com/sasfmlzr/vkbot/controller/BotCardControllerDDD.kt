@@ -25,6 +25,11 @@ import java.util.logging.Logger
 
 class BotCardControllerDDD internal constructor() : AnchorPane(), Initializable {
 
+    companion object {
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotCard.messages"
+        const val fxmlPath = "/com/sasfmlzr/vkbot/views/BotCard.fxml"
+    }
+
     @FXML
     private lateinit var avatar: ImageView
     @FXML
@@ -141,10 +146,5 @@ class BotCardControllerDDD internal constructor() : AnchorPane(), Initializable 
             button.id = "button"
             button.effect = null
         }
-    }
-
-    companion object {
-        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotCard.messages"
-        const val fxmlPath = "/com/sasfmlzr/vkbot/views/BotCard.fxml"
     }
 }

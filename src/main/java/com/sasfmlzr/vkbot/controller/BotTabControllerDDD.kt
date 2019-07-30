@@ -28,6 +28,13 @@ import java.util.logging.Logger
 
 class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
 
+    companion object {
+        private const val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTab.fxml"
+
+        private val lfName = arrayOfNulls<String>(30)                            // массив строк из листа - имя и фамилия
+        private val userIDmassive = IntArray(30)                           // массив userID
+    }
+
     @FXML
     private lateinit var botCardPane: FlowPane
     @FXML
@@ -129,9 +136,6 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
         print("vkdialog  " + vkdialog.selectionModel.selectedIndex + "\n")
         print("vkdindex  " + lfName[vkdialog.selectionModel.selectedIndex] + "\n")
         print("vkdindex  " + userIDmassive[vkdialog.selectionModel.selectedIndex] + "\n")
-        //  List listItems  =  vkdialog.getItems();
-        //   vkdialog.getSelectionModel().getSelectedItem();
-        //  System.out.print("getLongPollHistory = ");
     }
 
     //-----------------обновить диалоги--------------------------------------------//
@@ -179,14 +183,6 @@ class BotTabControllerDDD internal constructor() : AnchorPane(), Initializable {
     @FXML
     fun logFill() {
         textLog.text = botTabPresenter.fillLog()
-    }
-
-    companion object {
-        private val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTab.fxml"
-
-
-        private val lfName = arrayOfNulls<String>(30)                            // массив строк из листа - имя и фамилия
-        private val userIDmassive = IntArray(30)                           // массив userID
     }
 }
 

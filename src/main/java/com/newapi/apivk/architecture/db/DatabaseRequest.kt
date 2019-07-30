@@ -66,14 +66,6 @@ class DatabaseRequest private constructor(private val statement: Statement,
         // AnekdotMessages
         statement.execute("CREATE TABLE if not exists 'AnekdotMessages' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + "'request'  TEXT NOT NULL);")
 
-
-        // NorkinForewer
-        statement.execute(
-                "CREATE TABLE if not exists 'NorkinForewer' ('id' INTEGER UNIQUE PRIMARY KEY ASC AUTOINCREMENT NOT NULL, " +
-                        "'requesttextbot' CHAR    NOT NULL, 'responsetextbot' CHAR    NOT NULL, " +
-                        "'Login' TEXT    REFERENCES 'UserProgramInformation' ('Login') ON DELETE CASCADE ON UPDATE CASCADE NOT NULL DEFAULT (294987132));"
-        )
-
         // StatusMessages
         statement.execute("CREATE TABLE if not exists 'StatusMessages' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + "'request'  TEXT NOT NULL);")
         // StihMessages
@@ -130,10 +122,9 @@ class DatabaseRequest private constructor(private val statement: Statement,
         statement.setString(2, response)
         statement.setInt(3, actorId)
         statement.executeUpdate()
-        // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
+
         println("Успешно занесено в БД")
         DatabaseConnection.getInstance().init()
-        //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
 
@@ -141,15 +132,12 @@ class DatabaseRequest private constructor(private val statement: Statement,
     fun addRandomMessage(text: String) {
         println(text)
 
-        try {
-            statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('$text'); ")
-        } catch (e: Exception) {
-            println("wtf")
-        }
-        // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
+        val requestSQL = ("INSERT INTO 'RandomMessages' ('request')  VALUES  (?); ")
+        val statement = connection.prepareStatement(requestSQL)
+        statement.setString(1, text)
+        statement.executeUpdate()
+
         println("Успешно занесено в БД")
-        //InitDB()
-        //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
     // парсер добавления в таблицу через вк

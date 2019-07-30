@@ -133,9 +133,6 @@ public class BotTabController extends AnchorPane implements Initializable {
         System.out.print("vkdialog  " + vkdialog.getSelectionModel().getSelectedIndex() + "\n");
         System.out.print("vkdindex  " + lfName[vkdialog.getSelectionModel().getSelectedIndex()] + "\n");
         System.out.print("vkdindex  " + userIDmassive[vkdialog.getSelectionModel().getSelectedIndex()] + "\n");
-        //  List listItems  =  vkdialog.getItems();
-        //   vkdialog.getSelectionModel().getSelectedItem();
-        //  System.out.print("getLongPollHistory = ");
     }
 
     //-----------------обновить диалоги--------------------------------------------//

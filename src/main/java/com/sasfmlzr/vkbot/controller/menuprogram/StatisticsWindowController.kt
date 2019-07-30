@@ -15,6 +15,16 @@ import java.util.*
 
 class StatisticsWindowController : Initializable {
 
+    companion object {
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.StatisticsWindow.messages"
+        const val fxmlPath = "StatisticsWindow.fxml"
+
+        var seriesItogVk = XYChart.Series<Int, Long>()
+        var seriesZaprosVk = XYChart.Series<Int, Long>()
+        var seriesThread = XYChart.Series<Int, Int>()
+        var seriesBigBD = XYChart.Series<Int, Int>()
+    }
+
     @FXML
     private lateinit var textLog: TextArea
     @FXML
@@ -55,37 +65,18 @@ class StatisticsWindowController : Initializable {
     fun initWindow() {
         textLog.text = ""
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
-            /*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
-			System.out.println(bReader);
-			String s;
-			while ((s = bReader.readLine()) != null) {
-				textLog.appendText(s + "\n");
-			}*/
+
             textLog.appendText("Статистика бота" + "\n")
-            seriesZaprosVk.setName("Запрос в вк")
+            seriesZaprosVk.name = "Запрос в вк"
             seriesZaprosVk.name = "Запрос с отправкой"
 
-
-            //	timeZaprosVk;
             timeZaprosVk.data.setAll(seriesZaprosVk, seriesItogVk)
-            //	timeZaprosVk.getData() .setAll( seriesItogVk);
 
             timeThread.data.setAll(seriesThread)
-            //			timeBigBD.getData() .setAll(seriesBigBD);
         } else {
             textLog.appendText("Сначала запусти бота" + "\n")
         }
-        //		System.out.println(s);
     }
-
-    //////////////при нажатии на кнопку
-    fun blabla() {
-
-        print("setUpperBound " + timeZaprosVkX.upperBound + "\n")
-        punchRadioButton()
-        print("выполнено \n")
-    }
-
 
     //////////////при нажатии на кнопку выбора кратности статистики
     fun punchRadioButton() {
@@ -228,20 +219,4 @@ class StatisticsWindowController : Initializable {
             timeThreadX.isAutoRanging = true
         }
     }
-
-    companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.StatisticsWindow.messages"
-        val fxmlPath = "StatisticsWindow.fxml"
-
-
-        var seriesItogVk = XYChart.Series<Int, Long>()
-        var seriesZaprosVk = XYChart.Series<Int, Long>()
-        var seriesThread = XYChart.Series<Int, Int>()
-        var seriesBigBD = XYChart.Series<Int, Int>()
-    }
-
 }
-
-
-
-

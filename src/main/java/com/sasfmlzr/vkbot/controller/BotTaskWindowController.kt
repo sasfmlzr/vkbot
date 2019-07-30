@@ -10,6 +10,11 @@ import java.util.*
 
 class BotTaskWindowController : Initializable {
 
+    companion object {
+        internal const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotTaskWindow.messages"
+        internal const val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml"
+    }
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         println("BotTaskWindowController opened")
     }
@@ -29,17 +34,10 @@ class BotTaskWindowController : Initializable {
         val a = 10 // Начальное значение диапазона - "от"
         val b = 8000 // Конечное значение диапазона - "до"
 
-        //	int random = Integer(Math.random());
-        //UserActor actor = new UserActor(authResponse.getUserId(), client.token);
         vk.messages().send(actor)
                 .message("Как дела?")
                 .userId(30562433)
                 .randomId(a + (Math.random() * b).toInt())
                 .execute()
-    }
-
-    companion object {
-        internal val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotTaskWindow.messages"
-        internal val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml"
     }
 }
