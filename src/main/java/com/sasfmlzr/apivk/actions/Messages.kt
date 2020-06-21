@@ -51,7 +51,6 @@ open class Messages(client: BotApiClient) : AbstractAction(client) {
                         .vkSendMessageUser(actor, message, userID, super.client.vk)
             }
         }
-
     }
 
     fun commands(): CommonCommands {
