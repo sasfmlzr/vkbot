@@ -50,14 +50,6 @@ public class BotCardController extends AnchorPane implements Initializable {
     @FXML
     private Label nameBot;
 
-    private void setavatar(Image image) {
-        avatar.setImage(image);
-    }
-
-    private void settext(String text) {
-        nameBot.setText(text);
-    }
-
     public void initialize(URL location, ResourceBundle resources) {
     }
 
@@ -93,8 +85,16 @@ public class BotCardController extends AnchorPane implements Initializable {
 
 
     private void setAvatarBot(BotCardController childList, AbstractBot bot) {
-        childList.settext(bot.getBotName());
-        childList.setavatar(bot.getBotImage());
+        childList.setText(bot.getBotName());
+        childList.setAvatar(bot.getBotImage());
+    }
+
+    private void setAvatar(Image image) {
+        avatar.setImage(image);
+    }
+
+    private void setText(String text) {
+        nameBot.setText(text);
     }
 
     @FXML
@@ -116,7 +116,6 @@ public class BotCardController extends AnchorPane implements Initializable {
         toggleButtonActive(buttonLoad);
     }
 
-
     @FXML
     private void onSettings() {
     }
@@ -127,7 +126,6 @@ public class BotCardController extends AnchorPane implements Initializable {
 
     @FXML
     private void onRemove() {
-
     }
 
     private void toggleButtonActive(Button button) {

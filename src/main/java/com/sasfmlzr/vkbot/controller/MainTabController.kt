@@ -36,6 +36,6 @@ class MainTabController : AnchorPane(), Initializable {
 
     companion object {
         //final static String resourcePath = "com.sasfmlzr.vkbot.resourcebundle.maintab.messages";
-        val fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml"
+        const val fxmlPath = "/com/sasfmlzr/vkbot/views/MainTab.fxml"
     }
 }

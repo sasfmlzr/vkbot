@@ -45,9 +45,9 @@ public class ClientUtils implements Serializable {
                 if (name == null) continue;
 
                 if (name.equals(value))
-                    return true;
+                    return false;
             }
         }
-        return false;
+        return true;
     }
 }

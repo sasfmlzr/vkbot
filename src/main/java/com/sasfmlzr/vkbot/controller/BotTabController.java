@@ -23,9 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +33,6 @@ import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
 public class BotTabController extends AnchorPane implements Initializable {
-
 
     private final static String fxmlPath = "/com/sasfmlzr/vkbot/views/BotTab.fxml";
 
@@ -56,10 +53,10 @@ public class BotTabController extends AnchorPane implements Initializable {
     @FXML
     private ImageView imageTest;
 
-    private BotTabPresenter botTabPresenter = new BotTabPresenter();
+    private final BotTabPresenter botTabPresenter = new BotTabPresenter();
 
-    private static String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
-    private static int[] userIDmassive = new int[30];                           // массив userID
+    private static final String[] lfName = new String[30];                            // массив строк из листа - имя и фамилия
+    private static final int[] userIDmassive = new int[30];                           // массив userID
 
     BotTabController() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

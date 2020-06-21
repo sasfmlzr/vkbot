@@ -142,10 +142,10 @@ class DataBaseWindowController : Initializable {
     fun addElement() {
         if (zapros.text != "" && otvet.text != "") {
             val idBot: Int
-            if (Client.actor == null) {
-                idBot = StaticModel.userBot.actor.id!!
+            idBot = if (Client.actor == null) {
+                StaticModel.userBot.actor.id!!
             } else
-                idBot = Client.actor.id!!
+                Client.actor.id!!
             DatabaseEntity.database.statmt!!.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('" + zapros.text + "', '" + otvet.text + "',  '" + idBot + "');")
             println("Таблица заполнена")
             refreshTable()
@@ -155,8 +155,8 @@ class DataBaseWindowController : Initializable {
     }   // добавить новый элемент в таблицу
 
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages"
-        val fxmlPath = "DataBaseWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.DataBaseWindow.messages"
+        const val fxmlPath = "DataBaseWindow.fxml"
 
 
         private fun loadLocale(locale: Locale, resourcePath: String): ResourceBundle {

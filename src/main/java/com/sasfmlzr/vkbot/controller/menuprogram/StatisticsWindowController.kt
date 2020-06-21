@@ -57,7 +57,7 @@ class StatisticsWindowController : Initializable {
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
 
             textLog.appendText("Статистика бота" + "\n")
-            seriesZaprosVk.setName("Запрос в вк")
+            seriesZaprosVk.name = "Запрос в вк"
             seriesZaprosVk.name = "Запрос с отправкой"
 
             timeZaprosVk.data.setAll(seriesZaprosVk, seriesItogVk)
@@ -209,8 +209,8 @@ class StatisticsWindowController : Initializable {
     }
 
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.StatisticsWindow.messages"
-        val fxmlPath = "StatisticsWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.StatisticsWindow.messages"
+        const val fxmlPath = "StatisticsWindow.fxml"
 
 
         var seriesItogVk = XYChart.Series<Int, Long>()

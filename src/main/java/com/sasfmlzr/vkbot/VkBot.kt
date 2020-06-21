@@ -52,7 +52,7 @@ class VkBot : Application() {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            Application.launch(VkBot::class.java)
+            launch(VkBot::class.java)
         }
 
 

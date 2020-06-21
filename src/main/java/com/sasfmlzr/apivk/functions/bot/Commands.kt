@@ -11,6 +11,7 @@ import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.objects.messages.ConversationWithMessage
 import java.sql.SQLException
+import kotlin.math.roundToLong
 
 class Commands(client: BotApiClient) : Messages(client) {
 
@@ -85,13 +86,13 @@ class Commands(client: BotApiClient) : Messages(client) {
         if (textMessageString == "пинг") {
             print("Пришло сообщение = $textMessageString\n")
             message =
-                    "Среднее время запроса до вк равно " + Math.round((100 * timeZaprosFinishSumm / countSendMessageUser).toFloat()) / 100 + "мс\n"
+                    "Среднее время запроса до вк равно " + (100 * timeZaprosFinishSumm / countSendMessageUser).toFloat().roundToLong() / 100 + "мс\n"
         }
         if (textMessageString == "время работы") {
             print("Пришло сообщение = $textMessageString\n")
             val timeProgramFinish = System.currentTimeMillis()
             val timeProgramItog = timeProgramFinish - timeProgramStart
-            message = "Время работы равно " + Math.round((timeProgramItog / 1000).toFloat()) + "c"
+            message = "Время работы равно " + (timeProgramItog / 1000).toFloat().roundToLong() + "c"
         }
 
         if (message != messages) {

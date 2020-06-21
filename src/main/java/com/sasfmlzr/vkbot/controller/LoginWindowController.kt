@@ -142,9 +142,9 @@ class LoginWindowController : Initializable {
             }
         }
 
-        grid.heightProperty().addListener { observable, oldValue, newValue -> window.height = newValue.toDouble() + 35.0 }
+        grid.heightProperty().addListener { _, _, newValue -> window.height = newValue.toDouble() + 35.0 }
 
-        window.setOnCloseRequest { we ->
+        window.setOnCloseRequest {
             clientThread!!.interrupt()
 
             window.hide()
@@ -196,7 +196,7 @@ class LoginWindowController : Initializable {
     @FXML
     private fun onLogin() {
         when (state) {
-            LoginWindowController.State.NONE -> {
+            State.NONE -> {
                 if (loginText.text != "" && passText.text != "") {
                     hideCaptchaAnimation()
                     hideWarningAnimation()
@@ -207,16 +207,16 @@ class LoginWindowController : Initializable {
                     state = State.LOGGING_IN
                 }
             }
-            LoginWindowController.State.LOGGING_IN, LoginWindowController.State.CONFIRM_PHONE, LoginWindowController.State.SUCCESS -> {
+            State.LOGGING_IN, State.CONFIRM_PHONE, State.SUCCESS -> {
             }
-            LoginWindowController.State.NEED_CAPTCHA -> {
+            State.NEED_CAPTCHA -> {
                 if (captchaKey.text != "") {
                     client!!.onReceiveDataListener.onReceiveCaptcha(captchaKey.text)
                     loadingImage.isVisible = true
                     state = State.LOGGING_IN
                 }
             }
-            LoginWindowController.State.INVALID_DATA -> {
+            State.INVALID_DATA -> {
                 if (loginText.text != "" && passText.text != "") {
                     client!!.onReceiveDataListener.onReceiveData(loginText.text, passText.text)
                     loadingImage.isVisible = true
@@ -254,7 +254,7 @@ class LoginWindowController : Initializable {
 
     companion object {
 
-        internal val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LoginWindow.messages"
-        internal val fxmlPath = "/com/sasfmlzr/vkbot/views/LoginWindow.fxml"
+        internal const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LoginWindow.messages"
+        internal const val fxmlPath = "/com/sasfmlzr/vkbot/views/LoginWindow.fxml"
     }
 }

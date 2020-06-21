@@ -24,7 +24,7 @@ class LogWindowController : Initializable {
     }
 
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LogWindow.messages"
-        val fxmlPath = "LogWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.LogWindow.messages"
+        const val fxmlPath = "LogWindow.fxml"
     }
 }

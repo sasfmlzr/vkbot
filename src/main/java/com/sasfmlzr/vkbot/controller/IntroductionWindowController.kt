@@ -24,6 +24,7 @@ import javafx.stage.Stage
 import java.io.IOException
 import java.net.URL
 import java.util.*
+import kotlin.system.exitProcess
 
 class IntroductionWindowController : Application(), Initializable {
 
@@ -101,8 +102,8 @@ class IntroductionWindowController : Application(), Initializable {
 
     @Throws(Exception::class)
     override fun start(primaryStage: Stage) {
-        val bundle = VkBot.loadLocale(Locale.getDefault(), IntroductionWindowController.resourcePath)
-        val root = FXMLLoader.load<AnchorPane>(javaClass.getResource(IntroductionWindowController.fxmlPath), bundle)
+        val bundle = VkBot.loadLocale(Locale.getDefault(), resourcePath)
+        val root = FXMLLoader.load<AnchorPane>(javaClass.getResource(fxmlPath), bundle)
         val scene = Scene(root)
         scene.root = root
         scene.stylesheets.add(javaClass.getResource("application.css").toExternalForm())
@@ -114,9 +115,9 @@ class IntroductionWindowController : Application(), Initializable {
         primaryStage.title = "VKBot"
         primaryStage.show()
 
-        primaryStage.setOnCloseRequest { event ->
+        primaryStage.setOnCloseRequest {
             Platform.exit()
-            System.exit(0)
+            exitProcess(0)
         }
     }
 
@@ -247,7 +248,7 @@ class IntroductionWindowController : Application(), Initializable {
     @FXML
     private fun onLogin() {
         when (state) {
-            IntroductionWindowController.State.NONE -> {
+            State.NONE -> {
                 if (login.text != "" && password.text != "") {
                     hideCaptchaAnimation()
                     hideWarningAnimation()
@@ -259,23 +260,23 @@ class IntroductionWindowController : Application(), Initializable {
                     state = State.LOGGING_IN
                 }
             }
-            IntroductionWindowController.State.LOGGING_IN, IntroductionWindowController.State.CONFIRM_PHONE -> {
+            State.LOGGING_IN, State.CONFIRM_PHONE -> {
             }
-            IntroductionWindowController.State.NEED_CAPTCHA -> {
+            State.NEED_CAPTCHA -> {
                 if (captchaKey.text != "") {
                     client!!.onReceiveDataListener.onReceiveCaptcha(captchaKey.text)
                     loadingImage.isVisible = true
                     state = State.LOGGING_IN
                 }
             }
-            IntroductionWindowController.State.INVALID_DATA -> {
+            State.INVALID_DATA -> {
                 if (login.text != "" && password.text != "") {
                     client!!.onReceiveDataListener.onReceiveData(login.text, password.text)
                     loadingImage.isVisible = true
                     hideWarningAnimation()
                 }
             }
-            IntroductionWindowController.State.SUCCESS -> {
+            State.SUCCESS -> {
                 stageIntroduction++   // если успешно
             }
         }

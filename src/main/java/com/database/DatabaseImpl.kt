@@ -14,14 +14,14 @@ open class DatabaseImpl : Database {
     var conn: Connection? = null          //SQL connection
     var statmt: Statement? = null
 
-    var botData = FXCollections.observableArrayList<BotDatabase_IdRequestResponse>()
-    var botRandomData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
-    var stihMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
-    var anekdotMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
-    var aforismMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
-    var statusMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()
-    var bigMessagesData = FXCollections.observableArrayList<BotDatabase_RequestResponse>()
-    var userRightsData = FXCollections.observableArrayList<UserIdRightsBD>()
+    var botData = FXCollections.observableArrayList<BotDatabase_IdRequestResponse>()!!
+    var botRandomData = FXCollections.observableArrayList<BotDatabase_IdRequest>()!!
+    var stihMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()!!
+    var anekdotMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()!!
+    var aforismMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()!!
+    var statusMessagesData = FXCollections.observableArrayList<BotDatabase_IdRequest>()!!
+    var bigMessagesData = FXCollections.observableArrayList<BotDatabase_RequestResponse>()!!
+    var userRightsData = FXCollections.observableArrayList<UserIdRightsBD>()!!
 
     val databaseRequest: DatabaseRequestImpl by lazy {
         DatabaseRequestImpl(statmt!!, conn!!)
@@ -58,8 +58,7 @@ open class DatabaseImpl : Database {
     // initialize table ID REQUEST
     @Throws(SQLException::class)
     private fun InitOneDB_Id_Request(tableDB: String, objectData: ObservableList<BotDatabase_IdRequest>) {
-        val resSet: ResultSet
-        resSet = statmt!!.executeQuery("SELECT * FROM $tableDB")
+        val resSet: ResultSet = statmt!!.executeQuery("SELECT * FROM $tableDB")
         while (resSet.next()) {
             val requesttextbot = resSet.getString("request")
             val id = Integer.parseInt(resSet.getString("id"))
@@ -71,8 +70,7 @@ open class DatabaseImpl : Database {
     // initialize table   REQUEST RESPONSE
     @Throws(SQLException::class)
     private fun InitOneDB_Request_Response(tableDB: String, objectData: ObservableList<BotDatabase_RequestResponse>) {
-        val resSet: ResultSet
-        resSet = statmt!!.executeQuery("SELECT * FROM $tableDB")
+        val resSet: ResultSet = statmt!!.executeQuery("SELECT * FROM $tableDB")
         while (resSet.next()) {
             val requesttextbot = resSet.getString("requesttextbot")
             val responsetextbot = resSet.getString("responsetextbot")
@@ -91,8 +89,7 @@ open class DatabaseImpl : Database {
     @Throws(SQLException::class)
     private fun InitOneDB_userRights(objectData: ObservableList<UserIdRightsBD>) {
 
-        val resSet: ResultSet
-        resSet = statmt!!.executeQuery("SELECT * FROM UserRights")
+        val resSet: ResultSet = statmt!!.executeQuery("SELECT * FROM UserRights")
         while (resSet.next()) {
             val loginBot = resSet.getString("login")
             val userID = resSet.getInt("userID")
@@ -120,8 +117,7 @@ open class DatabaseImpl : Database {
         databaseRequest.createSecondaryDB()
         databaseRequest.insertIntoTablePrimary()
         databaseRequest.createRepostDB()
-        var resSet: ResultSet
-        resSet = statmt!!.executeQuery("SELECT * FROM BotMessages")
+        var resSet: ResultSet = statmt!!.executeQuery("SELECT * FROM BotMessages")
         addData(resSet)
         resSet = statmt!!.executeQuery("SELECT * FROM NorkinForewer")
         addData(resSet)

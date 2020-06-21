@@ -40,9 +40,7 @@ class DatabaseRequestImpl(private val statement: Statement,
     // инициализация одной таблицы  REQUEST RESPONSE
     @Throws(SQLException::class)
     fun findUserRights(userID: Int, actor: UserActor): String {
-        val resSet: ResultSet
-        resSet =
-                statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=" + actor.id + " AND userID=" + userID)
+        val resSet: ResultSet = statement.executeQuery("SELECT nameRight FROM UserRights WHERE login=" + actor.id + " AND userID=" + userID)
         var nameRight = ""
         while (resSet.next()) {
             nameRight = resSet.getString("nameRight")
@@ -131,7 +129,7 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     // --------Создание первичной записи в таблице--------
     fun insertIntoTablePrimary() {
-        statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
+        statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ")
     }
 
     @Throws(SQLException::class)

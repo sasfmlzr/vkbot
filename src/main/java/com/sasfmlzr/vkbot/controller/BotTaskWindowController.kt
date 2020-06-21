@@ -39,7 +39,7 @@ class BotTaskWindowController : Initializable {
     }
 
     companion object {
-        internal val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotTaskWindow.messages"
-        internal val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml"
+        internal const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BotTaskWindow.messages"
+        internal const val fxmlPath = "/com/sasfmlzr/vkbot/views/BotTaskWindow.fxml"
     }
 }

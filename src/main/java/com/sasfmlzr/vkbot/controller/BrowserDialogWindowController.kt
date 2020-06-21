@@ -30,7 +30,7 @@ class BrowserDialogWindowController : Initializable {
 
         window.onCloseRequest = EventHandler<WindowEvent> { it.consume() }
 
-        this.engine.locationProperty().addListener { prop, before, after ->
+        this.engine.locationProperty().addListener { _, _, _ ->
             //true if OK
             Platform.runLater { this.close() }
         }
@@ -50,7 +50,7 @@ class BrowserDialogWindowController : Initializable {
     }
 
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages"
-        val fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.BrowserDialogWindow.messages"
+        const val fxmlPath = "/com/sasfmlzr/vkbot/views/BrowserDialogWindow.fxml"
     }
 }

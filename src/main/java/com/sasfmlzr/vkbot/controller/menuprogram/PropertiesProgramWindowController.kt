@@ -21,8 +21,8 @@ class PropertiesProgramWindowController : Initializable {
     }
 
     companion object {
-        val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.PropertiesProgramWindow.messages"
-        val fxmlPath = "PropertiesProgramWindow.fxml"
+        const val resourcePath = "com.sasfmlzr.vkbot.resourcebundle.PropertiesProgramWindow.messages"
+        const val fxmlPath = "PropertiesProgramWindow.fxml"
 
         var token1: String? = null
         var token2: String? = null

@@ -74,7 +74,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
         while (client.stateBot.pushPowerBot) {
             client.stateBot.findMessage = false        // совпадение с сообщением не найдено
-            StatisticsVariable.countSendMessageUser = StatisticsVariable.countSendMessageUser + 1
+            countSendMessageUser = countSendMessageUser + 1
             val timeStartFunction = System.currentTimeMillis()
 
 
@@ -92,7 +92,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             val messagesList = createListMessageVK()                   // делается запрос непрочитанных сообщений
             obrachenie = "Колян, "
             StatisticsVariable.timeZaprosFinishSumm =
-                    StatisticsVariable.timeZaprosFinishSumm + StatisticsVariable.timeZaprosFinishItogo            // для среднего пинга
+                    StatisticsVariable.timeZaprosFinishSumm + timeZaprosFinishItogo            // для среднего пинга
 
             val userRight: UserRights
 
@@ -179,8 +179,8 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                     val timeFinishFunction = System.currentTimeMillis()
                     val timeConsumedMilliss = timeFinishFunction - timeStartFunction
                     //            System.out.print("время countSendMessageUser= " + timeConsumedMilliss + "\n");
-                    StatisticsVariable.timeItogoMsMinusVK =
-                            timeConsumedMilliss - StatisticsVariable.timeZaprosFinishItogo
+                    timeItogoMsMinusVK =
+                            timeConsumedMilliss - timeZaprosFinishItogo
                     //            System.out.print("время прохода минус запросвк= " + timeItogoMsMinusVK + "\n");
                 }
                 if (client.stateBot.priostanovka) {
@@ -211,7 +211,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                 .count(30)
                 .execute().items
         val timezaprosfinish = System.currentTimeMillis()
-        StatisticsVariable.timeZaprosFinishItogo =
+        timeZaprosFinishItogo =
                 timezaprosfinish - timezaprosstart      // время, затраченное на операцию
         return messages
     }
@@ -228,11 +228,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             // путешествие по списку объектов из БД
             var countDB = 0
             while (countDB <= (DatabaseEntity.database.botData.size - 1)) {
-                if (DatabaseEntity.database.botData.get(countDB).request.toLowerCase().equals(
-                                textMessageString.toLowerCase()
-                        )
+                if (DatabaseEntity.database.botData[countDB].request.toLowerCase() == textMessageString.toLowerCase()
                 ) {  // сравниваем нижний регистр
-                    listMessages.add(DatabaseEntity.database.botData.get(countDB).response)
+                    listMessages.add(DatabaseEntity.database.botData[countDB].response)
                     client.stateBot.findMessage =
                             true                                                           // совпадение с сообщением найдено
                 }
@@ -280,17 +278,15 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
 
             var countDB = 0
             while (countDB <= DatabaseEntity.database.bigMessagesData.size - 1) {
-                if (DatabaseEntity.database.bigMessagesData.get(countDB).request.toLowerCase().equals(
-                                textMessageString
-                        )
+                if (DatabaseEntity.database.bigMessagesData[countDB].request.toLowerCase() == textMessageString
                 ) {  // сравниваем нижний регистр
                     // сравниваем сообщение и значение в БД
-                    listMessages.add(DatabaseEntity.database.bigMessagesData.get(countDB).response)
+                    listMessages.add(DatabaseEntity.database.bigMessagesData[countDB].response)
                     client.stateBot.findMessage =
                             true                                                 // совпадение с сообщением найдено
                     // messages = listMessages.get(randomIdBot(listMessages.size()));    // выбираем рандомно из найденного сообщение
                 }
-                countDB = countDB + 1
+                countDB += 1
             }
             if (client.stateBot.findMessage)
             // если совпадение с сообщением найдено, то
@@ -299,9 +295,9 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                         listMessages[client.other().randomId(listMessages.size)]          // выбираем рандомно из найденного сообщение
             }
             val timeFinishBigBD = System.currentTimeMillis()
-            StatisticsVariable.timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
-            StatisticsVariable.countUsedBigBD =
-                    StatisticsVariable.countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
+            timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
+            countUsedBigBD =
+                    countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
             StatisticsWindowController.seriesBigBD.data.add(XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD.toInt()))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         return messages

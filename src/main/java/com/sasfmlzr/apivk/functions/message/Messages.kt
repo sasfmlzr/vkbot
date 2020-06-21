@@ -82,16 +82,15 @@ class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
     @Throws(ClientException::class, ApiException::class)
     fun vkSendMessage(actor: GroupActor, message: String, messagesList: List<ConversationWithMessage>, vk: VkApiClient) {
         val timeStartSendMessage = System.currentTimeMillis()
-        val peerID: Int
 
-        peerID = messagesList[0].lastMessage.peerId!!                  //берем переменную ChatID для удобности и читаемости
+        val peerID: Int = messagesList[0].lastMessage.peerId!!                  //берем переменную ChatID для удобности и читаемости
         vkSendMessageUser(actor, message, peerID, vk)                                          //отправляем сообщение
         //              System.out.print("Сообщение = " + message+"\n");
         vk.messages().markAsRead(actor).peerId(peerID).execute()         //пометка сообщения прочитанным
         val timeFinishSendMessage = System.currentTimeMillis()
         timeItogoSendMessage = timeFinishSendMessage - timeStartSendMessage
         //          System.out.print("время отправки сообщения= "+ timeItogoSendMessage + "\n");
-        countSendMessage = countSendMessage + 1        // количество отправленных сообщений увеличилось
+        countSendMessage += 1        // количество отправленных сообщений увеличилось
     }
 
     //-----------------отправить сообщение пользователюу---------------------------//
