@@ -116,9 +116,10 @@ open class DatabaseImpl : Database {
         statusMessagesData.clear()
         bigMessagesData.clear()
 
-        databaseRequest.CreateDB()
-        databaseRequest.CreateSecondaryDB()
-        databaseRequest.InsertIntoTablePrimary()
+        databaseRequest.createDB()
+        databaseRequest.createSecondaryDB()
+        databaseRequest.insertIntoTablePrimary()
+        databaseRequest.createRepostDB()
         var resSet: ResultSet
         resSet = statmt!!.executeQuery("SELECT * FROM BotMessages")
         addData(resSet)

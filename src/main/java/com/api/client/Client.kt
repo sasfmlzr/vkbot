@@ -76,7 +76,7 @@ class Client : Serializable {
 
         if (token == "")
             getToken()
-        mam = Client.token
+        mam = token
         idBot = Integer.parseInt(this.ID)
         println("Авторизация успешна")
         actor = UserActor(idBot, mam)
@@ -105,8 +105,8 @@ class Client : Serializable {
         val kit = HTMLEditorKit()
         val doc = kit.createDefaultDocument() as HTMLDocument
         doc.putProperty("IgnoreCharsetDirective", java.lang.Boolean.TRUE)
-        val HTMLReader = StringReader(string!!)
-        kit.read(HTMLReader, doc, 0)
+        val hTMLReader = StringReader(string!!)
+        kit.read(hTMLReader, doc, 0)
         return doc
     }
 
@@ -130,12 +130,11 @@ class Client : Serializable {
     private fun handleProblem() {
         val doc = stringToHtml(stringResponse)
 
-        if (hasAttributeValue(doc, "input", HTML.Attribute.NAME, "captcha_sid"))
-            handleCaptcha(doc)
-        else if (hasAttributeValue(doc, "div", HTML.Attribute.CLASS, "oauth_access_header"))
-            handleConfirmApplicationRights(doc)
-        else
-            handleInvalidData(doc)
+        when {
+            hasAttributeValue(doc, "input", HTML.Attribute.NAME, "captcha_sid") -> handleCaptcha(doc)
+            hasAttributeValue(doc, "div", HTML.Attribute.CLASS, "oauth_access_header") -> handleConfirmApplicationRights(doc)
+            else -> handleInvalidData(doc)
+        }
     }
 
     @Throws(Exception::class)
@@ -211,8 +210,7 @@ class Client : Serializable {
     private fun getToken() {
         postQuery(response!!.getFirstHeader("location").value)
 
-        val headerLocation = response!!.getFirstHeader("location").value
-        token = headerLocation.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+        getTokenFirstTime()
     }
 
     @Throws(Exception::class)

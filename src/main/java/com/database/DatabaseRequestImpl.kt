@@ -53,7 +53,7 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     // --------Создание первичных таблиц--------
     @Throws(SQLException::class)
-    fun CreateDB() {
+    fun createDB() {
 
         // NameRights
         statement.execute("CREATE TABLE if not exists 'NameRights' ('nameRight' TEXT UNIQUE" + "NOT NULL PRIMARY KEY);")
@@ -91,7 +91,7 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     // --------Создание вторичных таблиц--------
     @Throws(SQLException::class)
-    fun CreateSecondaryDB() {
+    fun createSecondaryDB() {
 
         //statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
 
@@ -117,8 +117,20 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     }
 
+    // --------Создание вторичных таблиц--------
+    @Throws(SQLException::class)
+    fun createRepostDB() {
+
+        statement.execute("CREATE TABLE if not exists 'UserInfo' ('id' INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "'user_id' TEXT (500) NOT NULL, 'first_name' TEXT (500) NOT NULL, 'second_name' TEXT (500) NOT NULL, 'is_posted' TEXT (500) NOT NULL);")
+
+
+        println("Информация о пользователях -  таблицы созданы или уже существуют.")
+
+    }
+
     // --------Создание первичной записи в таблице--------
-    fun InsertIntoTablePrimary() {
+    fun insertIntoTablePrimary() {
         statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
     }
 
