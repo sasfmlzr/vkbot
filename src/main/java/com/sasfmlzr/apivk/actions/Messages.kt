@@ -54,7 +54,7 @@ open class Messages(client: BotApiClient) : AbstractAction(client) {
 
     }
 
-    fun commands(): Commands {
-        return Commands(client)
+    fun commands(): CommonCommands {
+        return CommonCommands(client)
     }
 }

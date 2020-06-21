@@ -17,18 +17,18 @@ class GroupBot(vk: VkApiClient, actor: GroupActor) : AbstractBot(vk, actor) {
             if (listCounters.isNotEmpty()) {
                 val botSelfInfo = listCounters[0]
                 userID = botSelfInfo.id
-                botName = botSelfInfo.firstName + " " + botSelfInfo.lastName
+                botName = "${botSelfInfo.firstName} ${botSelfInfo.lastName}"
                 val daffyDuckImage = ImageIO.read(botSelfInfo.photo200)
                 botImage = SwingFXUtils.toFXImage(daffyDuckImage, null)
             } else {
                 botName = "Бот САИТ"
                 val urls = javaClass.getResource("/Yes.jpg")
-                if (urls == null) {
-                    println("Could not find image!")
-                } else {
+                if (urls != null) {
                     val daffyDuckImage = ImageIO.read(urls)
                     botImage = SwingFXUtils.toFXImage(daffyDuckImage, null)
                     println("find image!")
+                } else {
+                    println("Could not find image!")
                 }
             }
         } catch (e: Exception) {

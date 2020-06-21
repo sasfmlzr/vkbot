@@ -1,8 +1,8 @@
 package com.sasfmlzr.apivk.client
 
 import com.sasfmlzr.apivk.actions.Messages
-import com.sasfmlzr.apivk.actions.Other
 import com.sasfmlzr.apivk.bot.AbstractBot
+import com.sasfmlzr.apivk.functions.other.Other
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.Actor
 

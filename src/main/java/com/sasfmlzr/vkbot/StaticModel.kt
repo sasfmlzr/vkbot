@@ -17,6 +17,6 @@ object StaticModel {
     var userBot = UserBot(vk, actor)
 
 
-    private val groupActor = GroupActor(144853761, "0ed42462bb7ff49865bd92343711fbcab31b18ce3e7bfeabffed19019e05eb84aa25fa982d6412a9ab979")
+    private val groupActor = GroupActor(0, "0")
     var groupBot = GroupBot(vk, groupActor)
 }

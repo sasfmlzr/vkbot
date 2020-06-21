@@ -14,7 +14,7 @@ class UserBot(vk: VkApiClient, actor: UserActor) : AbstractBot(vk, actor) {
         try {
             val botSelfInfo = vk.users().get(actor).fields(Fields.PHOTO_200).execute()[0]
             userID = botSelfInfo.id
-            botName = botSelfInfo.firstName + " " + botSelfInfo.lastName
+            botName = "${botSelfInfo.firstName} ${botSelfInfo.lastName}"
             val daffyDuckImage = ImageIO.read(botSelfInfo.photo200)
             botImage = SwingFXUtils.toFXImage(daffyDuckImage, null)
         } catch (e: Exception) {

@@ -3,8 +3,7 @@ package com.sasfmlzr.vkbot.controller;
 import com.api.util.Effects;
 import com.database.DatabaseEntity;
 import com.sasfmlzr.apivk.State;
-import com.sasfmlzr.apivk.bot.GroupBot;
-import com.sasfmlzr.apivk.bot.UserBot;
+import com.sasfmlzr.apivk.bot.AbstractBot;
 import com.sasfmlzr.apivk.object.StatisticsVariable;
 import com.sasfmlzr.vkbot.StaticModel;
 import com.sasfmlzr.vkbot.controller.menuprogram.StatisticsWindowController;
@@ -93,12 +92,7 @@ public class BotCardController extends AnchorPane implements Initializable {
     }
 
 
-    private void setAvatarBot(BotCardController childList, UserBot bot) {
-        childList.settext(bot.getBotName());
-        childList.setavatar(bot.getBotImage());
-    }
-
-    private void setAvatarBot(BotCardController childList, GroupBot bot) {
+    private void setAvatarBot(BotCardController childList, AbstractBot bot) {
         childList.settext(bot.getBotName());
         childList.setavatar(bot.getBotImage());
     }

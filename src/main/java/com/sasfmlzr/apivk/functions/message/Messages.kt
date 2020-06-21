@@ -32,7 +32,7 @@ class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
         val timeFinishSendMessage = System.currentTimeMillis()
         timeItogoSendMessage = timeFinishSendMessage - timeStartSendMessage
         //          System.out.print("время отправки сообщения= "+ timeItogoSendMessage + "\n");
-        countSendMessage = countSendMessage + 1        // количество отправленных сообщений увеличилось
+        countSendMessage += 1        // количество отправленных сообщений увеличилось
 
 
     }
