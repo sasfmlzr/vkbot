@@ -157,6 +157,14 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
                     if (!client.stateBot.reduction) {
                         message = messageFromDataBase(textMessageString, message)       // бд коляна
                         message = messageFromBigDataBase(textMessageString, message!!)    // большая бд
+
+                        if(textMessageString.contains("Красная") || textMessageString.contains("Белый") ||
+                                textMessageString.contains("Красный") || textMessageString.contains("Белая")||
+                                textMessageString.contains("Красн") || textMessageString.contains("Бел")||
+                                textMessageString.contains("красн") || textMessageString.contains("бел")) {
+                            message = textMessageString.toUpperCase() + "! " + textMessageString.toUpperCase() + "! "+ textMessageString.toUpperCase() + "!"
+                        }
+
                         client.messages().vkSendMessage(
                                 actor,
                                 message,

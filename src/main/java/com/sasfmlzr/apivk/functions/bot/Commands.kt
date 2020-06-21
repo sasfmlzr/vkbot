@@ -25,40 +25,40 @@ class Commands(client: BotApiClient) : Messages(client) {
     ): String? {
         var message = messages
 
-        if (textMessageString == "го стих") {
+        if (textMessageString == "стих") {
             print("Пришло сообщение = $textMessageString\n")
             message =
                     DatabaseEntity.database.stihMessagesData[bot.other().randomId(DatabaseEntity.database.stihMessagesData.size)].response
         }
-        if (textMessageString == "го афоризм") {
+        if (textMessageString == "афоризм") {
             print("Пришло сообщение = $textMessageString\n")
             message =
                     DatabaseEntity.database.aforismMessagesData[bot.other().randomId(DatabaseEntity.database.aforismMessagesData.size)].response
         }
-        if (textMessageString == "го анекдот") {
+        if (textMessageString == "анекдот") {
             print("Пришло сообщение = $textMessageString\n")
             message =
                     DatabaseEntity.database.anekdotMessagesData[bot.other().randomId(DatabaseEntity.database.anekdotMessagesData.size)].response
         }
-        if (textMessageString == "го статус") {
+        if (textMessageString == "статус") {
             print("Пришло сообщение = $textMessageString\n")
             message =
                     DatabaseEntity.database.statusMessagesData[bot.other().randomId(DatabaseEntity.database.statusMessagesData.size)].response
         }
-        if (textMessageString == "го справку") {
+        if (textMessageString == "справку") {
             print("Пришло сообщение = $textMessageString\n")
 
-            message = "го статус - модный статус про машину в вк \n" +
-                    "го анекдот - анекдот про хонду \n" +
-                    "го афоризм - афоризм про машину в вк \n" +
-                    "го стих - стих про машину в вк \n"
+            message = "статус\n" +
+                    "анекдот\n" +
+                    "афоризм\n" +
+                    "стих\n"
         }
-        if (textMessageString == "го админ справку") {
+        if (textMessageString == "админ справка") {
             print("Пришло сообщение = $textMessageString\n")
 
-            message = "го средний пинг \n" +
-                    "го время работы \n" +
-                    "го приостановка бота \n"
+            message = "средний пинг \n" +
+                    "время работы \n" +
+                    "приостановка бота \n"
         }
 
 
@@ -70,24 +70,24 @@ class Commands(client: BotApiClient) : Messages(client) {
                     .addToDB(textMessageString, actor.id!!)
         }
 
-        if (textMessageString.contains("го мем")) {
+        if (textMessageString.contains("мем")) {
 
             print("Пришло сообщение = $textMessageString\n")
 
             bot.messages().vksendImageMessages(actor, messagesList)
             client.stateBot.reduction = true
         }
-        if (textMessageString == "го приостановка бота") {
+        if (textMessageString == "приостановка бота") {
             print("Пришло сообщение = $textMessageString\n")
             message = "Ок, бот приостановлен на минуту "
             client.stateBot.priostanovka = true
         }
-        if (textMessageString == "го пинг") {
+        if (textMessageString == "пинг") {
             print("Пришло сообщение = $textMessageString\n")
             message =
                     "Среднее время запроса до вк равно " + Math.round((100 * timeZaprosFinishSumm / countSendMessageUser).toFloat()) / 100 + "мс\n"
         }
-        if (textMessageString == "го время работы") {
+        if (textMessageString == "время работы") {
             print("Пришло сообщение = $textMessageString\n")
             val timeProgramFinish = System.currentTimeMillis()
             val timeProgramItog = timeProgramFinish - timeProgramStart
@@ -113,7 +113,7 @@ class Commands(client: BotApiClient) : Messages(client) {
         }
         if (textMessageString == "включись") {
             print("Пришло сообщение = $textMessageString\n")
-            message = "Смотри скай поехал"
+            message = "Чат-бот включен"
             client.stateBot.botStopped = false
         }
 

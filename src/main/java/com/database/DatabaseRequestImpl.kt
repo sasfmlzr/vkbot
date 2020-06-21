@@ -10,11 +10,8 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 
-
 class DatabaseRequestImpl(private val statement: Statement,
                           private val connection: Connection) : DatabaseRequest {
-
-    // --------тут красивые запросы--------
 
     //занесение данных в бд инфе о пользователях. userID, имя, фамилия
     @Throws(ClientException::class, ApiException::class, SQLException::class)
@@ -57,8 +54,6 @@ class DatabaseRequestImpl(private val statement: Statement,
     // --------Создание первичных таблиц--------
     @Throws(SQLException::class)
     fun CreateDB() {
-
-        //statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
 
         // NameRights
         statement.execute("CREATE TABLE if not exists 'NameRights' ('nameRight' TEXT UNIQUE" + "NOT NULL PRIMARY KEY);")
@@ -124,7 +119,7 @@ class DatabaseRequestImpl(private val statement: Statement,
 
     // --------Создание первичной записи в таблице--------
     fun InsertIntoTablePrimary() {
-        //statmt.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
+        statement.execute("INSERT INTO 'RandomMessages' ('request')  VALUES  ('Это тестовая запись'); ");
     }
 
     @Throws(SQLException::class)
@@ -138,10 +133,8 @@ class DatabaseRequestImpl(private val statement: Statement,
         statement.setString(2, response)
         statement.setInt(3, actorId)
         statement.executeUpdate()
-        // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
         DatabaseEntity.database.InitDB()
-        //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
 
@@ -155,10 +148,7 @@ class DatabaseRequestImpl(private val statement: Statement,
         } catch (e: Exception) {
             println("wtf")
         }
-        // statmt.execute("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot', 'Login') VALUES ('"+request+"', '"+response+"',  '"+ids+"');");
         println("Успешно занесено в БД")
-        //InitDB()
-        //  System.out.println("INSERT INTO 'BotMessages' ('requesttextbot', 'responsetextbot') VALUES ("+zapros.getText()+", "+ otvet.getText()+ ")");
     }   // добавить новый элемент в таблицу
 
     // парсер добавления в таблицу через вк
@@ -204,10 +194,4 @@ class DatabaseRequestImpl(private val statement: Statement,
         addElementinDialog(firstWord, secondWord, actorId)
         return "Сделано!"
     }
-
-    /* пример написания запроса, чтоб исключал повторяющиеся
-     * INSERT INTO UserRights(login, userID, nameRight)
-     * SELECT DISTINCT 294987132, 30562433, 'Пользователь' FROM UserRights
-     * WHERE NOT EXISTS (SELECT userID FROM UserRights WHERE userID = '30562433')
-     */
 }

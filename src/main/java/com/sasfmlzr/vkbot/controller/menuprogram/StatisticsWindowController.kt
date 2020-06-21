@@ -55,44 +55,24 @@ class StatisticsWindowController : Initializable {
     fun initWindow() {
         textLog.text = ""
         if (StaticModel.userBot.botApiClient().stateBot.botWork) {
-            /*BufferedReader bReader = new BufferedReader(new FileReader("src/resources/locale/StatisticsWindow/Log.txt"));
-			System.out.println(bReader);
-			String s;
-			while ((s = bReader.readLine()) != null) {
-				textLog.appendText(s + "\n");
-			}*/
+
             textLog.appendText("Статистика бота" + "\n")
             seriesZaprosVk.setName("Запрос в вк")
             seriesZaprosVk.name = "Запрос с отправкой"
 
-
-            //	timeZaprosVk;
             timeZaprosVk.data.setAll(seriesZaprosVk, seriesItogVk)
-            //	timeZaprosVk.getData() .setAll( seriesItogVk);
-
             timeThread.data.setAll(seriesThread)
-            //			timeBigBD.getData() .setAll(seriesBigBD);
         } else {
             textLog.appendText("Сначала запусти бота" + "\n")
         }
         //		System.out.println(s);
     }
 
-    //////////////при нажатии на кнопку
-    fun blabla() {
-
-        print("setUpperBound " + timeZaprosVkX.upperBound + "\n")
-        punchRadioButton()
-        print("выполнено \n")
-    }
-
-
     //////////////при нажатии на кнопку выбора кратности статистики
     fun punchRadioButton() {
         //setTen,setFiveteen,setHungry,setThousand;
         if (setTen.isFocused) {
             //System.out.print("время прохода минус запросвк= "+ "\n");
-            //setFiveteen.;
             setTen.isSelected = true
             setFiveteen.isSelected = false
             setHungry.isSelected = false
@@ -101,7 +81,7 @@ class StatisticsWindowController : Initializable {
             setTen.requestFocus()
             val time = Timer()
             time.schedule(object : TimerTask() {
-                override fun run() { //ПЕРЕЗАГРУЖАЕМ МЕТОД RUN В КОТОРОМ ДЕЛАЕТЕ ТО ЧТО ВАМ НАДО
+                override fun run() { //ПЕРЕГРУЖАЕМ МЕТОД RUN
                     if (!setTen.isSelected) {
                         time.cancel()
                     }
@@ -109,7 +89,6 @@ class StatisticsWindowController : Initializable {
                         timeZaprosVkX.isAutoRanging = false
                         timeZaprosVkX.lowerBound = (StatisticsVariable.countSendMessageUser - 10).toDouble()
                         timeZaprosVkX.upperBound = (5 + StatisticsVariable.countSendMessageUser).toDouble()
-                        //	timeZaprosVkY.setAutoRanging(false);
                         if (StatisticsVariable.timeItogoMsMinusVK > StatisticsVariable.timeZaprosFinishItogo) {
                             timeZaprosVkX.upperBound = (100 + StatisticsVariable.countSendMessageUser).toDouble()
                         }

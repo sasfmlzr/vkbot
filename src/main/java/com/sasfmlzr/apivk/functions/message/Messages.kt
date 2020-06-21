@@ -64,16 +64,9 @@ class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
         if (Files.exists(path)) {                   // если путь существует
             val file = File(memPath) //
             val files = file.listFiles()
-            //    ((WindowsPathWithAttributes)listMem.get(0))
             val getMessagesUploadServer = vk.photos().getMessagesUploadServer(actor).execute()
             assert(files != null)
-            //  String memPathJPG= files[0].getPath();//(String) listMem.get(0);
             val setImage = super.other().randomId(files!!.size)
-            //      String memPathJPG= files[setImage].getPath();//(String) listMem.get(0);
-            //     Path pathJPG = Paths.get(memPathJPG);
-            //     List listMem;
-            //     File imageMem = new File("");
-            //      System.out.println(files[1].exists());  //файл существует
             val uploadPhotoMessage = vk.upload().photoMessage(getMessagesUploadServer.uploadUrl.toString(), files[setImage]).execute()
             val saveMessagesPhoto = vk.photos().saveMessagesPhoto(actor, uploadPhotoMessage.photo).server(uploadPhotoMessage.server!!).hash(uploadPhotoMessage.hash).execute()
 
@@ -128,16 +121,9 @@ class Messages(vk: VkApiClient, actor: Actor) : BotApiClient(vk, actor) {
         if (Files.exists(path)) {                   // если путь существует
             val file = File(memPath) //
             val files = file.listFiles()
-            //    ((WindowsPathWithAttributes)listMem.get(0))
             val getMessagesUploadServer = vk.photos().getMessagesUploadServer(actor).execute()
             assert(files != null)
-            //  String memPathJPG= files[0].getPath();//(String) listMem.get(0);
             val setImage = super.other().randomId(files!!.size)
-            //      String memPathJPG= files[setImage].getPath();//(String) listMem.get(0);
-            //     Path pathJPG = Paths.get(memPathJPG);
-            //     List listMem;
-            //     File imageMem = new File("");
-            //      System.out.println(files[1].exists());  //файл существует
             val uploadPhotoMessage = vk.upload().photoMessage(getMessagesUploadServer.uploadUrl.toString(), files[setImage]).execute()
             val saveMessagesPhoto = vk.photos().saveMessagesPhoto(actor, uploadPhotoMessage.photo).server(uploadPhotoMessage.server!!).hash(uploadPhotoMessage.hash).execute()
 
