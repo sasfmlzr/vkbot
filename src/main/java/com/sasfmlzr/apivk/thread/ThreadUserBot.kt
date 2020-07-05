@@ -77,7 +77,6 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             countSendMessageUser = countSendMessageUser + 1
             val timeStartFunction = System.currentTimeMillis()
 
-
             client.stateBot.botWork = true           // если метод запущен, то бот включен
             client.stateBot.priostanovka = false   // для приостановки бота
             var message: String?         // сообщение бота
@@ -296,8 +295,7 @@ class ThreadUserBot(private val client: BotApiClient, private val actor: UserAct
             }
             val timeFinishBigBD = System.currentTimeMillis()
             timeConsumedMillisBigBD = timeFinishBigBD - timeStartBigBD
-            countUsedBigBD =
-                    countUsedBigBD + 1                                            // количество использований большой бд увеличилось на 1
+            countUsedBigBD += 1                                            // количество использований большой бд увеличилось на 1
             StatisticsWindowController.seriesBigBD.data.add(XYChart.Data(countUsedBigBD, timeConsumedMillisBigBD.toInt()))                        //ведение статистики задержки потока////здесь иногда ловится исключение
         }
         return messages

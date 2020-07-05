@@ -119,8 +119,7 @@ class DatabaseRequestImpl(private val statement: Statement,
     @Throws(SQLException::class)
     fun createRepostDB() {
 
-        statement.execute("CREATE TABLE if not exists 'UserInfo' ('id' INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "'user_id' TEXT (500) NOT NULL, 'first_name' TEXT (500) NOT NULL, 'second_name' TEXT (500) NOT NULL, 'is_posted' TEXT (500) NOT NULL);")
+        statement.execute("CREATE TABLE if not exists 'UserInfo' ('userID' INTEGER NOT NULL PRIMARY KEY ON CONFLICT FAIL, 'firstName' TEXT NOT NULL, 'lastName' TEXT NOT NULL, 'isPosted' CHAR(1) NOT NULL);")
 
 
         println("Информация о пользователях -  таблицы созданы или уже существуют.")
@@ -203,5 +202,43 @@ class DatabaseRequestImpl(private val statement: Statement,
         println("secondWord $secondWord")
         addElementinDialog(firstWord, secondWord, actorId)
         return "Сделано!"
+    }
+
+    //занесение данных в бд инфе о пользователях. userID, имя, фамилия
+    fun addInfoUserRepost(user: User) {
+        val requestSQL = ("INSERT  INTO 'UserInfo' ('userID', 'firstName', 'lastName', 'isPosted') SELECT DISTINCT ?, ?, ?, ? FROM 'UserInfo'WHERE NOT EXISTS (SELECT 'userID' FROM 'UserInfo' WHERE userID=${user.userID});")
+
+        val statement = connection.prepareStatement(requestSQL)
+        statement.setInt(1, user.userID)
+        statement.setString(2, user.firstName)
+        statement.setString(3, user.lastName)
+        statement.setBoolean(4, user.isPosted)
+        statement.executeUpdate()
+        //statement.execute("INSERT  INTO 'UserInfo' ('userID', 'firstName', 'lastName', 'isPosted') SELECT DISTINCT ${user.userID},'${user.firstName}','${user.lastName}', '${isPosted}' FROM 'UserInfo'WHERE NOT EXISTS (SELECT 'userID' FROM 'UserInfo' WHERE userID=${user.userID});"
+      //  )        // проверка есть ли такая в бд. если нет, то добавить инфу.
+    }
+
+    fun updateInfoUserRepost(user: User) {
+        statement.executeUpdate("UPDATE UserInfo SET isPosted=${user.isPosted} WHERE userID=${user.userID};"
+        )        // проверка есть ли такая в бд. если нет, то добавить инфу.
+    }
+
+    @Throws(SQLException::class)
+    fun getUsers(): MutableList<User> {
+        val resSet: ResultSet = statement.executeQuery("SELECT * FROM UserInfo")
+        val users = mutableListOf<User>()
+        while (resSet.next()) {
+            val userID = resSet.getInt("userID")
+            val firstName = resSet.getString("firstName")
+            val lastName = resSet.getString("lastName")
+            val isPosted = resSet.getBoolean("isPosted")
+            users.add(User(userID, firstName, lastName, isPosted))
+        }
+        resSet.close()
+        return users
+    }
+
+    data class User(val userID: Int, val firstName: String, val lastName: String, val isPosted: Boolean) {
+
     }
 }

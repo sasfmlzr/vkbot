@@ -10,6 +10,7 @@ import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.objects.messages.ConversationWithMessage
+import com.vk.api.sdk.objects.users.Fields
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
